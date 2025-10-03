@@ -7,7 +7,6 @@ import { UrlParser } from "$lib/tools";
 import type { RequestHandler } from "@sveltejs/kit";
 import { error, json, redirect } from '@sveltejs/kit';
 import * as fs from 'fs';
-import ping from "ping";
 /**
  * redirect to specific subdomain
  */
@@ -111,26 +110,4 @@ export const boo: RequestHandler = async ({ url }) => {
         },
     });
     return res;
-};
-
-/**
- * 
- * @param host web origin or IP address. exclude protocol
- */
-export async function getPing(host: string="sbrstrkkdwmdr.me") {
-    const promise = await ping.promise.probe(host);
-
-    return {
-        alive: promise.alive,
-        times: promise.times,
-        loss: +promise.packetLoss,
-        avg: +promise.avg,
-        stddev: +promise.stddev,
-    };
-}
-
-export const pingGET: RequestHandler= async ({ url }) => {
-    const param = url.searchParams.get('host');
-    const data = getPing(param ?? undefined);
-    return json(data);
 };
