@@ -1,7 +1,4 @@
 <script lang="ts">
-    import type { pathableItem } from "$lib/data/files";
-    import { UrlParser } from "$lib/tools";
-    import { onMount } from "svelte";
     import Fileviewer from "../fileviewer.svelte";
     import MarkdownRenderer from "../markdownRenderer.svelte";
     let { data } = $props();

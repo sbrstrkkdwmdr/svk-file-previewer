@@ -25,3 +25,27 @@ If the file is in a subfolder, make sure the subfolder isn't `/app`. `/app` is i
 Make sure directories do not contain any spaces or special characters. Files are ok.
 
 Public folder syncs with the `/files` folder every 60 minutes (can be edited by going into `/src/lib/server/files.ts` and changing `fileSyncTimer`)
+
+## Routes
+
+### /{slug}
+
+Displays all files with paths that match the given slug.
+
+| Params       |                                  |
+| ------------ | -------------------------------- |
+| `q={string}` | filters by both name and/or path |
+
+### /api/download
+
+Downloads a file
+
+| Params              |                                                                                             |
+| ------------------- | ------------------------------------------------------------------------------------------- |
+| `name={string}`     | File name including extension eg. `rafis2018hddt.osk`                                       |
+| `location={string}` | File path encased in `/` eg. `/skins/farm/`                                                 |
+| `preview={boolean}` | Whether to directly download the file or load the preview (if available). Defaults to false |
+
+### /api/files
+
+Returns a list of all files

@@ -177,7 +177,7 @@ async function getFile(dir: string, file: string) {
     }
     let tfile: file | null = null;
     for (const sf of tf ?? []) {
-        if (sf.rel.endsWith(dir + file)) tfile = sf;
+        if (sf.rel == dir + file) tfile = sf;
     }
     if (tfile) {
         let content: Buffer;
