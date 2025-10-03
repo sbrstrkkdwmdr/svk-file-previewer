@@ -1,0 +1,238 @@
+#markdownData pre {
+    background: none;
+}
+
+#markdownData h1 {
+    width: fit-content;
+    font-size: 4rem;
+    clear: both;
+    /* margin: auto; */
+    /* text-align: center; */
+    margin: 0;
+    padding: 15px;
+}
+
+#markdownData h2 {
+    width: fit-content;
+    font-size: 2.5rem;
+    clear: both;
+    /* margin: auto; */
+    margin: 0;
+    padding: 15px;
+}
+
+#markdownData h3 {
+    font-size: 1.5rem;
+    padding: 0;
+    margin: 0;
+    /* padding-top: 15px */
+    padding: 15px;
+}
+
+#markdownData h4 {
+    text-align: left;
+    font-size: 1rem;
+    padding: 0;
+    margin: 0;
+    /* padding-top: 15px */
+    padding: 15px;
+}
+
+#markdownData p,
+#markdownData ul {
+    width: fit-content;
+    clear: both;
+    margin: 0;
+    /* margin: auto; */
+}
+
+#markdownData code {
+    background-color: var(--codeInline-bg);
+    color: var(--codeInline);
+    padding: 2px 6px;
+    border-radius: 3px;
+    font-family: monospace;
+    font-size: 0.95em;
+}
+
+#markdownData pre code {
+    display: block;
+    border: var(--border) 3px solid;
+    padding: 2px 6px;
+    border-radius: 3px;
+    font-family: monospace;
+    font-size: 0.95em;
+    white-space: pre;
+    width: max-content;
+    margin: 5px;
+}
+
+#markdownData a {
+    font-size: inherit;
+}
+
+#markdownData a:link,
+#markdownData a:visited {
+    color: var(--text-link);
+}
+
+#markdownData a:hover,
+#markdownData a:active {
+    color: var(--text-linkHover);
+}
+
+#markdownData mark {
+    color: var(--mark-text);
+    background-color: var(--mark-bg);
+}
+
+#markdownData sup>*,
+#markdownData sub>*,
+#markdownData sup,
+#markdownData sub {
+    font-size: 0.8rem;
+}
+
+#markdownData blockquote {
+    background-color: var(--highlight);
+    border-left: var(--blockquote-border) 5px solid;
+    padding-left: 5px;
+}
+
+#markdownData thead {
+    background-color: var(--highlight);
+}
+
+#markdownData tr:nth-child(even) {
+    background-color: var(--table-even);
+}
+
+#markdownData tr:hover {
+    background-color: var(--highlight);
+}
+
+#raw {
+    width: fit-content;
+    padding: 35px;
+    clear: both;
+    margin: auto;
+    font-size: 1.5rem;
+}
+
+.markdownHoverCopyable:hover {
+    background-color: var(--highlight);
+}
+
+.checkmark {
+    height: 20px;
+    margin-right: 5px;
+    width: auto;
+    vertical-align: middle;
+}
+
+.checkbox {
+    list-style-type: none;
+}
+
+input[type=checkbox] {
+    border: 1px solid var(--border);
+    appearance: none;
+    -webkit-appearance: none;
+    width: 25px;
+    height: 25px;
+    background-color: var(--bg-main);
+    position: relative;
+    transition: background-color 300ms ease;
+    vertical-align: top;
+
+    &::after {
+        content: '';
+        position: absolute;
+        height: calc(100% - 1px);
+        vertical-align: middle;
+        width: calc(100% - 1px);
+        text-align: center;
+        /* content: "✖"; */
+        color: var(--checkboxOff);
+        /* background-color: var(--border); */
+    }
+
+    &:checked {
+        background-color: var(--bg-item);
+
+        &::after {
+            width: 100%;
+            text-align: center;
+            content: "✔";
+            color: var(--checkboxOn);
+            /* background-color: #67ff67; */
+        }
+    }
+}
+
+#markdownData .markdown-alert {
+    padding: 10px;
+}
+
+#markdownData .markdown-alert-title {
+    margin-bottom: 15px;
+}
+
+.mr-2 {
+    vertical-align: middle;
+    display: inline-block;
+    margin-right: 5px;
+}
+
+.markdown-alert-note {
+    border-left: var(--alert-note) 5px solid;
+}
+
+.markdown-alert-note>.markdown-alert-title {
+    color: var(--alert-note);
+    fill: var(--alert-note);
+    font-weight: 700;
+}
+
+.markdown-alert-tip {
+    border-left: var(--alert-tip) 5px solid;
+
+}
+
+.markdown-alert-tip>.markdown-alert-title {
+    color: var(--alert-tip);
+    fill: var(--alert-tip);
+    font-weight: 700;
+}
+
+.markdown-alert-important {
+    border-left: var(--alert-important) 5px solid;
+
+}
+
+.markdown-alert-important>.markdown-alert-title {
+    color: var(--alert-important);
+    fill: var(--alert-important);
+    font-weight: 700;
+}
+
+.markdown-alert-warning {
+    border-left: var(--alert-warning) 5px solid;
+
+}
+
+.markdown-alert-warning>.markdown-alert-title {
+    color: var(--alert-warning);
+    fill: var(--alert-warning);
+    font-weight: 700;
+}
+
+.markdown-alert-caution {
+    border-left: var(--alert-caution) 5px solid;
+}
+
+.markdown-alert-caution>.markdown-alert-title {
+    color: var(--alert-caution);
+    fill: var(--alert-caution);
+    font-weight: 700;
+}

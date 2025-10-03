@@ -1,0 +1,100 @@
+/* based off material theme ocean high contrast */
+:root {
+    --sidebarAnim: 0ms ease-in-out;
+    --none: #00000000;
+
+    --gradient1: linear-gradient(rgb(65, 88, 132), rgb(113, 108, 121));
+    --gradient2: linear-gradient(#8FC5FC, #DDB3D9, #FE97AB, #FEB1A3, #FCCA9F);
+    --gradient: var(--border);
+    --linkDefault: var(--clrs-pastel-magenta);
+
+    --bg-header: #090B10;
+    --bg-main: #0F111A;
+    --bg-item: var(--bg-header);
+    --border: #1E212D;
+
+    --text-main: #B2CCD6;
+    --text-other: #505a5e;
+    --text-highlight: var(--clrs-pastel-cyan);
+    --text-link: var(--clrs-pastel-magenta);
+    --text-linkHover: #fc6450;
+    --icon-default-highlight: white;
+
+    --highlight: #282c3c;
+    --highlightAlt: #313649;
+
+    --h1: var(--clrs-pastel-yellow);
+    --h2: var(--clrs-pastel-green);
+    --h3: var(--clrs-pastel-cyan);
+    --h4: var(--clrs-pastel-cyan);
+    --h5: var(--text-main);
+    --h6: var(--text-main);
+
+    --scrollbar: var(--clrs-pastel-yellow) var(--bg-main) !important;
+    --itemName: var(--clrs-pastel-yellow);
+
+    --alert-note: var(--clrs-pastel-blue);
+    --alert-tip: var(--clrs-pastel-green);
+    --alert-important: var(--clrs-pastel-magenta);
+    --alert-warning: var(--clrs-pastel-orange);
+    --alert-caution: var(--clrs-pastel-red);
+    --blockquote-border: var(--clrs-pastel-blue);
+    --codeInline: var(--clrs-pastel-yellow);
+    --codeInline-bg: #2a2a2a;
+    --codeTableHeader: var(--clrs-pastel-yellow);
+    --codeTableCell: var(--clrs-pastel-blue);
+    --mark-text: var(--text-main);
+    --mark-bg: var(--clrs-pastel-green);
+    --table-even: #1a1d26;
+
+    --checkboxOn: var(--clrs-pastel-green);
+    --checkboxOff: var(--clrs-pastel-red);
+    --maximise: var(--clrs-pastel-green);
+    --minimise: var(--clrs-pastel-red);
+
+    --navbar-social-glow: var(--clrs-neon-mint);
+    --navbar-social-glow-text: #fff;
+    --navbar-dropdown-hover: var(--clrs-pastel-green);
+    --navbar-address-hover: var(--clrs-neon-mint);
+    --navbar-address-hover-text: #fff;
+    --sidebar-parent: var(--clrs-pastel-cyan);
+    --sidebar-active: var(--clrs-pastel-green);
+    --sidebar-hover: var(--clrs-pastel-cyan);
+
+    --glow-text: 0 0 20px #fff, 0 0 40px var(--clrs-pastel-yellow), 0 0 20px var(--clrs-pastel-cyan);
+    --glow: 0 0 5px #fff, 0 0 40px var(--clrs-pastel-yellow);
+
+    /* components */
+    --component-pagelist-location: var(--clrs-pastel-magenta);
+    --component-search-loader-active: var(--clrs-pastel-yellow);
+    --component-search-loader-inactive: var(--bg-main);
+    --component-search-results: var(--clrs-pastel-yellow);
+
+    --component-skin-button-glow: var(--clrs-neon-mint);
+    --component-skin-preview: #15171b;
+    --component-skin-preview-button: #646a6d4b;
+    --component-skin-preview-button-text: var(--text-main);
+    --component-skin-preview-button-hover: var(--text-linkHover);
+
+    --component-file-name: var(--clrs-pastel-yellow);
+    --component-file-extension: var(--clrs-pastel-blue);
+    --component-file-extras: var(--text-other);
+
+    /* pages */
+    --page-index-showIcon-glow: var(--clrs-neon-mint);
+    --page-index-showIcon-text: #fff;
+
+
+    --page-gallery-reset: var(--clrs-pastel-red);
+
+    --page-tools-link1: var(--clrs-pastel-orange);
+    --page-tools-link2: var(--clrs-pastel-magenta);
+    --page-tools-link3: var(--clrs-pastel-yellow);
+    --page-tools-link4: var(--clrs-pastel-orange);
+
+    --page-tools-param1: var(--clrs-pastel-green);
+    --page-tools-param2: var(--clrs-pastel-yellow);
+    --page-tools-param3: var(--clrs-pastel-blue);
+
+    --page-tools-err: var(--clrs-pastel-red);
+}

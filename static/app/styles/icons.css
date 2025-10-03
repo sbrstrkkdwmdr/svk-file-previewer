@@ -1,0 +1,694 @@
+@font-face {
+    font-family: 'icomoon';
+    src: url('fonts/icomoon.eot?g0f7zq');
+    src: url('fonts/icomoon.eot?g0f7zq#iefix') format('embedded-opentype'),
+        url('fonts/icomoon.ttf?g0f7zq') format('truetype'),
+        url('fonts/icomoon.woff?g0f7zq') format('woff'),
+        url('fonts/icomoon.svg?g0f7zq#icomoon') format('svg');
+    font-weight: normal;
+    font-style: normal;
+    font-display: block;
+}
+
+[class^="icon-"],
+[class*=" icon-"],
+[class^="icon-"],
+[class*=" icon-"] {
+    /* use !important to prevent issues with browser extensions that change fonts */
+    font-family: 'icomoon' !important;
+    speak: never;
+    font-style: normal;
+    font-weight: normal;
+    font-variant: normal;
+    text-transform: none;
+    line-height: 1;
+
+    /* Better Font Rendering =========== */
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+[class^="icon-"]::before,
+[class*=" icon-"]::before,
+a [class^="icon-"]::before,
+a [class*=" icon-"]::before {
+    /* color: var(--text-main); */
+}
+
+/* [class^="icon-"]:hover::before, */
+/* [class*=" icon-"]:hover::before, */
+/* a [class^="icon-"]:hover::before,
+a [class*=" icon-"]:hover::before {
+    color: white;
+} */
+
+/* socials / organisations */
+.icon-emailSmall::before {
+    content: "\e901";
+}
+
+.icon-ytSmall::before {
+    content: "\e902";
+}
+
+.icon-githubSmall::before {
+    content: "\e900";
+}
+
+.icon-email::before {
+    content: "\e901";
+}
+
+.icon-email:hover::before {
+    color: var(--icon-default-highlight);
+    content: "\e901";
+}
+
+.icon-yt::before {
+    content: "\ea9d";
+    color: red;
+    background-image: linear-gradient(white);
+    background-size: 35% 35%;
+    background-repeat: no-repeat;
+    background-position: 50%;
+}
+
+.icon-yt:hover::before {
+    color: red;
+    background-image: linear-gradient(white);
+    background-size: 35% 35%;
+    background-repeat: no-repeat;
+    background-position: 50%;
+}
+
+.icon-github::before {
+    content: "\eab0";
+    color: purple;
+}
+
+.icon-github:hover::before {
+    color: purple;
+}
+
+.icon-discord::before {
+    content: "\e96d";
+    color: #5865F2;
+}
+
+.icon-discord:hover::before {
+    color: #5865F2;
+}
+
+.icon-osu::before {
+    content: "\e905";
+    color: #FF66AA;
+}
+
+.icon-osu:hover::before {
+    color: #FF66AA;
+}
+
+.icon-osuFCNT.path1:before {
+    content: "\e93b";
+    color: #f6a;
+}
+
+.icon-osuFCNT.path2:before {
+    content: "\e968";
+    color: #fff;
+    margin-left: -1em;
+}
+
+.icon-osuFCNT.path3:before {
+    content: "\e969";
+    color: #fff;
+    margin-left: -1em;
+}
+
+.icon-osuFC.path1:before {
+    content: "\e93b";
+    color: #f6a;
+}
+
+.icon-osuFC.path2:before {
+    content: "\e93c";
+    color: #f1f1f2;
+    opacity: 0.15;
+    margin-left: -1em;
+}
+
+.icon-osuFC.path3:before {
+    content: "\e93d";
+    color: #231f20;
+    opacity: 0.15;
+    margin-left: -1em;
+}
+
+.icon-osuFC.path4:before {
+    content: "\e93e";
+    color: #808184;
+    opacity: 0.15;
+    margin-left: -1em;
+}
+
+.icon-osuFC.path5:before {
+    content: "\e93f";
+    color: #929497;
+    opacity: 0.15;
+    margin-left: -1em;
+}
+
+.icon-osuFC.path6:before {
+    content: "\e940";
+    color: #636466;
+    opacity: 0.15;
+    margin-left: -1em;
+}
+
+.icon-osuFC.path7:before {
+    content: "\e941";
+    color: #59595c;
+    opacity: 0.15;
+    margin-left: -1em;
+}
+
+.icon-osuFC.path8:before {
+    content: "\e942";
+    color: #a7a8ab;
+    opacity: 0.15;
+    margin-left: -1em;
+}
+
+.icon-osuFC.path9:before {
+    content: "\e943";
+    color: #6d6e70;
+    opacity: 0.15;
+    margin-left: -1em;
+}
+
+.icon-osuFC.path10:before {
+    content: "\e944";
+    color: #a7a8ab;
+    opacity: 0.15;
+    margin-left: -1em;
+}
+
+.icon-osuFC.path11:before {
+    content: "\e945";
+    color: #221f1f;
+    opacity: 0.15;
+    margin-left: -1em;
+}
+
+.icon-osuFC.path12:before {
+    content: "\e946";
+    color: #221f1f;
+    opacity: 0.15;
+    margin-left: -1em;
+}
+
+.icon-osuFC.path13:before {
+    content: "\e947";
+    color: #808184;
+    opacity: 0.15;
+    margin-left: -1em;
+}
+
+.icon-osuFC.path14:before {
+    content: "\e948";
+    color: #404041;
+    opacity: 0.15;
+    margin-left: -1em;
+}
+
+.icon-osuFC.path15:before {
+    content: "\e949";
+    color: #808184;
+    opacity: 0.15;
+    margin-left: -1em;
+}
+
+.icon-osuFC.path16:before {
+    content: "\e94a";
+    color: #58595b;
+    opacity: 0.15;
+    margin-left: -1em;
+}
+
+.icon-osuFC.path17:before {
+    content: "\e94b";
+    color: #221f1f;
+    opacity: 0.15;
+    margin-left: -1em;
+}
+
+.icon-osuFC.path18:before {
+    content: "\e94c";
+    color: #404041;
+    opacity: 0.15;
+    margin-left: -1em;
+}
+
+.icon-osuFC.path19:before {
+    content: "\e94d";
+    color: #f1f1f2;
+    opacity: 0.15;
+    margin-left: -1em;
+}
+
+.icon-osuFC.path20:before {
+    content: "\e94e";
+    color: #a7a8ab;
+    opacity: 0.15;
+    margin-left: -1em;
+}
+
+.icon-osuFC.path21:before {
+    content: "\e94f";
+    color: #bbbdbf;
+    opacity: 0.15;
+    margin-left: -1em;
+}
+
+.icon-osuFC.path22:before {
+    content: "\e950";
+    color: #fff;
+    opacity: 0.15;
+    margin-left: -1em;
+}
+
+.icon-osuFC.path23:before {
+    content: "\e951";
+    color: #6d6e70;
+    opacity: 0.15;
+    margin-left: -1em;
+}
+
+.icon-osuFC.path24:before {
+    content: "\e952";
+    color: #a6a8ab;
+    opacity: 0.15;
+    margin-left: -1em;
+}
+
+.icon-osuFC.path25:before {
+    content: "\e953";
+    color: #231f20;
+    opacity: 0.15;
+    margin-left: -1em;
+}
+
+.icon-osuFC.path26:before {
+    content: "\e954";
+    color: #a7a8ab;
+    opacity: 0.15;
+    margin-left: -1em;
+}
+
+.icon-osuFC.path27:before {
+    content: "\e955";
+    color: #a7a8ab;
+    opacity: 0.15;
+    margin-left: -1em;
+}
+
+.icon-osuFC.path28:before {
+    content: "\e956";
+    color: #f1f1f2;
+    opacity: 0.15;
+    margin-left: -1em;
+}
+
+.icon-osuFC.path29:before {
+    content: "\e957";
+    color: #a6a8ab;
+    opacity: 0.15;
+    margin-left: -1em;
+}
+
+.icon-osuFC.path30:before {
+    content: "\e958";
+    color: #59595c;
+    opacity: 0.15;
+    margin-left: -1em;
+}
+
+.icon-osuFC.path31:before {
+    content: "\e959";
+    color: #a6a8ab;
+    opacity: 0.15;
+    margin-left: -1em;
+}
+
+.icon-osuFC.path32:before {
+    content: "\e95a";
+    color: #fff;
+    opacity: 0.15;
+    margin-left: -1em;
+}
+
+.icon-osuFC.path33:before {
+    content: "\e95b";
+    color: #58595b;
+    opacity: 0.15;
+    margin-left: -1em;
+}
+
+.icon-osuFC.path34:before {
+    content: "\e95c";
+    color: #808184;
+    opacity: 0.15;
+    margin-left: -1em;
+}
+
+.icon-osuFC.path35:before {
+    content: "\e95d";
+    color: #bbbdbf;
+    opacity: 0.15;
+    margin-left: -1em;
+}
+
+.icon-osuFC.path36:before {
+    content: "\e95e";
+    color: #f1f1f2;
+    opacity: 0.15;
+    margin-left: -1em;
+}
+
+.icon-osuFC.path37:before {
+    content: "\e95f";
+    color: #f1f1f2;
+    opacity: 0.15;
+    margin-left: -1em;
+}
+
+.icon-osuFC.path38:before {
+    content: "\e960";
+    color: #59595c;
+    opacity: 0.15;
+    margin-left: -1em;
+}
+
+.icon-osuFC.path39:before {
+    content: "\e961";
+    color: #bbbdbf;
+    opacity: 0.15;
+    margin-left: -1em;
+}
+
+.icon-osuFC.path40:before {
+    content: "\e962";
+    color: #e6e7e8;
+    opacity: 0.15;
+    margin-left: -1em;
+}
+
+.icon-osuFC.path41:before {
+    content: "\e963";
+    color: #808184;
+    opacity: 0.15;
+    margin-left: -1em;
+}
+
+.icon-osuFC.path42:before {
+    content: "\e964";
+    color: #fff;
+    opacity: 0.15;
+    margin-left: -1em;
+}
+
+.icon-osuFC.path43:before {
+    content: "\e965";
+    color: #808184;
+    opacity: 0.15;
+    margin-left: -1em;
+}
+
+.icon-osuFC.path44:before {
+    content: "\e966";
+    color: #a7a8ab;
+    opacity: 0.15;
+    margin-left: -1em;
+}
+
+.icon-osuFC.path45:before {
+    content: "\e967";
+    color: #d0d2d3;
+    opacity: 0.15;
+    margin-left: -1em;
+}
+
+.icon-osuFC.path46:before {
+    content: "\e968";
+    color: #fff;
+    margin-left: -1em;
+}
+
+.icon-osuFC.path47:before {
+    content: "\e969";
+    color: #fff;
+    margin-left: -1em;
+}
+
+.icon-pronouns::before {
+    content: "\e906";
+    color: #C71585;
+}
+
+.icon-pronouns:hover::before {
+    color: #C71585;
+}
+
+
+.icon-orgMediafire::before {
+    content: "\e925";
+    color: #0077FF;
+    background-image: linear-gradient(white);
+    background-size: 40% 25%;
+    background-repeat: no-repeat;
+    background-position: 80% 55%;
+}
+
+/* .icon-orgMediafire:hover::before {
+    background-image: linear-gradient(#0077FF);
+} */
+
+.icon-orgMega::before {
+    content: "\e92a";
+    color: #D9272E;
+    background-image: linear-gradient(white);
+    background-size: 60% 60%;
+    background-repeat: no-repeat;
+    background-position: 50%;
+}
+
+/* .icon-orgMega:hover::before {
+    background-image: linear-gradient(#D9272E);
+} */
+
+.icon-orgDriveGoogle.path1:before {
+    content: "\e921";
+    color: #3777e3;
+}
+
+.icon-orgDriveGoogle.path2:before {
+    content: "\e922";
+    color: #ffcf63;
+    margin-left: -1em;
+}
+
+.icon-orgDriveGoogle.path3:before {
+    content: "\e923";
+    color: #11a861;
+    margin-left: -1em;
+}
+
+/* generic */
+.icon-check::before {
+    content: "\e903";
+}
+
+.icon-cross::before {
+    content: "\e915";
+}
+
+.icon-link::before {
+    content: "\e904";
+}
+
+.icon-search::before {
+    content: "\e918";
+}
+
+
+.icon-copy::before {
+    content: "\e92c";
+}
+
+.icon-paste::before {
+    content: "\e92d";
+}
+
+.icon-external::before {
+    content: "\e90e";
+}
+
+.icon-leave::before {
+    content: "\ea13";
+}
+
+.icon-menu::before {
+    content: "\e907";
+}
+
+.icon-arrowDown::before {
+    content: "\e908";
+}
+
+.icon-arrowUp::before {
+    content: "\e90b";
+}
+
+.icon-arrowLeft::before {
+    content: "\e909";
+}
+
+.icon-arrowRight::before {
+    content: "\e90a";
+}
+
+.icon-minimise::before {
+    content: "\e913";
+}
+
+.icon-maximise::before {
+    content: "\e911";
+}
+
+.icon-minimiseArrow::before {
+    content: "\e914";
+}
+
+.icon-maximiseArrow::before {
+    content: "\e912";
+}
+
+.icon-hide::before {
+    content: "\e910";
+}
+
+.icon-show::before {
+    content: "\e90f";
+}
+
+.icon-info::before {
+    content: "\e96a";
+}
+
+.icon-at::before {
+    content: "\e96b";
+}
+
+.icon-briefcase::before {
+    content: "\e96c";
+}
+
+.icon-download::before {
+    content: "\e919"
+}
+
+.icon-sun::before {
+    content: "\e96f";
+}
+
+.icon-moon::before {
+    content: "\e96e";
+}
+
+.icon-wifi::before {
+    content: "\e91f"
+}
+
+.icon-wifiNone::before {
+    content: "\e920"
+}
+
+
+/* content types */
+
+.icon-document::before {
+    content: "\e916"
+}
+
+
+.icon-text::before {
+    content: "\e938"
+}
+
+.icon-music::before {
+    content: "\e91d"
+}
+
+.icon-audio::before {
+    content: "\e91b"
+}
+
+.icon-image::before {
+    content: "\e91c"
+}
+
+.icon-tv::before {
+    content: "\e91e"
+}
+
+.icon-video::before {
+    content: "\e917"
+}
+
+.icon-fileGeneric::before {
+    content: "\e924";
+}
+
+.icon-fileArchive::before {
+    content: "\e92b";
+}
+
+.icon-fileText::before {
+    content: "\e926";
+}
+
+.icon-fileImage::before {
+    content: "\e927";
+}
+
+.icon-fileAudio::before {
+    content: "\e928";
+}
+
+.icon-fileVideo::before {
+    content: "\e929";
+}
+
+.icon-folder::before {
+    content: "\e92f";
+}
+
+.icon-folderOpen::before {
+    content: "\e930";
+}
+
+.icon-edit::before {
+    content: "\e90d";
+}
+
+.icon-code::before {
+    content: "\e90c";
+}
+
+.iconDefClr::before {
+    /* color: basic; */
+    color: var(--text-main);
+    background-image: none;
+    background-size: none;
+    background-position: none;
+}

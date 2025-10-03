@@ -1,0 +1,668 @@
+/* @font-face {
+    font-family: munro;
+    src: url("./munro.ttf");
+}
+
+@font-face {
+    font-family: alt-mono;
+    src: url("./munro.ttf");
+} */
+
+:root {
+    font-family: munro, Arial, Helvetica, sans-serif;
+}
+
+* {
+    /* background-color: var(--bg-item); */
+    color: var(--text-main);
+
+    scrollbar-color: var(--scrollbar);
+    /* scrollbar-width: thin; */
+    scroll-behavior: smooth;
+    /* transition: var(--sidebarAnim); */
+    font-size: 18px;
+}
+
+html,
+body {
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    background-color: var(--bg-main);
+    height: 100vh;
+    width: 100vw;
+    max-height: 100%;
+    max-width: 100%;
+    overflow: hidden;
+}
+
+a {
+    color: var(--text-link);
+    text-decoration: none;
+    font-size: inherit;
+}
+
+a:link,
+a:visited {
+    color: var(--text-link);
+}
+
+a:hover,
+a:active {
+    color: var(--text-linkHover);
+    text-decoration: underline;
+}
+
+input:focus,
+textarea:focus {
+    outline: none;
+}
+
+.external {
+    border: 3px solid var(--border);
+    background-color: var(--bg-item);
+    position: fixed;
+}
+
+.layoutElem {}
+
+.layoutElem a {
+    color: var(--text-main);
+}
+
+.layoutElem a:hover {
+    color: var(--text-main);
+}
+
+main {
+    /* background-color: var(--bg-main); */
+    background-image: var(--gradient);
+    overflow: auto;
+    /* position: fixed; */
+    padding: 35px;
+    /* padding-top: calc(15% + 3px); */
+    /* padding-left: calc(15% + 3px); */
+    /* width: calc(auto - 33px); */
+    width: auto;
+    /* margin-left: 33px; */
+    text-align: center;
+    height: calc(100vh - 70px);
+}
+
+main.sdml {
+    height: calc(100vh - 147px);
+}
+
+.mono {
+    font-family: alt-mono, "Lucida Console", monospace;
+    font-weight: 600;
+    white-space: pre;
+}
+
+h1 {
+    width: fit-content;
+    font-size: 4rem;
+    color: var(--h1);
+    clear: both;
+    margin: auto;
+    text-align: center;
+}
+
+.pageTitleSubText,
+.pageTitleSubText * {
+    width: fit-content;
+    font-size: 1.5rem;
+    color: var(--text-main);
+    clear: both;
+    margin: auto;
+    text-align: center;
+}
+
+h2 {
+    width: fit-content;
+    font-size: 2.5rem;
+    color: var(--h2);
+    clear: both;
+    margin: auto;
+}
+
+h3 {
+    color: var(--h3);
+    font-size: 1.5rem;
+    padding: 0;
+    margin: 0;
+    /* padding-top: 15px */
+}
+
+.genericSearch {
+    margin: auto;
+    margin-top: 15px;
+    width: 35%;
+    font-size: 24px;
+    background: none;
+    background-color: var(--bg-item);
+    border: 3px solid var(--border);
+}
+
+.itemGrid {
+    /* margin: 0 10vw; */
+    display: inline-block;
+    text-align: center;
+    width: 100%;
+    /* margin: 10px;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(720px, 1fr));
+    grid-auto-columns: auto;
+    gap: 50px;
+    justify-content: center; */
+}
+
+.item {
+    /* scroll-margin-top: 3rem; */
+    margin: 10px;
+    padding: 10px;
+    display: inline-block;
+    text-align: center;
+    border-radius: 15px;
+    background-color: var(--bg-item);
+    border: 3px solid var(--border);
+    width: 420px;
+    position: relative;
+    transition:
+        transform 0.2s ease,
+        box-shadow 0.2s ease;
+}
+
+.liftItem { 
+    transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease,
+    background-color 0.2s ease;
+}
+
+.liftItem:hover {
+    background-color: var(--highlight);
+    transform: translateY(-5px);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+}
+
+.modal {
+    /* scroll-margin-top: 3rem; */
+    margin: 10px;
+    padding: 10px;
+    display: inline-block;
+    border-radius: 15px;
+    background-color: var(--bg-item);
+    border: 3px solid var(--border);
+    position: relative;
+}
+
+.itemHomeGrid {
+    grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+    justify-content: center;
+}
+
+.itemProfileGrid {
+    grid-template-columns: repeat(auto-fit, minmax(256px, 1fr));
+}
+
+.itemHomeHeight {
+    height: 200px;
+}
+
+.itemHomeWidth {
+    width: 400px;
+}
+
+.itemProfile {
+    width: 256px;
+}
+
+.itemName {
+    width: 100%;
+    text-align: center;
+    margin: 0 auto;
+    color: var(--component-item-name);
+    /* background-color: var(--bg-title); */
+    margin-right: 2vw;
+    padding-right: 5px;
+    padding-left: 5px;
+    border-radius: 5px;
+    /* font-family: 'Consolas', monospace; */
+    font-weight: bolder;
+    font-size: 1.5rem;
+    /* font-size: 40px; */
+    margin: 0;
+    padding: 0;
+}
+
+.itemLongName {
+    font-size: 30px;
+}
+
+.itemAsLink {}
+
+/* doesnt work :( */
+.itemAsLink:hover {
+    color: var(--linkHighlight);
+}
+
+/* also includes yt preview */
+.itemPreviewImage {
+    width: 400px;
+    height: 225px;
+}
+
+/* https://www.w3schools.com/css/css_tooltip.asp */
+
+/* Tooltip text */
+.tooltipContainer .tooltipText {
+    visibility: hidden;
+    background-color: var(--highlight);
+    color: var(--text-main);
+    text-align: center;
+    padding: 3px 5px;
+    margin: 5px;
+    border-radius: 6px;
+    position: absolute;
+    z-index: 800;
+    left: -10px;
+    bottom: 35px;
+}
+
+.tooltipContainer {
+    position: relative;
+}
+
+/* Show the tooltip text when you mouse over the tooltip container */
+.tooltipContainer:hover .tooltipText {
+    visibility: visible;
+}
+
+/* https://stackoverflow.com/a/12540590 */
+.clearfix:after {
+    content: ".";
+    display: block;
+    clear: both;
+    visibility: hidden;
+    line-height: 0;
+    height: 0;
+}
+
+.clearfix {
+    display: inline-block;
+}
+
+html[xmlns] .clearfix {
+    display: block;
+}
+
+* html .clearfix {
+    height: 1%;
+}
+
+.underlay {
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 100vw;
+    height: 100vh;
+    background-color: #000000bb;
+    z-index: 1000;
+    position: fixed;
+}
+
+.loader {
+    border: 5px solid var(--loader-inactive);
+    margin-right: 15px;
+    border-radius: 50%;
+    width: 36px;
+    height: 36px;
+    animation: none;
+    transition: none;
+    display: inline-block;
+}
+
+.loader.active {
+    border-top: 5px solid var(--loader-active);
+    animation: spin 0.5s linear infinite;
+}
+
+@keyframes spin {
+    0% {
+        transform: rotate(0deg);
+    }
+
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+.smallTable {
+    border: none;
+    border-spacing: 15px 0;
+}
+
+.centreDiv {
+    /* text-align: center; */
+    margin: auto;
+    width: 50%;
+}
+
+.baseInput {
+    background: none;
+    background-color: var(--bg-item);
+    border: 3px solid var(--border);
+    display: block;
+    font-size: 24px;
+}
+
+input.baseInput {
+    width: calc(100% - 10px);
+}
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+input[type=number] {
+    -moz-appearance: textfield;
+}
+
+.checkboxSwitch {
+    appearance: none;
+    -webkit-appearance: none;
+    width: 50px;
+    height: 25px;
+    background-color: var(--bg-item);
+    position: relative;
+    transition: background-color 300ms ease;
+    vertical-align: top;
+
+    &::after {
+        content: '';
+        position: absolute;
+        top: 50%;
+        left: 23%;
+        transform: translate(-50%, -50%);
+        height: 20px;
+        width: 20px;
+        background-color: var(--checkboxOff);
+        transition: left 300ms ease;
+    }
+
+    &:checked {
+
+        &::after {
+            left: 77%;
+            background-color: #67ff67;
+        }
+
+        transition: ease-in-out;
+    }
+}
+
+.checkboxCheckmark {
+    border: 3px solid var(--border);
+    appearance: none;
+    -webkit-appearance: none;
+    width: 25px;
+    height: 25px;
+    background-color: var(--bg-item);
+    position: relative;
+    transition: background-color 300ms ease;
+    vertical-align: top;
+
+    &::after {
+        content: '';
+        position: absolute;
+        width: 100%;
+        text-align: center;
+        content: "✖";
+        color: var(--checkboxOff);
+        /* background-color: var(--checkboxOff); */
+    }
+
+    &:checked {
+
+        &::after {
+            width: 100%;
+            text-align: center;
+            content: "✔";
+            color: var(--checkboxOn);
+            /* background-color: #67ff67; */
+        }
+    }
+}
+
+.centrePage {
+    background-color: var(--bg-item);
+    display: block;
+    list-style-position: inside;
+    border-radius: 1rem;
+    border: 3px solid var(--border);
+    min-width: fit-content;
+    max-width: 50vw;
+    padding: 15px;
+    margin: auto;
+    /* display: inline-block; */
+    column-gap: 50px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    /* background-color: #15171B88; */
+    text-align: left;
+}
+
+.centrePageNoclr {
+    display: block;
+    list-style-position: inside;
+    border: 3px solid #00000000;
+    min-width: fit-content;
+    max-width: 50vw;
+    padding: 15px;
+    margin: auto;
+    /* display: inline-block; */
+    column-gap: 50px;
+    text-align: left;
+}
+
+.centrePageSmall {
+    background-color: var(--bg-item);
+    display: block;
+    list-style-position: inside;
+    border-radius: 1rem;
+    border: 3px solid var(--border);
+    max-width: 50vw;
+    padding: 15px;
+    margin: auto;
+    /* display: inline-block; */
+    column-gap: 50px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    /* background-color: #15171B88; */
+    text-align: left;
+}
+
+.stickyAside {
+    top: 50%;
+    transform: translateY(-25%);
+    right: 0;
+    height: 250px;
+    width: 250px;
+    position: fixed;
+    z-index: 998;
+    height: calc(100% - 75px);
+    padding: 1em;
+}
+
+/* if sticky aside is invis show this elem */
+.stickyAsideReplacer {
+    display: none;
+}
+
+.stickyAsideItem {
+    display: block;
+    width: 100%;
+    color: var(--text-other);
+}
+
+.glowHighlight {
+    text-shadow: 0;
+    transition: 0.3s ease;
+}
+
+.glowHighlight:hover {
+    color: #fff;
+    /* background-color: var(--highlight); */
+    text-shadow: var(--glow-text);
+    -webkit-filter: drop-shadow(var(--glow));
+    -moz-filter: drop-shadow(var(--glow));
+    -ms-filter: drop-shadow(var(--glow));
+    -o-filter: drop-shadow(var(--glow));
+    filter: drop-shadow(var(--glow));
+}
+
+.centrePageItem {
+    border-radius: 1rem;
+    border: 3px solid var(--border);
+    margin: 12px auto;
+    overflow: hidden;
+    text-align: left;
+}
+
+.asP {
+    display: block;
+    margin-top: 1em;
+    margin-bottom: 1em;
+    margin-left: 0;
+    margin-right: 0;
+}
+
+.inline-code {
+    background-color: var(--codeInline-bg);
+    color: var(--codeInline);
+    padding: 2px 6px;
+    border-radius: 3px;
+    font-family: monospace;
+    font-size: 0.95em;
+}
+
+@keyframes jump {
+    0% {
+        transform: translateY(0);
+    }
+
+    30% {
+        transform: translateY(-8px);
+    }
+
+    60% {
+        transform: translateY(2px);
+    }
+
+    100% {
+        transform: translateY(0);
+    }
+}
+
+@keyframes opacInOut {
+    0% {
+        opacity: 100;
+    }
+
+    50% {
+        opacity: 0;
+    }
+
+    100% {
+        opacity: 100;
+    }
+}
+
+.jump-on-click {
+    transition: transform 0.2s ease;
+}
+
+.jump-active {
+    animation: jump 0.4s ease;
+}
+
+.dimSwitch {
+    animation: opacInOut 0.5s ease;
+}
+
+.codeTable {
+    background-color: var(--codeInline-bg);
+    padding: 2px 6px;
+    border-radius: 3px;
+    font-size: 0.95em;
+    font-family: monospace;
+}
+
+.codeTable * {
+    text-align: left;
+}
+
+.codeTable th {
+    color: var(--codeTableHeader);
+}
+
+.codeTable td {
+    color: var(--codeTableCell);
+}
+
+@media only screen and (max-width: 1150px) {
+    .stickyAside {
+        display: none;
+    }
+
+    .stickyAsideReplacer {
+        display: block
+    }
+}
+
+@media only screen and (max-width: 600px) and (-webkit-min-device-pixel-ratio: 2) and (orientation: portrait) {
+    h1 {
+        width: fit-content;
+        font-size: 4rem;
+        clear: both;
+        margin: auto;
+        text-align: center;
+    }
+
+    h2 {
+        width: fit-content;
+        font-size: 2.5rem;
+        clear: both;
+        /* margin: auto; */
+    }
+
+    main {
+        padding-left: 15px;
+    }
+
+    .item {
+        width: 275px;
+        height: auto;
+    }
+
+    .itemPreviewImage {
+        width: 275px;
+        height: auto;
+    }
+
+    .itemName {
+        overflow-wrap: anywhere;
+    }
+
+    .centrePage {
+        margin: auto;
+    }
+}
+
+.layoutForcedSpecialButtons {
+    text-align: left;
+    width: 100%;
+}
