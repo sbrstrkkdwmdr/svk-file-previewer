@@ -18,8 +18,9 @@ export default defineConfig({
         port: 41735,
         allowedHosts: [
             'files.sbrstrkkdwmdr.me',
-        ]
-    }
+        ],
+    },
+
     // build: {
     //     rollupOptions: {
     //         external: ['fsevents']

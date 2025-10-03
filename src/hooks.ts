@@ -14,7 +14,6 @@ export const reroute: Reroute = ({ url }) => {
     //     return temp;
     // }
 
-
     return `/public${url.pathname}`;
 };
 

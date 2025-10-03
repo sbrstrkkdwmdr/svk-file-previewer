@@ -15,7 +15,7 @@
             downloadurl =
                 "/api/download?name=" +
                 encodeURIComponent(fname) +
-                ".md&location=" +
+                "&location=" +
                 encodeURIComponent(path.join("/")) +
                 "/&preview=true";
         }, 500);
