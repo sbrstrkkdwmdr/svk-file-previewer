@@ -1,5 +1,6 @@
 <script lang="ts">
     import { invalidate, pushState } from "$app/navigation";
+    import { previewables } from "$lib/data/extensions";
     import { type pathableItem } from "$lib/data/files";
     import { isPreviewable } from "$lib/MIME";
     import Ctxmenu from "$lib/svelte/ctxmenu.svelte";
@@ -16,13 +17,22 @@
         showSearchbar?: boolean;
     } = $props();
     const childLink = (child: pathableItem) => {
-        if (encodeURIComponent(child.name).trim() == child.name.trim()) {
+        if (encodeURIComponent(child.name).trim() == child.name.trim() && !fileShouldBuffer(child.name)) {
             return `${child.path.endsWith("/") ? child.path : child.path + "/"}${child.name}`;
         }
         return `/api/download?name=${encodeURIComponent(
             child.name
         )}&location=${child.path}/&preview=${isPreviewable(child.name)}`;
     };
+
+
+    function fileShouldBuffer(filename:string){
+        for(const extension of previewables){
+            if(filename.endsWith('.' + extension)) return false;
+        }
+        return true;
+    }
+
     let usefiles = $state(forceOpenFolders(files));
     let searchInitial = $state("");
     onMount(async () => {

@@ -60,7 +60,7 @@
 <style>
     .searchContainer {
         display: inline-block;
-        width: 920px;
+        width: min(70%, 920px);
     }
     .icon-input {
         display: inline-flex;

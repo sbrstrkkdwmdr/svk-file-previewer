@@ -1,3 +1,4 @@
+import { code } from "$lib/data/extensions";
 import type { file, pathableItem } from "$lib/data/files";
 import { markdownParse } from "$lib/marked";
 import { getMime } from "$lib/MIME";
@@ -8,16 +9,17 @@ import fs from 'fs';
 export const load = async (event: ServerLoadEvent) => {
     updateFiles();
     let returnfiles: pathableItem<"folder">;
-    let mode: 'folder' | 'markdown' | 'file' = 'folder';
+    let mode: 'folder' | 'markdown' | 'file' | 'code' = 'folder';
     let text = '';
+    let lang = '';
     const floc = event.url.pathname.split("/");
     const fname = floc.pop()!;
     const ctn = await getFile(floc.join('/') + '/', fname);
     const mime = getMime(fname);
     if (Error.isError(ctn)) {
         if ((ctn as Error).name.startsWith('40')) {
-            mode = 'folder';
             returnfiles = await formattedFiles(event.url.pathname);
+            mode = 'folder';
         } else {
             const err = ctn as Error;
             return error(+err.name, err.message);
@@ -26,16 +28,23 @@ export const load = async (event: ServerLoadEvent) => {
         mode = 'markdown';
         text = await markdownParse(ctn.toString());
         // text = ctn.toString('utf-8');
+    } else if (isCode(fname)) {
+        mode = 'code';
+        lang = getLang(fname);
+        text = ctn.toString('utf-8');
     } else {
         mode = 'file';
-        // return json({ 'yo': 'yo' });
         text = ctn.toString('utf-8');
     }
+    //@ts-expect-error returnfiles being used before assigned - intended behaviour
+    if (!returnfiles) {
+        returnfiles = await formattedFiles();
+    }
     return {
-        //@ts-expect-error used before assigned
         files: returnfiles,
         mode,
         text,
+        lang,
         // buffer: ctn
     };
 };
@@ -201,4 +210,18 @@ async function getFile(dir: string, file: string) {
     err.name = '404';
     err.message = "Could not find markdown file matching: " + dir + file + '.md';
     return err;
+}
+
+function isCode(file: string) {
+    for (const ext of code) {
+        if (file.endsWith('.' + ext)) return true;
+    }
+    return false;
+}
+
+function getLang(file: string) {
+    for (const ext of code) {
+        if (file.endsWith('.' + ext)) return ext;
+    }
+    return '';
 }
