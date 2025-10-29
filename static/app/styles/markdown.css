@@ -47,8 +47,8 @@
 }
 
 #markdownData code {
-    background-color: var(--codeInline-bg);
-    color: var(--codeInline);
+    background-color: var(--code-bg);
+    color: var(--code);
     padding: 2px 6px;
     border-radius: 3px;
     font-family: monospace;
@@ -78,7 +78,7 @@
 
 #markdownData a:hover,
 #markdownData a:active {
-    color: var(--text-linkHover);
+    color: var(--text-link-hover);
 }
 
 #markdownData mark {
@@ -94,13 +94,13 @@
 }
 
 #markdownData blockquote {
-    background-color: var(--highlight);
+    background-color: var(--bg-highlight);
     border-left: var(--blockquote-border) 5px solid;
     padding-left: 5px;
 }
 
 #markdownData thead {
-    background-color: var(--highlight);
+    background-color: var(--bg-highlight);
 }
 
 #markdownData tr:nth-child(even) {
@@ -108,7 +108,7 @@
 }
 
 #markdownData tr:hover {
-    background-color: var(--highlight);
+    background-color: var(--bg-highlight);
 }
 
 #raw {
@@ -120,7 +120,7 @@
 }
 
 .markdownHoverCopyable:hover {
-    background-color: var(--highlight);
+    background-color: var(--bg-highlight);
 }
 
 .checkmark {
@@ -140,7 +140,7 @@ input[type=checkbox] {
     -webkit-appearance: none;
     width: 25px;
     height: 25px;
-    background-color: var(--bg-main);
+    background-color: var(--bg-primary);
     position: relative;
     transition: background-color 300ms ease;
     vertical-align: top;
@@ -153,18 +153,18 @@ input[type=checkbox] {
         width: calc(100% - 1px);
         text-align: center;
         /* content: "✖"; */
-        color: var(--checkboxOff);
+        color: var(--disable);
         /* background-color: var(--border); */
     }
 
     &:checked {
-        background-color: var(--bg-item);
+        background-color: var(--bg-primary);
 
         &::after {
             width: 100%;
             text-align: center;
             content: "✔";
-            color: var(--checkboxOn);
+            color: var(--enable);
             /* background-color: #67ff67; */
         }
     }
