@@ -38,7 +38,7 @@
     } */
     code {
         /* background-color: var(--codeInline-bg); */
-        color: var(--codeInline);
+        color: var(--code);
         padding: 2px 6px;
         border-radius: 5px;
         font-family: monospace;

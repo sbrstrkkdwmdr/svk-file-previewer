@@ -430,21 +430,21 @@ transform: rotate(90deg); */
     }
 
     .file:hover {
-        background-color: var(--highlightAlt);
+        background-color: var(--bg-highlight-secondary);
     }
 
     .fileName {
-        color: var(--component-file-name);
+        color: var(--accent-primary);
         font-family: alt-mono, monospace;
     }
 
     .extension {
-        color: var(--component-file-extension);
+        color: var(--accent-five);
         font-family: alt-mono, monospace;
     }
 
     .fileExtra {
-        color: var(--component-file-extras);
+        color: var(--text-secondary);
     }
 
     .downloadCount {
@@ -461,6 +461,6 @@ transform: rotate(90deg); */
         /* pull summaries back to align left */
     }
     .underlay {
-        background-color: #00000055;
+        background-color: var(--bg-under);
     }
 </style>

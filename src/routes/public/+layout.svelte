@@ -46,7 +46,7 @@
         href="/icons/apple-touch-icon.png"
     /> -->
 </svelte:head>
-<main>
+<main class="theme-{colourMode}">
     <div class="layoutForcedSpecialButtons">
         <Icon
             icon="moon"
@@ -69,5 +69,4 @@
 </main>
 
 <link rel="stylesheet" href="/app/styles/base.css" />
-<link rel="stylesheet" href="/app/styles/palette/base.css" />
-<link rel="stylesheet" href="/app/styles/palette/{colourMode}.css" />
+<link rel="stylesheet" href="/app/styles/palette.css" />

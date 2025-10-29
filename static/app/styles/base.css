@@ -13,8 +13,8 @@
 }
 
 * {
-    /* background-color: var(--bg-item); */
-    color: var(--text-main);
+    /* background-color: var(--bg-secondary); */
+    color: var(--text-primary);
 
     scrollbar-color: var(--scrollbar);
     /* scrollbar-width: thin; */
@@ -30,7 +30,7 @@ body {
 }
 
 body {
-    background-color: var(--bg-main);
+    background-color: var(--bg-primary);
     height: 100vh;
     width: 100vw;
     max-height: 100%;
@@ -51,7 +51,7 @@ a:visited {
 
 a:hover,
 a:active {
-    color: var(--text-linkHover);
+    color: var(--text-link-hover);
     text-decoration: underline;
 }
 
@@ -62,23 +62,23 @@ textarea:focus {
 
 .external {
     border: 3px solid var(--border);
-    background-color: var(--bg-item);
+    background-color: var(--bg-secondary);
     position: fixed;
 }
 
 .layoutElem {}
 
 .layoutElem a {
-    color: var(--text-main);
+    color: var(--text-primary);
 }
 
 .layoutElem a:hover {
-    color: var(--text-main);
+    color: var(--text-primary);
 }
 
 main {
-    /* background-color: var(--bg-main); */
-    background-image: var(--gradient);
+    background-color: var(--bg-primary);
+    /* background-image: var(--gradient); */
     overflow: auto;
     /* position: fixed; */
     padding: 35px;
@@ -104,7 +104,7 @@ main.sdml {
 h1 {
     width: fit-content;
     font-size: 4rem;
-    color: var(--h1);
+    color: var(--accent-primary);
     clear: both;
     margin: auto;
     text-align: center;
@@ -114,7 +114,7 @@ h1 {
 .pageTitleSubText * {
     width: fit-content;
     font-size: 1.5rem;
-    color: var(--text-main);
+    color: var(--text-primary);
     clear: both;
     margin: auto;
     text-align: center;
@@ -123,17 +123,36 @@ h1 {
 h2 {
     width: fit-content;
     font-size: 2.5rem;
-    color: var(--h2);
+    color: var(--accent-secondary);
     clear: both;
     margin: auto;
 }
 
 h3 {
-    color: var(--h3);
+    color: var(--accent-tertiary);
     font-size: 1.5rem;
     padding: 0;
     margin: 0;
     /* padding-top: 15px */
+}
+
+h4 {
+    color: var(--accent-four);
+}
+
+h5 {
+    color: var(--accent-five);
+}
+
+h5 {
+    color: var(--accent-six);
+}
+
+h4,
+h5,
+h6 {
+    padding: 0;
+    margin: 0;
 }
 
 .genericSearch {
@@ -142,7 +161,7 @@ h3 {
     width: 35%;
     font-size: 24px;
     background: none;
-    background-color: var(--bg-item);
+    background-color: var(--bg-secondary);
     border: 3px solid var(--border);
 }
 
@@ -166,7 +185,7 @@ h3 {
     display: inline-block;
     text-align: center;
     border-radius: 15px;
-    background-color: var(--bg-item);
+    background-color: var(--bg-secondary);
     border: 3px solid var(--border);
     width: 420px;
     position: relative;
@@ -175,15 +194,24 @@ h3 {
         box-shadow 0.2s ease;
 }
 
-.liftItem { 
+.item:hover {
+    background-color: var(--bg-highlight);
+    border: 3px solid var(--border);
+}
+
+.theme-light_default .item:hover {
+    background-color: var(--bg-secondary);
+    border: 3px solid var(--accent-primary);
+}
+
+.liftItem {
     transition:
-    transform 0.2s ease,
-    box-shadow 0.2s ease,
-    background-color 0.2s ease;
+        transform 0.2s ease,
+        box-shadow 0.2s ease,
+        background-color 0.2s ease;
 }
 
 .liftItem:hover {
-    background-color: var(--highlight);
     transform: translateY(-5px);
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
 }
@@ -194,7 +222,7 @@ h3 {
     padding: 10px;
     display: inline-block;
     border-radius: 15px;
-    background-color: var(--bg-item);
+    background-color: var(--bg-secondary);
     border: 3px solid var(--border);
     position: relative;
 }
@@ -221,11 +249,10 @@ h3 {
 }
 
 .itemName {
+    color: var(--accent-secondary);
     width: 100%;
     text-align: center;
     margin: 0 auto;
-    color: var(--component-item-name);
-    /* background-color: var(--bg-title); */
     margin-right: 2vw;
     padding-right: 5px;
     padding-left: 5px;
@@ -260,8 +287,8 @@ h3 {
 /* Tooltip text */
 .tooltipContainer .tooltipText {
     visibility: hidden;
-    background-color: var(--highlight);
-    color: var(--text-main);
+    background-color: var(--bg-highlight);
+    color: var(--text-primary);
     text-align: center;
     padding: 3px 5px;
     margin: 5px;
@@ -279,6 +306,19 @@ h3 {
 /* Show the tooltip text when you mouse over the tooltip container */
 .tooltipContainer:hover .tooltipText {
     visibility: visible;
+}
+
+.sidebyside {
+    display: flex;
+}
+
+.sidebyside>*:first-child {
+    margin: 5px;
+}
+
+.sidebyside>* {
+    flex: auto;
+    /* flex: 1; */
 }
 
 /* https://stackoverflow.com/a/12540590 */
@@ -309,35 +349,9 @@ html[xmlns] .clearfix {
     transform: translate(-50%, -50%);
     width: 100vw;
     height: 100vh;
-    background-color: #000000bb;
+    background-color: var(--bg-under);
     z-index: 1000;
     position: fixed;
-}
-
-.loader {
-    border: 5px solid var(--loader-inactive);
-    margin-right: 15px;
-    border-radius: 50%;
-    width: 36px;
-    height: 36px;
-    animation: none;
-    transition: none;
-    display: inline-block;
-}
-
-.loader.active {
-    border-top: 5px solid var(--loader-active);
-    animation: spin 0.5s linear infinite;
-}
-
-@keyframes spin {
-    0% {
-        transform: rotate(0deg);
-    }
-
-    100% {
-        transform: rotate(360deg);
-    }
 }
 
 .smallTable {
@@ -353,14 +367,19 @@ html[xmlns] .clearfix {
 
 .baseInput {
     background: none;
-    background-color: var(--bg-item);
+    background-color: var(--bg-secondary);
     border: 3px solid var(--border);
     display: block;
     font-size: 24px;
 }
 
-input.baseInput {
+input.baseInput,
+textarea.baseInput {
     width: calc(100% - 10px);
+}
+
+textarea.baseInput {
+    resize: vertical;
 }
 
 input::-webkit-outer-spin-button,
@@ -378,7 +397,7 @@ input[type=number] {
     -webkit-appearance: none;
     width: 50px;
     height: 25px;
-    background-color: var(--bg-item);
+    background-color: var(--bg-secondary);
     position: relative;
     transition: background-color 300ms ease;
     vertical-align: top;
@@ -391,7 +410,7 @@ input[type=number] {
         transform: translate(-50%, -50%);
         height: 20px;
         width: 20px;
-        background-color: var(--checkboxOff);
+        background-color: var(--enable);
         transition: left 300ms ease;
     }
 
@@ -412,7 +431,7 @@ input[type=number] {
     -webkit-appearance: none;
     width: 25px;
     height: 25px;
-    background-color: var(--bg-item);
+    background-color: var(--bg-secondary);
     position: relative;
     transition: background-color 300ms ease;
     vertical-align: top;
@@ -423,8 +442,8 @@ input[type=number] {
         width: 100%;
         text-align: center;
         content: "✖";
-        color: var(--checkboxOff);
-        /* background-color: var(--checkboxOff); */
+        color: var(--enable);
+        /* background-color: var(--enable); */
     }
 
     &:checked {
@@ -433,19 +452,18 @@ input[type=number] {
             width: 100%;
             text-align: center;
             content: "✔";
-            color: var(--checkboxOn);
+            color: var(--enable);
             /* background-color: #67ff67; */
         }
     }
 }
 
 .centrePage {
-    background-color: var(--bg-item);
+    background-color: var(--bg-secondary);
     display: block;
     list-style-position: inside;
     border-radius: 1rem;
     border: 3px solid var(--border);
-    min-width: fit-content;
     max-width: 50vw;
     padding: 15px;
     margin: auto;
@@ -460,7 +478,6 @@ input[type=number] {
     display: block;
     list-style-position: inside;
     border: 3px solid #00000000;
-    min-width: fit-content;
     max-width: 50vw;
     padding: 15px;
     margin: auto;
@@ -470,7 +487,7 @@ input[type=number] {
 }
 
 .centrePageSmall {
-    background-color: var(--bg-item);
+    background-color: var(--bg-secondary);
     display: block;
     list-style-position: inside;
     border-radius: 1rem;
@@ -505,7 +522,7 @@ input[type=number] {
 .stickyAsideItem {
     display: block;
     width: 100%;
-    color: var(--text-other);
+    color: var(--text-secondary);
 }
 
 .glowHighlight {
@@ -515,7 +532,7 @@ input[type=number] {
 
 .glowHighlight:hover {
     color: #fff;
-    /* background-color: var(--highlight); */
+    /* background-color: var(--bg-highlight); */
     text-shadow: var(--glow-text);
     -webkit-filter: drop-shadow(var(--glow));
     -moz-filter: drop-shadow(var(--glow));
@@ -541,8 +558,8 @@ input[type=number] {
 }
 
 .inline-code {
-    background-color: var(--codeInline-bg);
-    color: var(--codeInline);
+    background-color: var(--code-bg);
+    color: var(--code);
     padding: 2px 6px;
     border-radius: 3px;
     font-family: monospace;
@@ -594,7 +611,7 @@ input[type=number] {
 }
 
 .codeTable {
-    background-color: var(--codeInline-bg);
+    background-color: var(--code-bg);
     padding: 2px 6px;
     border-radius: 3px;
     font-size: 0.95em;
@@ -611,6 +628,20 @@ input[type=number] {
 
 .codeTable td {
     color: var(--codeTableCell);
+}
+
+.sidebutton {
+    position: absolute;
+    top: 50%;
+    z-index: 800;
+}
+
+.sidebutton.right {
+    right: 15px;
+}
+
+.sidebutton.left {
+    left: 15px;
 }
 
 @media only screen and (max-width: 1150px) {
@@ -657,8 +688,11 @@ input[type=number] {
         overflow-wrap: anywhere;
     }
 
-    .centrePage {
+    .centrePage,
+    .centrePageNoclr {
         margin: auto;
+        /* min-width: fit-content; */
+        max-width: 100%;
     }
 }
 
