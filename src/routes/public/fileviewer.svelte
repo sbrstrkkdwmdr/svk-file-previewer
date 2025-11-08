@@ -17,7 +17,10 @@
         showSearchbar?: boolean;
     } = $props();
     const childLink = (child: pathableItem) => {
-        if (encodeURIComponent(child.name).trim() == child.name.trim() && !fileShouldBuffer(child.name)) {
+        if (
+            encodeURIComponent(child.name).trim() == child.name.trim() &&
+            !fileShouldBuffer(child.name)
+        ) {
             return `${child.path.endsWith("/") ? child.path : child.path + "/"}${child.name}`;
         }
         return `/api/download?name=${encodeURIComponent(
@@ -25,10 +28,9 @@
         )}&location=${child.path}/&preview=${isPreviewable(child.name)}`;
     };
 
-
-    function fileShouldBuffer(filename:string){
-        for(const extension of previewables){
-            if(filename.endsWith('.' + extension)) return false;
+    function fileShouldBuffer(filename: string) {
+        for (const extension of previewables) {
+            if (filename.endsWith("." + extension)) return false;
         }
         return true;
     }
@@ -75,6 +77,15 @@
         Executable: ["exe"],
         Installer: ["msi", "apk"],
     };
+    const extensions_full = {
+        "osu! Beatmap archive": ["osz"],
+        "osu! Skin archive": ["osk"],
+        "osu! Beatmap": ["osu"],
+        "osu! storyboard": ["osb"],
+        "osu! replay": ["osr"],
+        ...extensions,
+    }
+
     function extToImage(str: string) {
         str = str.toLowerCase();
         let p = "file";
@@ -93,9 +104,9 @@
     function extToType(str: string) {
         str = str.toLowerCase();
         let p = "file";
-        for (const key in extensions) {
+        for (const key in extensions_full) {
             //@ts-expect-error string cannot index extensions
-            if (extensions[key].some((x) => x == str)) {
+            if (extensions_full[key].some((x) => x == str)) {
                 p = key;
                 break;
             }
