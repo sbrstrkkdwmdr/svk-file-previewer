@@ -89,7 +89,7 @@
 
 <style>
     .contextmenu {
-        background-color: var(--bg-item);
+        background-color: var(--bg-secondary);
         padding: 5px;
         width: max-content;
         position: absolute;
