@@ -1,4 +1,7 @@
 :root {
+    --clrs-none: #00000000;
+    --none: #00000000;
+
     /* pastel */
     --clrs-pastel-blue: #82aaff;
     --clrs-pastel-cyan: #89ddff;
@@ -22,26 +25,28 @@
 
     /* theme changeables */
 
-    --bg-primary: #090B10;
-    --bg-secondary: #0F111A;
-    --bg-highlight: #282c3c;
+    --bg-primary: #1a1a1a;
+    --bg-secondary: #2a2a2a;
+    --bg-highlight: #3a3a3a;
     --bg-highlight-secondary: #00000088;
     --bg-under: #00000088;
 
-    --text-primary: #B2CCD6;
+    --text-primary: #b0bec5;
     --text-highlight: #fff;
-    --text-secondary: #505a5e;
-    --text-link: var(--clrs-pastel-magenta);
+    --text-secondary: #8a969c;
+    --text-link: #c792ea;
     --text-link-hover: #fc6450;
 
-    --border: #1E212D;
-    --scrollbar: var(--clrs-pastel-yellow) var(--bg-primary) !important;
+    --border: #333;
 
-    --accent-primary: var(--clrs-pastel-yellow);
-    --accent-secondary: var(--clrs-pastel-green);
-    --accent-tertiary: var(--clrs-pastel-cyan);
-    --accent-four: var(--clrs-pastel-magenta);
-    --accent-five: var(--clrs-pastel-blue);
+    --scrollbar: #ffb74d var(--bg-primary) !important;
+
+
+    --accent-primary: #ffb74d;
+    --accent-secondary: #57f8b8;
+    --accent-tertiary: #90caf9;
+    --accent-four: #ab9cdc;
+    --accent-five: #f07178;
     --accent-six: var(--text-primary);
 
     --alert-note: var(--clrs-pastel-blue);
@@ -50,29 +55,30 @@
     --alert-warning: var(--clrs-pastel-orange);
     --alert-caution: var(--clrs-pastel-red);
 
-    --blockquote-border: var(--clrs-pastel-blue);
+    --blockquote-border: #90caf9;
 
-    --code: var(--clrs-pastel-yellow);
-    --code-bg: #2a2a2a;
-    --table-even: #1a1d26;
+    --code: #ffb74d;
+    --code-bg: #3a3a3a;
+    --table-head: var(--bg-highlight);
+    --table-even: #1f1f1f;
 
-    --mark-text: var(--clrs-pastel-yellow);
+    --mark-text: var(--clrs-neon-green);
     --mark-bg: #000;
 
-    --enable: var(--clrs-pastel-green);
-    --disable: var(--clrs-pastel-red);
-    
-    --navbar-dropdown-hover: var(--clrs-pastel-green);
-    --navbar-address-hover: var(--clrs-neon-mint);
+    --enable: #57f8b8;
+    --disable: #f07178;
+
+    --navbar-dropdown-hover: var(--accent-secondary);
+    --navbar-address-hover: var(--accent-secondary);
     --navbar-address-hover-text: #fff;
-    --sidebar-parent: var(--clrs-pastel-cyan);
-    --sidebar-active: var(--clrs-pastel-green);
-    --sidebar-hover: var(--clrs-pastel-cyan);
+    --sidebar-parent: var(--accent-tertiary);
+    --sidebar-active: var(--accent-five);
+    --sidebar-hover: var(--accent-four);
 
-    --glow-text: 0 0 20px #fff, 0 0 40px var(--clrs-basic-yellow), 0 0 20px var(--clrs-basic-blue);
-    --glow: 0 0 5px #fff, 0 0 40px var(--clrs-basic-yellow);
+    --glow-text: 0 0 20px #fff, 0 0 40px var(--accent-secondary), 0 0 20px var(--accent-tertiary);
+    --glow: 0 0 5px #fff, 0 0 40px var(--accent-secondary);
 
-    --glow-button: var(--clrs-neon-mint);
+    --glow-button: var(--clrs-neon-green);
 }
 
 [class^="theme-"],
@@ -83,68 +89,141 @@
 [class^="theme-"] *,
 [class*=" theme-"] *,
 [class^="theme-"] *,
-[class*=" theme-"] *
-{
-    transition: 
+[class*=" theme-"] * {
+    transition:
         color 0.5s ease,
         background-color 0.5s ease;
     /* transition-duration: 0.5s;    */
 }
 
+/* based off material ocean high contrast */
 .theme-dark_default {
+    --bg-primary: #1a1a1a;
+    --bg-secondary: #2a2a2a;
+    --bg-highlight: #3a3a3a;
+    --bg-highlight-secondary: #00000088;
+    --bg-under: #00000088;
 
-}
-
-.theme-light_default {
-    --bg-primary: #dcdcdc;
-    --bg-secondary: #fff;
-    --bg-highlight: #fcbcd9;
-    --bg-highlight-secondary: #9e9e9e;
-    --bg-under: #ffffff88;
-
-    --text-primary: #000;
-    --text-highlight: #000;
-    --text-secondary: #545454;
-    --text-link: var(--clrs-basic-purple);
+    --text-primary: #b0bec5;
+    --text-highlight: #fff;
+    --text-secondary: #8a969c;
+    --text-link: #c792ea;
     --text-link-hover: #fc6450;
 
-    --border: #939393;
-    --scrollbar: #782C79 var(--bg-primary) !important;
+    --border: #333;
 
-    --accent-primary: #ee455c;
-    --accent-secondary: #9E0059;
-    --accent-tertiary: #F564A9;
-    --accent-four: #FF5400;
-    --accent-five: #ee455c;
+    --scrollbar: #ffb74d var(--bg-primary) !important;
+
+
+    --accent-primary: #ffb74d;
+    --accent-secondary: #57f8b8;
+    --accent-tertiary: #90caf9;
+    --accent-four: #ab9cdc;
+    --accent-five: #f07178;
     --accent-six: var(--text-primary);
 
-    --alert-note: var(--clrs-basic-blue);
-    --alert-tip: var(--clrs-basic-green);
-    --alert-important: var(--clrs-basic-purple);
-    --alert-warning: var(--clrs-basic-orange);
-    --alert-caution: var(--clrs-basic-red);
+    --alert-note: var(--clrs-pastel-blue);
+    --alert-tip: var(--clrs-pastel-green);
+    --alert-important: var(--clrs-pastel-magenta);
+    --alert-warning: var(--clrs-pastel-orange);
+    --alert-caution: var(--clrs-pastel-red);
+
+    --blockquote-border: #90caf9;
+
+    --code: #ffb74d;
+    --code-bg: #3a3a3a;
+    --table-head: var(--bg-highlight);
+    --table-even: #1f1f1f;
+
+    --mark-text: var(--clrs-neon-green);
+    --mark-bg: #000;
+
+    --enable: #57f8b8;
+    --disable: #f07178;
+
+    --navbar-dropdown-hover: var(--accent-secondary);
+    --navbar-address-hover: var(--accent-secondary);
+    --navbar-address-hover-text: #fff;
+    --sidebar-parent: var(--accent-tertiary);
+    --sidebar-active: var(--accent-five);
+    --sidebar-hover: var(--accent-four);
+
+    --glow-text: 0 0 20px #fff, 0 0 40px var(--accent-secondary), 0 0 20px var(--accent-tertiary);
+    --glow: 0 0 5px #fff, 0 0 40px var(--accent-secondary);
+
+    --glow-button: var(--clrs-neon-green);
+}
+
+/* based off catpuccin latte */
+.theme-light_default {
+    --clrs-custom-rosewater: #dc8a78;
+    --clrs-custom-flamingo: #dd7878;
+    --clrs-custom-pink: #ea76cb;
+    --clrs-custom-mauve: #8839ef;
+    --clrs-custom-red: #d20f39;
+    --clrs-custom-maroon: #e64553;
+    --clrs-custom-peach: #fe640b;
+    --clrs-custom-yellow: #df8e1d;
+    --clrs-custom-green: #40a02b;
+    --clrs-custom-teal: #179299;
+    --clrs-custom-sky: #04a5e5;
+    --clrs-custom-sapphire: #209fb5;
+    --clrs-custom-blue: #1e66f5;
+    --clrs-custom-lavender: #7287fd;
+
+
+    --bg-primary: #eff1f5;
+    --bg-secondary: #ccd0da;
+    /* --bg-primary: #ccd0da;
+    --bg-secondary: #eff1f5; */
+    --bg-highlight: #acb0be;
+    --bg-highlight-secondary: #8c8fa1;
+    --bg-under: #00000088;
+
+    --text-primary: #4c4f69;
+    --text-highlight: var(--clrs-custom-maroon);
+    --text-secondary: #6c6f85;
+    --text-link: var(--clrs-custom-blue);
+    --text-link-hover: var(--clrs-custom-peach);
+
+    --border: #6c6f85;
+    --scrollbar: #ea76cb var(--bg-primary) !important;
+
+    --accent-primary: var(--clrs-custom-sky);
+    --accent-secondary: var(--clrs-custom-sapphire);
+    --accent-tertiary: var(--clrs-custom-maroon);
+    --accent-four: var(--clrs-custom-lavender);
+    --accent-five: var(--clrs-custom-teal);
+    --accent-six: var(--text-primary);
+
+    --alert-note: #1e66f5;
+    --alert-tip: #40a02b;
+    --alert-important: #8839ef;
+    --alert-warning: #fe640b;
+    --alert-caution: #d20f39;
 
     --blockquote-border: var(--clrs-pastel-blue);
 
-    --code: #ff007b;
-    --code-bg: #c5afaf;
-    --table-even: #bfc0c4;
+    --code: #dce0e8;
+    --code-bg: #7c7f93;
+    --table-head: #ccd0da;
+    --table-even: #e6e9ef;
 
     --mark-text: var(--text-primary);
     --mark-bg: var(--clrs-basic-orange);
 
-    --enable: var(--clrs-basic-green);
-    --disable: var(--clrs-basic-red);
-    
-    --navbar-dropdown-hover: var(--clrs-basic-orange);
-    --navbar-address-hover: var(--clrs-neon-mint);
+    --enable: var(--clrs-custom-green);
+    --disable: var(--clrs-custom-red);
+
+    --navbar-dropdown-hover: var(--clrs-custom-peach);
+    --navbar-address-hover: var(--clrs-custom-sky);
     --navbar-address-hover-text: #000;
-    --sidebar-parent: var(--clrs-basic-blue);
-    --sidebar-active: #27B237;
-    --sidebar-hover: var(--clrs-basic-blue);
+    --sidebar-parent: var(--clrs-custom-teal);
+    --sidebar-active: var(--clrs-custom-red);
+    --sidebar-hover: var(--clrs-custom-green);
 
     --glow-text: 0 0 20px #fff, 0 0 40px var(--clrs-basic-yellow), 0 0 20px var(--clrs-basic-blue);
     --glow: 0 0 5px #fff, 0 0 40px var(--clrs-basic-yellow);
 
-    --glow-button: #9E0059;
+    --glow-button: var(--clrs-custom-pink);
 }

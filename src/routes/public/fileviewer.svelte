@@ -441,7 +441,7 @@ transform: rotate(90deg); */
     }
 
     .file:hover {
-        background-color: var(--bg-highlight-secondary);
+        background-color: var(--bg-highlight);
     }
 
     .fileName {
@@ -450,7 +450,7 @@ transform: rotate(90deg); */
     }
 
     .extension {
-        color: var(--accent-five);
+        color: var(--accent-tertiary);
         font-family: alt-mono, monospace;
     }
 
