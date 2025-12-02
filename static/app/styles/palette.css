@@ -227,3 +227,13 @@
 
     --glow-button: var(--clrs-custom-pink);
 }
+
+::-moz-selection {
+    color: var(--bg-primary);
+    background: var(--accent-primary);
+}
+
+::selection {
+    color: var(--bg-primary);
+    background: var(--accent-primary);
+}

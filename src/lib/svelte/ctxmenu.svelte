@@ -52,7 +52,7 @@
     {#if closeMenu}
         <Icon
             icon="cross"
-            callback={()=> closeMenu()}
+            callback={() => closeMenu()}
             glowOnHover={true}
             colour="var(--text-main)"
             textGlowColour="var(--minimise)"
@@ -71,8 +71,12 @@
     {/if}
     {#each Object.entries(buttons) as [key, [fn, icon, enabled]]}
         {#if enabled}
-            <button class="ctxItem" onclick={() => fn()}
-                ><Icon {icon} /> {key}</button
+            <button
+                class="ctxItem"
+                onclick={() => {
+                    fn();
+                    closeMenu();
+                }}><Icon {icon} /> {key}</button
             >
         {:else}
             <button class="ctxItem" disabled
@@ -107,6 +111,9 @@
         border-radius: 5px;
         white-space: nowrap;
         border: none;
+    }
+    .contextmenu .ctxItem:hover {
+        background-color: var(--bg-highlight);
     }
     .contextmenu button {
     }
