@@ -4,6 +4,7 @@ import standard from "mime/types/standard.js";
 import type { Dict } from "./data/types";
 
 const customExtensions: Dict<string[]> = {
+    'application/x-xpinstall': ['xpi'],
     'text/javascript': ['cjs', 'js', 'mjs',],
     'text/plain': ['txt', 'ts', 'jsx', 'tsx',],
     'x-osu-beatmap-archive': ['osz'],

@@ -49,3 +49,8 @@ Downloads a file
 ### /api/files
 
 Returns a list of all files
+
+### TODO
+
+- [ ] download files directly by slug (eg /subfolder/test.png downloads the png)
+- [ ] add download button to content previews
