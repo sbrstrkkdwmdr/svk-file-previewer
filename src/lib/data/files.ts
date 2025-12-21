@@ -3,11 +3,13 @@ export type file = {
     aUrl: string, // base url
     rel: string,
     size: number,
+    hash: string,
 };
 
 export interface pathableItem<T = 'folder' | 'file'> {
     type: T,
-    name: string, //fName
+    hash: string,
+    name: string, // fName
     path: string, // path 
     children: pathableItem[],
     size: number, // bytes

@@ -59,7 +59,8 @@ async function formattedFiles(root = '/'): Promise<pathableItem<"folder">> {
         name: root,
         path: root,
         children: [],
-        size: 0
+        size: 0,
+        hash: ""
     };
     if (!files) return data;
     for (const file of files) {
@@ -82,6 +83,7 @@ async function formattedFiles(root = '/'): Promise<pathableItem<"folder">> {
             path: file.aUrl.replace(file.fName, ''),
             size: file.size,
             children: [],
+            hash: file.hash,
         };
         if (parentDirs.length == 0) {
             data.children.push(newFile);
@@ -97,6 +99,7 @@ async function formattedFiles(root = '/'): Promise<pathableItem<"folder">> {
                     path: root,
                     children: [newFile],
                     size: 0,
+                    hash: "",
                 });
             }
         } else {
@@ -111,6 +114,7 @@ async function formattedFiles(root = '/'): Promise<pathableItem<"folder">> {
                     path: root,
                     children: [],
                     size: 0,
+                    hash: "",
                 };
                 data.children.push(gt);
             }
@@ -126,6 +130,7 @@ async function formattedFiles(root = '/'): Promise<pathableItem<"folder">> {
                         path: root,
                         children: [],
                         size: 0,
+                        hash: "",
                     };
                     gt.children.push(temp);
                 }

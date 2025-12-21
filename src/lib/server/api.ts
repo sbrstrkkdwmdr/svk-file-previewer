@@ -32,12 +32,29 @@ export const subdomainRedirect: RequestHandler = (event) => {
 
 export const downloadFileGET: RequestHandler = async ({ url }) => {
     await updateFiles();
-    const file = url.searchParams.get('name') as string;
-    const dir = url.searchParams.get('location') as string;
+    let file = url.searchParams.get('name') as string;
+    let dir = url.searchParams.get('location') as string;
     const preview = url.searchParams.get('preview') as string;
+    const hash = url.searchParams.get('hash') as string;
     let tfile: file | null = null;
-    for (const sf of files ?? []) {
-        if (sf.rel == dir + file) tfile = sf;
+    if (file && dir) {
+        for (const sf of files ?? []) {
+            if (sf.rel == dir + file) {
+                tfile = sf;
+                break;
+            }
+        }
+    } else if (hash) {
+        for (const sf of files ?? []) {
+            if (sf.hash == hash) {
+                tfile = sf;
+                file = tfile.fName;
+                dir = tfile.aUrl.replace(tfile.fName, '');
+                break;
+            }
+        }
+    } else {
+        error(500, { "message": "Missing params. Please use either name={name}&location={location} or hash={hash}" });
     }
     if (tfile) {
         downloadUpdate(dir, file);

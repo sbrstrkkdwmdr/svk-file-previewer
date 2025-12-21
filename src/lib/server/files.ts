@@ -1,8 +1,8 @@
 import type { file } from '$lib/data/files';
+import crypto from 'crypto';
 import fs from 'fs';
 import path from 'path';
-
-type result = { file: string, size: number; };
+type result = { file: string; size: number; };
 
 export let files: file[] | null = null;
 
@@ -37,7 +37,8 @@ export function editFiles(results: result[]): file[] {
             fName: p.split('/')[p.split('/').length - 1],
             aUrl: relativePath(p).replaceAll('\\', '/').replace(`../${rootFolder}`, '').replaceAll('../', ''),
             rel: relativePath(p).replaceAll('\\', '/').replace(`./${rootFolder}`, ''),
-            size: x.size
+            size: x.size,
+            hash: createHash(p)
         };
     }).sort((a, b) => a.parent.localeCompare(b.parent));
     for (const item of data) {
@@ -98,6 +99,7 @@ const walkCallback = (err: Error, results: result[], resolve: (value?: unknown) 
                 aUrl: 'error',
                 rel: 'error',
                 size: 0,
+                hash: 'error'
             }
         ];
         resolve(false);
@@ -118,7 +120,7 @@ const walkCallback = (err: Error, results: result[], resolve: (value?: unknown) 
     }
 };
 
-function walkCallback_addFiles(results: result[],) {
+function walkCallback_addFiles(results: result[]) {
     if (files) {
         files = files.concat(editFiles(results));
     } else {
@@ -136,4 +138,14 @@ export function getFile(dir: string, fileName: string) {
 
 async function addCounters() {
 
+}
+
+// create hash based off file location
+function createHash(str: string): string {
+    let hash = crypto.createHash('md5');
+    hash.setEncoding('hex');
+    hash.write(str);
+    hash.end();
+    let sum = hash.read();
+    return sum;
 }

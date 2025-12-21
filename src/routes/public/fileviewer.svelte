@@ -17,15 +17,16 @@
         showSearchbar?: boolean;
     } = $props();
     const childLink = (child: pathableItem) => {
-        if (
-            encodeURIComponent(child.name).trim() == child.name.trim() &&
-            !fileShouldBuffer(child.name)
-        ) {
-            return `${child.path.endsWith("/") ? child.path : child.path + "/"}${child.name}`;
-        }
-        return `/api/download?name=${encodeURIComponent(
-            child.name
-        )}&location=${child.path}/&preview=${isPreviewable(child.name)}`;
+        // if (
+        //     encodeURIComponent(child.name).trim() == child.name.trim() &&
+        //     !fileShouldBuffer(child.name)
+        // ) {
+        //     return `${child.path.endsWith("/") ? child.path : child.path + "/"}${child.name}`;
+        // }
+        // return `/api/download?name=${encodeURIComponent(
+        //     child.name
+        // )}&location=${child.path}/&preview=${isPreviewable(child.name)}`;
+        return `/api/download?hash=${child.hash}&preview=${isPreviewable(child.name)}`;
     };
 
     function fileShouldBuffer(filename: string) {
@@ -84,7 +85,7 @@
         "osu! storyboard": ["osb"],
         "osu! replay": ["osr"],
         ...extensions,
-    }
+    };
 
     function extToImage(str: string) {
         str = str.toLowerCase();
