@@ -2,7 +2,7 @@
     import { invalidate, pushState } from "$app/navigation";
     import { previewables } from "$lib/data/extensions";
     import { type pathableItem } from "$lib/data/files";
-    import { isPreviewable } from "$lib/MIME";
+    import { getMime, isPreviewable } from "$lib/MIME";
     import Ctxmenu from "$lib/svelte/ctxmenu.svelte";
     import Icon from "$lib/svelte/icon.svelte";
     import Searchbar from "$lib/svelte/searchbar.svelte";
@@ -321,7 +321,10 @@
                     ],
                     Type: [
                         extToImage(contextItem!.name.split(".")?.pop() ?? ""),
-                        extToType(contextItem!.name.split(".")?.pop() ?? ""),
+                        extToType(contextItem!.name.split(".")?.pop() ?? "") +
+                            " (MIME: " +
+                            getMime(contextItem!.name) +
+                            ")",
                     ],
                 }}
                 buttons={{
