@@ -26,8 +26,14 @@
         // return `/api/download?name=${encodeURIComponent(
         //     child.name
         // )}&location=${child.path}/&preview=${isPreviewable(child.name)}`;
-        return `/api/download?hash=${child.hash}&preview=${isPreviewable(child.name)}`;
+        return getLink(child, true);
     };
+
+    function getLink(item: pathableItem, doPreview = false) {
+        let url = `/api/download?hash=${item.hash}`;
+        if (doPreview) url += `&preview=${isPreviewable(item.name)}`;
+        return url;
+    }
 
     function fileShouldBuffer(filename: string) {
         for (const extension of previewables) {
@@ -330,12 +336,7 @@
                 buttons={{
                     Download: [
                         () => {
-                            open(
-                                `/api/download?name=${encodeURIComponent(
-                                    contextItem?.name ?? ""
-                                )}&location=${contextItem?.path ?? ""}/`,
-                                "_blank"
-                            );
+                            open(getLink(contextItem!), "_blank");
                         },
                         "download",
                         true,
@@ -349,11 +350,7 @@
                     ],
                     "Copy Link": [
                         () => {
-                            let url =
-                                window.origin +
-                                `/api/download?name=${encodeURIComponent(
-                                    contextItem?.name ?? ""
-                                )}&location=${contextItem?.path ?? ""}/`;
+                            let url = window.origin + getLink(contextItem!);
                             navigator.clipboard.writeText(url);
                         },
                         "link",
