@@ -218,7 +218,7 @@
 
 {#snippet folder(dir: pathableItem, isPrimary: boolean = false)}
     <details class="folder" open={isPrimary || dir.forceInitialOpen}>
-        <summary class="file fileName" oncontextmenu={(ev) => ctxmenu(ev, dir)}>
+        <summary class="file fileName mono" oncontextmenu={(ev) => ctxmenu(ev, dir)}>
             {dir.name}/
             <span class="fileExtra"
                 >{dir.children.length} item{dir.children.length == 1 ? "" : "s"}
@@ -243,11 +243,11 @@
                         )}"
                     >
                     </span>
-                    <a target="_blank" class="fileName" href={childLink(child)}>
+                    <a target="_blank" class="fileName mono" href={childLink(child)}>
                         {fileName(
                             child.name
                         )[0]}{#if fileName(child.name)[1]}<span
-                                class="extension"
+                                class="extension mono"
                                 >{fileName(child.name)[1]}</span
                             >{/if}
                         <span class="fileExtra">
@@ -447,12 +447,10 @@ transform: rotate(90deg); */
 
     .fileName {
         color: var(--accent-primary);
-        font-family: alt-mono, monospace;
     }
 
     .extension {
         color: var(--accent-tertiary);
-        font-family: alt-mono, monospace;
     }
 
     .fileExtra {

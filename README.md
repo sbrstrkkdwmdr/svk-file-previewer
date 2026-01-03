@@ -52,5 +52,14 @@ Returns a list of all files
 
 ### TODO
 
-- [ ] download files directly by slug (eg /subfolder/test.png downloads the png)
-- [ ] add download button to content previews
+-   [ ] download files directly by slug (eg /subfolder/test.png downloads the png)
+-   [ ] add download button to content previews
+
+## Credits
+
+### Fonts
+
+|                                                      |                                                                               |
+| ---------------------------------------------------- | ----------------------------------------------------------------------------- |
+| [Inter](https://rsms.me/inter/)                      | [SIL-OFL 1.1](https://raw.githubusercontent.com/rsms/inter/v4.1/LICENSE.txt)  |
+| [JetBrains Mono](https://www.jetbrains.com/lp/mono/) | [SIL-OFL 1.1](https://github.com/JetBrains/JetBrainsMono/blob/master/OFL.txt) |

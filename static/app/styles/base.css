@@ -1,15 +1,5 @@
-/* @font-face {
-    font-family: munro;
-    src: url("./munro.ttf");
-}
-
-@font-face {
-    font-family: alt-mono;
-    src: url("./munro.ttf");
-} */
-
 :root {
-    font-family: munro, Arial, Helvetica, sans-serif;
+    font-family: InterVariable, "Inter", "JetBrainsMono" Arial, Helvetica, sans-serif;
 }
 
 * {
@@ -96,9 +86,7 @@ main.sdml {
 }
 
 .mono {
-    font-family: alt-mono, "Lucida Console", monospace;
-    font-weight: 600;
-    white-space: pre;
+    font-family: 'JetBrainsMono', "Lucida Console", monospace;
 }
 
 h1 {

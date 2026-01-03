@@ -1,0 +1,17 @@
+/* @font-face {
+    font-family: munro;
+    src: url("./munro.ttf");
+}
+
+@font-face {
+    font-family: alt-mono;
+    src: url("./munro.ttf");
+} */
+
+@font-face {
+    font-family: 'JetBrainsMono';
+    src: url('fonts/JetBrainsMono/JetBrainsMono-Bold.woff2') format('woff');
+    font-weight: bold;
+    font-style: normal;
+    font-display: block;
+}
