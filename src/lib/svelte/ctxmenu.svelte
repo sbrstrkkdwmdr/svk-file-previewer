@@ -59,13 +59,18 @@
         />
     {/if}
     <h3>{name}</h3>
-    <p>{desc}</p>
-    {#each Object.entries(stats) as [key, [icon, description]]}
-        <p class="ctxItem">
-            <Icon {icon} />
-            {key}: {description}
-        </p>
-    {/each}
+    <p class="mono">{desc}</p>
+    <table class="ctxmenu-stats-table">
+        <tbody>
+            {#each Object.entries(stats) as [key, [icon, description]]}
+                <tr>
+                    <td><Icon {icon} /></td>
+                    <td class="ctxmenu-stats mono">{key}</td>
+                    <td class="ctxmenu-stats mono">{description}</td>
+                </tr>
+            {/each}
+        </tbody>
+    </table>
     {#if Object.keys(stats).length > 0}
         <hr />
     {/if}
@@ -79,10 +84,10 @@
                 }}><Icon {icon} /> {key}</button
             >
         {:else}
-            <button class="ctxItem" disabled
+            <button class="ctxItem disabled" disabled
                 ><Icon
                     {icon}
-                    colour="var(--text-other)"
+                    colour="inherit"
                     title="this button is disabled"
                 />
                 {key}</button
@@ -112,8 +117,23 @@
         white-space: nowrap;
         border: none;
     }
+    .contextmenu .ctxItem.disabled {
+        color: var(--text-secondary);
+        text-decoration: line-through;
+    }
     .contextmenu .ctxItem:hover {
         background-color: var(--bg-highlight);
+    }
+    .ctxmenu-stats {
+        text-align: left;
+    }
+    .ctxmenu-stats-table {
+    }
+    .ctxmenu-stats-table td:not(:last-child) {
+        padding-right: 10px;
+    }
+    .ctxmenu-stats-table td:last-child {
+        color: var(--accent-tertiary);
     }
     .contextmenu button {
     }
