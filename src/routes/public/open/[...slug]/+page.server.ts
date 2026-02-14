@@ -49,7 +49,8 @@ export const load = async (event: ServerLoadEvent) => {
         mode = "video";
     } else {
         // redirect
-        return redirect(308, "/api/download?hash=" + ctn.metadata.hash);
+        // return redirect(308, "/api/download?hash=" + ctn.metadata.hash);
+        mode = "file";
     }
     //@ts-expect-error returnfiles being used before assigned - intended behaviour
     if (!returnfiles) {

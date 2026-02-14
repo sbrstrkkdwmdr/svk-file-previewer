@@ -1,5 +1,6 @@
 <script lang="ts">
     import { afterNavigate } from "$app/navigation";
+    import { extToImage } from "$lib/data/extensions";
     import AudioRender from "$lib/renders/audio-render.svelte";
     import CodeRender from "$lib/renders/code-render.svelte";
     import FolderRender from "$lib/renders/folder-render.svelte";
@@ -35,29 +36,35 @@
 </script>
 
 <svelte:window bind:innerWidth />
-<div>
-    <!-- {#if viewMode == "folder"}
+<!-- {#if viewMode == "folder"}
         <h1>Files</h1>
         <FolderRender files={data.files} /> -->
+<div class="sbsparent">
     {#if showFilePreview}
-        <div class="sbsparent">
-            <section class="sbs left">
-                <h1>Files</h1>
-                <FolderRender files={data.files} />
-            </section>
-            <section class="sbs right">
-                {@render renderContent()}
-            </section>
-        </div>
-    {:else}
-        {@render renderContent()}
+        <section class="sbs left">
+            <h1>Files</h1>
+            <FolderRender files={data.files} isChild={data.isChild} />
+        </section>
     {/if}
+    <section class="sbs right">
+        {#if !showFilePreview}
+            <a
+                target="_self"
+                href={data.metadata.directory}
+                class="data-button"
+            >
+                Go to folder
+            </a>
+        {/if}
+
+        {@render renderContent()}
+    </section>
 </div>
 
 {#snippet renderContent()}
     <div id="metadata">
         <h2>File {data.metadata.name}</h2>
-        <code>{data.metadata.directory}</code><br/>
+        <code>{data.metadata.directory}</code><br />
         <a target="_blank" href={downloadurl}>
             <Icon icon="download" /> download
         </a>
@@ -76,7 +83,20 @@
     {:else if viewMode == "video"}
         <VideoRender src={downloadurl + "&preview=true"} mime={data.mime} />
     {:else}
-        Error???
+        <section id="data" class="centre-page">
+            <Icon icon={extToImage(data.metadata.extension)} /> MIME type: {data.mime}
+            <a target="_blank" href={downloadurl} class="data-button">
+                <Icon icon="download" fsize="inherit" /> download
+            </a>
+            <button
+                class="data-button"
+                onclick={(ev) => {
+                    navigator.clipboard.writeText(window.location.href);
+                }}
+            >
+                <Icon icon="copy" fsize="inherit" /> Copy link to clipboard
+            </button>
+        </section>
     {/if}
 {/snippet}
 
@@ -100,5 +120,20 @@
     .right {
         max-width: 70%;
         /* border-left: 3px solid var(--border); */
+    }
+
+    .data-button {
+        font-family: "JetBrainsMono";
+        text-align: center;
+        font-size: 24px;
+        background: none;
+        color: var(--text-link);
+        border: solid 3px var(--border);
+    }
+
+    .data-button:hover {
+        color: var(--text-link-hover);
+        text-decoration: underline;
+        background-color: var(--bg-highlight);
     }
 </style>

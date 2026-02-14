@@ -1,6 +1,6 @@
 <script lang="ts">
     import { invalidate, pushState } from "$app/navigation";
-    import { previewables } from "$lib/data/extensions";
+    import { extToImage, extToType, previewables } from "$lib/data/extensions";
     import { type pathableItem } from "$lib/data/files";
     import { getMime, isPreviewable } from "$lib/MIME";
     import Ctxmenu from "$lib/svelte/ctxmenu.svelte";
@@ -86,52 +86,6 @@
         const i = Math.floor(Math.log(bytes) / Math.log(k));
 
         return `${parseFloat((bytes / Math.pow(k, i)).toFixed(dm))} ${sizes[i]}`;
-    }
-
-    const extensions = {
-        Image: ["png", "jpg", "svg", "jpeg", "gif", "pdn", "heic"],
-        Video: ["mp4", "mkv", "mov", "avi"],
-        Audio: ["mp3", "ogg", "wav", "flac", "aac"],
-        Text: ["txt", "md", "log", "js", "html", "ts", "osb", "osu"],
-        Archive: ["zip", "rar", "osk", "7z", "osz", "xpi", "tar.gz", "tar"],
-        Executable: ["exe"],
-        Installer: ["msi", "apk"],
-    };
-    const extensions_full = {
-        "osu! Beatmap archive": ["osz"],
-        "osu! Skin archive": ["osk"],
-        "osu! Beatmap": ["osu"],
-        "osu! storyboard": ["osb"],
-        "osu! replay": ["osr"],
-        ...extensions,
-    };
-
-    function extToImage(str: string) {
-        str = str.toLowerCase();
-        let p = "file";
-        for (const key in extensions) {
-            //@ts-expect-error string cannot index extensions
-            if (extensions[key].some((x) => x == str)) {
-                p += key;
-                break;
-            }
-        }
-        if (p == "file") {
-            p += "Generic";
-        }
-        return p;
-    }
-    function extToType(str: string) {
-        str = str.toLowerCase();
-        let p = "file";
-        for (const key in extensions_full) {
-            //@ts-expect-error string cannot index extensions
-            if (extensions_full[key].some((x) => x == str)) {
-                p = key;
-                break;
-            }
-        }
-        return p.toLowerCase();
     }
 
     function fileName(str: string) {
@@ -297,8 +251,8 @@
         /><br />
     {/if}
     {#if isChild}
-        <div style="width:100%;text-align:left;">
-            <a href="./" data-sveltekit-reload><Icon icon="leave" /></a><br />
+        <div style="width:100%;text-align:left;margin-top: 10px;">
+            <a href="./" data-sveltekit-reload><Icon icon="leave" /> to parent folder... </a><br />
         </div>
     {/if}
     {@render folder(usefiles!, true)}
