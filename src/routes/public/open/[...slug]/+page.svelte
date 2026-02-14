@@ -6,12 +6,12 @@
     import FolderRender from "$lib/renders/folder-render.svelte";
     import ImageRender from "$lib/renders/image-render.svelte";
     import MarkdownRender from "$lib/renders/markdown-render.svelte";
-    import { downloadLink } from "$lib/renders/share";
     import TextRender from "$lib/renders/text-render.svelte";
     import VideoRender from "$lib/renders/video-render.svelte";
     import Icon from "$lib/svelte/icon.svelte";
     import { getColourMode } from "$lib/tools";
     import { onMount } from "svelte";
+    import * as utils from 'util';
     let { data } = $props();
     let viewMode = data.mode;
     let colourMode = $state("dark_default");
@@ -19,18 +19,12 @@
     let showFilePreview = $derived.by(() => {
         return innerWidth > 1000;
     });
-    let downloadurl = $state("./");
+    let downloadurl = $derived(`/api/download?hash=${data.metadata.hash}&preview=true`)
     onMount(() => {
         colourMode = getColourMode();
-        setTimeout(() => {
-            downloadurl = downloadLink();
-        }, 500);
     });
     afterNavigate(() => {
         colourMode = getColourMode();
-        setTimeout(() => {
-            downloadurl = downloadLink();
-        }, 500);
     });
     $effect(() => {
         try {
@@ -62,9 +56,10 @@
 </div>
 
 {#snippet renderContent()}
+<code>{data.metadata.rel}</code>
 <div>
     <a target="_blank" href={downloadurl}>
-        <Icon icon="download" /> Click here for original file
+        <Icon icon="download" /> Click here for original {viewMode} file
     </a>
 </div>
     {#if viewMode == "markdown"}

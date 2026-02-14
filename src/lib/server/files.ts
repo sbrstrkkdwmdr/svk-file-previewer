@@ -141,7 +141,7 @@ async function addCounters() {
 }
 
 // create hash based off file location
-function createHash(str: string): string {
+export function createHash(str: string): string {
     let hash = crypto.createHash('md5');
     hash.setEncoding('hex');
     hash.write(str);

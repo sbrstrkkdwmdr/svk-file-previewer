@@ -57,6 +57,7 @@ export const downloadFileGET: RequestHandler = async ({ url }) => {
         error(500, { "message": "Missing params. Please use either name={name}&location={location} or hash={hash}" });
     }
     if (tfile) {
+
         downloadUpdate(dir, file);
         let content: NonSharedBuffer | null = null;
         if (fs.existsSync('./files/' + tfile.rel)) content = fs.readFileSync('./files/' + tfile.rel);
@@ -75,6 +76,9 @@ export const downloadFileGET: RequestHandler = async ({ url }) => {
         } else {
             res.headers.set("Content-Disposition", "attachment; filename=" + tfile.fName);
         }
+        console.log(res.headers);
+        console.log(tfile.rel);
+        console.log(content)
 
         return res;
         // return json({ "msg": "skissue" });

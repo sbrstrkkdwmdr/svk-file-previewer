@@ -26,13 +26,24 @@
         // return `/api/download?name=${encodeURIComponent(
         //     child.name
         // )}&location=${child.path}/&preview=${isPreviewable(child.name)}`;
-        return getLink(child, true);
+        return getLink(child, undefined, true);
     };
 
-    function getLink(item: pathableItem, doPreview = false) {
-        let url = `/api/download?hash=${item.hash}`;
-        if (doPreview) url += `&preview=${isPreviewable(item.name)}`;
-        return url;
+    function getLink(item: pathableItem, download = false, doPreview = false) {
+        if (download) {
+            let url = `/api/download?hash=${item.hash}`;
+            if (doPreview) url += `&preview=${isPreviewable(item.name)}`;
+            return url;
+        }
+        // return item.path + "/" + item.name;
+        return `/open/${item.hash}`;
+    }
+
+    function openInCurrentWindow(item: pathableItem): boolean {
+        const mime = getMime(item.name);
+        const allow = ["text", "image", "video", "audio"];
+        if (allow.some((x) => mime.startsWith(x))) return true;
+        return false;
     }
 
     function fileShouldBuffer(filename: string) {
@@ -150,7 +161,7 @@
     }
     function checkFolder(
         parent: pathableItem<"folder">,
-        match: string
+        match: string,
     ): pathableItem<"folder"> {
         const temp: pathableItem<"folder"> = {
             ...parent,
@@ -166,7 +177,7 @@
             } else if (file.type == "folder") {
                 const newfolder = checkFolder(
                     file as pathableItem<"folder">,
-                    match
+                    match,
                 );
                 if (nonemptyFolder(newfolder)) {
                     temp.children.push(newfolder);
@@ -218,11 +229,13 @@
 
 {#snippet folder(dir: pathableItem, isPrimary: boolean = false)}
     <details class="folder" open={isPrimary || dir.forceInitialOpen}>
-        <summary class="file fileName mono" oncontextmenu={(ev) => ctxmenu(ev, dir)}>
+        <summary
+            class="file fileName mono"
+            oncontextmenu={(ev) => ctxmenu(ev, dir)}
+        >
             {dir.name}/
             <span class="fileExtra"
-                >{dir.children.length} item{dir.children.length == 1 ? "" : "s"}
-                ({@html formatBytes(dir.size)})</span
+                >{dir.children.length} item{dir.children.length == 1 ? "" : "s"} ({@html formatBytes(dir.size)})</span
             >
         </summary>
         {#each dir.children as child}
@@ -239,13 +252,15 @@
                     <span></span>
                     <span
                         class="fileIcon icon-fileGeneric icon-{extToImage(
-                            child.name.split('.')?.pop() ?? ''
+                            child.name.split('.')?.pop() ?? '',
                         )}"
+                    ></span><a
+                        target={openInCurrentWindow(child) ? "_self" : "_blank"}
+                        class="fileName mono"
+                        href={childLink(child)}
                     >
-                    </span>
-                    <a target="_blank" class="fileName mono" href={childLink(child)}>
                         {fileName(
-                            child.name
+                            child.name,
                         )[0]}{#if fileName(child.name)[1]}<span
                                 class="extension mono"
                                 >{fileName(child.name)[1]}</span
@@ -336,14 +351,19 @@
                 buttons={{
                     Download: [
                         () => {
-                            open(getLink(contextItem!), "_blank");
+                            open(getLink(contextItem!, true), "_blank");
                         },
                         "download",
                         true,
                     ],
                     Preview: [
                         () => {
-                            open(childLink(contextItem!), "_blank");
+                            open(
+                                childLink(contextItem!),
+                                openInCurrentWindow(contextItem!)
+                                    ? "_self"
+                                    : "_blank",
+                            );
                         },
                         "show",
                         isPreviewable(contextItem?.name ?? ""),

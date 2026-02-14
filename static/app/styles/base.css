@@ -1,5 +1,5 @@
 :root {
-    font-family: InterVariable, "Inter", "JetBrainsMono" Arial, Helvetica, sans-serif;
+    font-family: "Inter", "Zen Kaku Gothic", "JetBrainsMono", Arial, Helvetica, sans-serif;
 }
 
 * {
@@ -45,9 +45,19 @@ a:active {
     text-decoration: underline;
 }
 
-input:focus,
-textarea:focus {
-    outline: none;
+.loading-overlay {
+    position: absolute;
+    width: 100vw;
+    height: 100vh;
+    margin: -35px;
+    z-index: 600;
+    background-color: var(--bg-under);
+    text-align: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    min-height: 100vh;
 }
 
 .external {
@@ -85,24 +95,25 @@ main.sdml {
     height: calc(100vh - 147px);
 }
 
+.force-whole-page {
+    min-height: calc(100% + 25px);
+}
+
 .mono {
-    font-family: 'JetBrainsMono', "Lucida Console", monospace;
+    font-family: "JetBrainsMono", "FiraCodeNerdFont", monospace;
+    font-weight: 600;
+    white-space: pre;
+}
+
+.no-liga {
+    font-feature-settings: "liga" 0;
+    font-variant-ligatures: none;
 }
 
 h1 {
     width: fit-content;
     font-size: 4rem;
     color: var(--accent-primary);
-    clear: both;
-    margin: auto;
-    text-align: center;
-}
-
-.pageTitleSubText,
-.pageTitleSubText * {
-    width: fit-content;
-    font-size: 1.5rem;
-    color: var(--text-primary);
     clear: both;
     margin: auto;
     text-align: center;
@@ -132,7 +143,7 @@ h5 {
     color: var(--accent-five);
 }
 
-h5 {
+h6 {
     color: var(--accent-six);
 }
 
@@ -143,12 +154,48 @@ h6 {
     margin: 0;
 }
 
-.genericSearch {
+hr {
+    color: var(--border);
+    border: 1px solid var(--border);
+    width: 100%;
+}
+
+.vr {
+    color: var(--border);
+    border-left: 1px solid var(--border);
+}
+
+
+tr:nth-child(odd) {
+    background-color: var(--table-even);
+}
+
+tr:hover {
+    background-color: var(--bg-highlight);
+}
+
+thead,
+thead tr,
+thead th,
+thead td {
+    background-color: var(--table-head);
+}
+
+table {
+    /* border-spacing: 0px; */
+    border-collapse: collapse;
+}
+
+th,
+td {
+    padding: 5px;
+}
+
+.searchbar {
     margin: auto;
     margin-top: 15px;
     width: 35%;
     font-size: 24px;
-    background: none;
     background-color: var(--bg-secondary);
     border: 3px solid var(--border);
 }
@@ -187,20 +234,31 @@ h6 {
     border: 3px solid var(--border);
 }
 
-.theme-light_default .item:hover {
+/* .theme-light_default .item:hover {
     background-color: var(--bg-secondary);
     border: 3px solid var(--accent-primary);
-}
+} */
 
-.liftItem {
-    transition:
-        transform 0.2s ease,
+.item-lift {
+    transition: 0.2s ease;
+    /*         transform 0.2s ease,
         box-shadow 0.2s ease,
-        background-color 0.2s ease;
+        background-color 0.2s ease; */
 }
 
-.liftItem:hover {
+.item-lift:hover {
     transform: translateY(-5px);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+}
+
+.item-shadow {
+    transition: 0.2s ease;
+    /*         transform 0.2s ease,
+        box-shadow 0.2s ease,
+        background-color 0.2s ease; */
+}
+
+.item-shadow:hover {
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
 }
 
@@ -215,28 +273,7 @@ h6 {
     position: relative;
 }
 
-.itemHomeGrid {
-    grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
-    justify-content: center;
-}
-
-.itemProfileGrid {
-    grid-template-columns: repeat(auto-fit, minmax(256px, 1fr));
-}
-
-.itemHomeHeight {
-    height: 200px;
-}
-
-.itemHomeWidth {
-    width: 400px;
-}
-
-.itemProfile {
-    width: 256px;
-}
-
-.itemName {
+.item-name {
     color: var(--accent-secondary);
     width: 100%;
     text-align: center;
@@ -253,48 +290,15 @@ h6 {
     padding: 0;
 }
 
-.itemLongName {
-    font-size: 30px;
-}
-
-.itemAsLink {}
-
-/* doesnt work :( */
-.itemAsLink:hover {
-    color: var(--linkHighlight);
-}
 
 /* also includes yt preview */
-.itemPreviewImage {
+.item-image-preview {
     width: 400px;
     height: 225px;
+    border-radius: 10px;
+    object-fit: cover;
 }
 
-/* https://www.w3schools.com/css/css_tooltip.asp */
-
-/* Tooltip text */
-.tooltipContainer .tooltipText {
-    visibility: hidden;
-    background-color: var(--bg-highlight);
-    color: var(--text-primary);
-    text-align: center;
-    padding: 3px 5px;
-    margin: 5px;
-    border-radius: 6px;
-    position: absolute;
-    z-index: 800;
-    left: -10px;
-    bottom: 35px;
-}
-
-.tooltipContainer {
-    position: relative;
-}
-
-/* Show the tooltip text when you mouse over the tooltip container */
-.tooltipContainer:hover .tooltipText {
-    visibility: visible;
-}
 
 .sidebyside {
     display: flex;
@@ -338,35 +342,53 @@ html[xmlns] .clearfix {
     width: 100vw;
     height: 100vh;
     background-color: var(--bg-under);
-    z-index: 1000;
+    z-index: 300;
     position: fixed;
 }
 
-.smallTable {
-    border: none;
-    border-spacing: 15px 0;
+blockquote {
+    background-color: var(--bg-highlight);
+    border-left: var(--blockquote-border) 5px solid;
+    padding-left: 5px;
 }
 
-.centreDiv {
-    /* text-align: center; */
-    margin: auto;
-    width: 50%;
+.unset {
+    all: unset;
 }
 
-.baseInput {
-    background: none;
+.inherit-all {
+    all: inherit;
+}
+
+
+
+.input-generic,
+input[type="text"],
+input[type="number"],
+input[type="password"],
+textarea {
     background-color: var(--bg-secondary);
     border: 3px solid var(--border);
     display: block;
     font-size: 24px;
 }
 
-input.baseInput,
-textarea.baseInput {
+input:not([type="checkbox"]):focus,
+textarea:focus,
+.input-generic:focus,
+input[type="text"]:focus,
+input[type="number"]:focus,
+input[type="password"]:focus {
+    outline: none;
+    background-color: var(--bg-primary);
+}
+
+input.input-generic,
+textarea.input-generic {
     width: calc(100% - 10px);
 }
 
-textarea.baseInput {
+textarea.input-generic {
     resize: vertical;
 }
 
@@ -380,7 +402,7 @@ input[type=number] {
     -moz-appearance: textfield;
 }
 
-.checkboxSwitch {
+.checkbox-switch {
     appearance: none;
     -webkit-appearance: none;
     width: 50px;
@@ -389,6 +411,7 @@ input[type=number] {
     position: relative;
     transition: background-color 300ms ease;
     vertical-align: top;
+    border: 3px solid var(--border);
 
     &::after {
         content: '';
@@ -398,28 +421,27 @@ input[type=number] {
         transform: translate(-50%, -50%);
         height: 20px;
         width: 20px;
-        background-color: var(--enable);
+        background-color: var(--disable);
         transition: left 300ms ease;
     }
 
     &:checked {
-
         &::after {
             left: 77%;
-            background-color: #67ff67;
+            background-color: var(--enable);
         }
 
         transition: ease-in-out;
     }
 }
 
-.checkboxCheckmark {
-    border: 3px solid var(--border);
+.checkbox-check {
+    border: 1px solid var(--border);
     appearance: none;
     -webkit-appearance: none;
     width: 25px;
     height: 25px;
-    background-color: var(--bg-secondary);
+    background-color: var(--bg-primary);
     position: relative;
     transition: background-color 300ms ease;
     vertical-align: top;
@@ -427,14 +449,17 @@ input[type=number] {
     &::after {
         content: '';
         position: absolute;
-        width: 100%;
+        height: calc(100% - 1px);
+        vertical-align: middle;
+        width: calc(100% - 1px);
         text-align: center;
-        content: "✖";
-        color: var(--enable);
-        /* background-color: var(--enable); */
+        /* content: "✖"; */
+        color: var(--disable);
+        /* background-color: var(--border); */
     }
 
     &:checked {
+        background-color: var(--bg-secondary);
 
         &::after {
             width: 100%;
@@ -446,79 +471,108 @@ input[type=number] {
     }
 }
 
-.centrePage {
+select {
     background-color: var(--bg-secondary);
-    display: block;
-    list-style-position: inside;
-    border-radius: 1rem;
     border: 3px solid var(--border);
-    max-width: 50vw;
-    padding: 15px;
-    margin: auto;
-    /* display: inline-block; */
-    column-gap: 50px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    /* background-color: #15171B88; */
-    text-align: left;
+    font-size: 24px;
 }
 
-.centrePageNoclr {
-    display: block;
-    list-style-position: inside;
-    border: 3px solid #00000000;
-    max-width: 50vw;
-    padding: 15px;
-    margin: auto;
-    /* display: inline-block; */
-    column-gap: 50px;
-    text-align: left;
-}
-
-.centrePageSmall {
+.button-decor {
+    border: 3px solid var(--border);
     background-color: var(--bg-secondary);
-    display: block;
-    list-style-position: inside;
-    border-radius: 1rem;
+}
+
+.button-decor:hover {
+    background-color: var(--bg-highlight);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+}
+
+.button-decor:active {
+    background-color: var(--enable);
+}
+
+.button-decor-2 {
+    background-color: var(--bg-secondary);
+    display: inline-block;
+    width: fit-content;
+    border: 1px solid var(--border);
+    font-size: 1rem;
+    padding: 0.5em 1em;
+    border-radius: 8px;
+}
+
+.button-decor-2:hover {
+    cursor: pointer;
+    background-color: var(--bg-highlight);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+}
+
+.button-animated {
+    border-radius: 5px;
     border: 3px solid var(--border);
-    max-width: 50vw;
+    background-color: var(--bg-secondary);
+    transition: 0.2s ease;
+}
+
+.button-animated:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+}
+
+.button-animated:active {
+    transform: translateY(-3px);
+    background-color: var(--bg-highlight);
+}
+
+.centre-page {
+    display: flex;
+    gap: 8px;
+    flex-shrink: 0;
+    flex-direction: column;
+    width: 1000px;
+    max-width: 80vw;
+    list-style-position: inside;
+    margin: 15px auto;
     padding: 15px;
-    margin: auto;
-    /* display: inline-block; */
-    column-gap: 50px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    /* background-color: #15171B88; */
     text-align: left;
 }
 
-.stickyAside {
+.centre-page.stylised {
+    background-color: var(--bg-secondary);
+    border: 3px solid var(--border);
+    border-radius: 1rem;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.aside-sticky {
     top: 50%;
     transform: translateY(-25%);
     right: 0;
     height: 250px;
     width: 250px;
     position: fixed;
-    z-index: 998;
+    z-index: 300;
     height: calc(100% - 75px);
     padding: 1em;
 }
 
 /* if sticky aside is invis show this elem */
-.stickyAsideReplacer {
+.aside-sticky-replacer {
     display: none;
 }
 
-.stickyAsideItem {
+.aside-sticky-item {
     display: block;
     width: 100%;
     color: var(--text-secondary);
 }
 
-.glowHighlight {
+.highlight-glow {
     text-shadow: 0;
     transition: 0.3s ease;
 }
 
-.glowHighlight:hover {
+.highlight-glow:hover {
     color: #fff;
     /* background-color: var(--bg-highlight); */
     text-shadow: var(--glow-text);
@@ -529,7 +583,7 @@ input[type=number] {
     filter: drop-shadow(var(--glow));
 }
 
-.centrePageItem {
+.centre-page-item {
     border-radius: 1rem;
     border: 3px solid var(--border);
     margin: 12px auto;
@@ -537,7 +591,7 @@ input[type=number] {
     text-align: left;
 }
 
-.asP {
+.as-p {
     display: block;
     margin-top: 1em;
     margin-bottom: 1em;
@@ -545,13 +599,18 @@ input[type=number] {
     margin-right: 0;
 }
 
-.inline-code {
+code {
     background-color: var(--code-bg);
     color: var(--code);
     padding: 2px 6px;
     border-radius: 3px;
-    font-family: monospace;
+    font-family: "JetBrainsMono", "Lucida Console", monospace;
     font-size: 0.95em;
+}
+
+mark {
+    color: var(--mark-text);
+    background-color: var(--mark-bg);
 }
 
 @keyframes jump {
@@ -586,6 +645,73 @@ input[type=number] {
     }
 }
 
+@keyframes opacIn {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 100;
+    }
+}
+
+@keyframes opacOut {
+    from {
+        opacity: 100;
+    }
+
+    to {
+        opacity: 0;
+    }
+}
+
+@keyframes grow {
+    from {
+        transform: scale(0);
+    }
+
+    to {
+        transform: scale(1);
+    }
+}
+
+@keyframes shrink {
+    from {
+        transform: scale(1);
+    }
+
+    to {
+        transform: scale(0);
+    }
+}
+
+@keyframes opacgrow {
+    from {
+        opacity: 0;
+        transform: rotateX(-10deg) scale(0.9);
+    }
+
+    to {
+        opacity: 1;
+        transform: rotateX(0deg) scale(1);
+    }
+}
+
+@keyframes opacshrink {
+    from {
+        opacity: 1;
+        transform: rotateX(0deg) scale(1);
+    }
+
+    to {
+        opacity: 0;
+        transform: rotateX(-10deg) scale(0.95);
+    }
+}
+
+
+
+
 .jump-on-click {
     transition: transform 0.2s ease;
 }
@@ -594,34 +720,34 @@ input[type=number] {
     animation: jump 0.4s ease;
 }
 
-.dimSwitch {
+.switch-dim {
     animation: opacInOut 0.5s ease;
 }
 
-.codeTable {
+.code-table {
     background-color: var(--code-bg);
     padding: 2px 6px;
     border-radius: 3px;
     font-size: 0.95em;
-    font-family: monospace;
+    font-family: "JetBrainsMono", "Lucida Console", monospace;
 }
 
-.codeTable * {
+.code-table * {
     text-align: left;
 }
 
-.codeTable th {
+.code-table th {
     color: var(--codeTableHeader);
 }
 
-.codeTable td {
+.code-table td {
     color: var(--codeTableCell);
 }
 
 .sidebutton {
     position: absolute;
     top: 50%;
-    z-index: 800;
+    z-index: 700;
 }
 
 .sidebutton.right {
@@ -633,11 +759,11 @@ input[type=number] {
 }
 
 @media only screen and (max-width: 1150px) {
-    .stickyAside {
+    .aside-sticky {
         display: none;
     }
 
-    .stickyAsideReplacer {
+    .aside-sticky-replacer {
         display: block
     }
 }
@@ -667,24 +793,33 @@ input[type=number] {
         height: auto;
     }
 
-    .itemPreviewImage {
+    .item-image-preview {
         width: 275px;
         height: auto;
     }
 
-    .itemName {
+    .item-name {
         overflow-wrap: anywhere;
-    }
-
-    .centrePage,
-    .centrePageNoclr {
-        margin: auto;
-        /* min-width: fit-content; */
-        max-width: 100%;
     }
 }
 
-.layoutForcedSpecialButtons {
+.layout-forced-special-buttons {
     text-align: left;
     width: 100%;
+}
+
+sup>*,
+sub>*,
+sup,
+sub {
+    font-size: 0.8rem;
+    display: inline;
+}
+
+sup {
+    vertical-align: super;
+}
+
+sub {
+    vertical-align: sub;
 }

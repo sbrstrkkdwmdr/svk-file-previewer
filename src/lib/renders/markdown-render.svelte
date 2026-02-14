@@ -1,23 +1,12 @@
 <script lang="ts">
     import { browser } from "$app/environment";
-    import { UrlParser } from "$lib/tools";
     import { onMount } from "svelte";
     let { markdownText, colourMode } = $props();
-    let downloadurl = $state("./");
 
     onMount(async () => {
         setTimeout(() => {
             fixMarkdown();
             // prism.highlightAll();
-            const parsed = new UrlParser(window.location.href);
-            const path = parsed.path.split("/");
-            const fname = path.pop()!;
-            downloadurl =
-                "/api/download?name=" +
-                encodeURIComponent(fname) +
-                "&location=" +
-                encodeURIComponent(path.join("/")) +
-                "/&preview=true";
         }, 500);
     });
     function isLinkable(tag: string) {
@@ -80,16 +69,10 @@
         });
     }
 </script>
-
-<section id="markdownData" class="centrePageNoclr">
+<section id="markdownData" class="centre-page">
     {@html markdownText}
 </section>
 
-<div>
-    <a target="_blank" href={downloadurl}
-        >Click here for original markdown file</a
-    >
-</div>
 {#if colourMode == "light_default"}
     <link href="https://prismjs.catppuccin.com/latte.css" rel="stylesheet" />
 {:else}

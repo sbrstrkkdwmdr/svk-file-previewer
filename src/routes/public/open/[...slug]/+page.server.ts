@@ -24,10 +24,9 @@ export const load = async (event: ServerLoadEvent) => {
     let mode: mode = "folder";
     let text = "";
     let lang = "";
-    const floc = event.url.pathname.split("/");
-    const fname = floc.pop()!;
-    const ctn = await getFile(floc.join("/") + "/", fname);
-    const mime = getMime(fname);
+    const hash = event.params.slug;
+    const ctn = await getFileHash(hash ?? '');
+    const mime = getMime((ctn as FileReturn)?.metadata?.fName ?? '');
     if (Error.isError(ctn)) {
         if ((ctn as Error).name.startsWith("40")) {
             returnfiles = await formattedFiles(event.url.pathname);
@@ -38,15 +37,15 @@ export const load = async (event: ServerLoadEvent) => {
         }
     } else if (mime.includes("markdown")) {
         mode = "markdown";
-        text = await markdownParse(ctn.toString());
+        text = await markdownParse(ctn.content.toString());
         // text = ctn.toString('utf-8');
-    } else if (isCode(fname)) {
+    } else if (isCode(ctn.metadata.fName)) {
         mode = "code";
-        lang = getLang(fname);
-        text = ctn.toString("utf-8");
+        lang = getLang(ctn.metadata.fName);
+        text = ctn.content.toString("utf-8");
     } else if (mime.startsWith("text")) {
         mode = "text";
-        text = ctn.toString("utf-8");
+        text = ctn.content.toString("utf-8");
     } else if (mime.startsWith("image")) {
         mode = "image";
     } else if (mime.startsWith("audio")) {
@@ -55,11 +54,11 @@ export const load = async (event: ServerLoadEvent) => {
         mode = "video";
     } else {
         // redirect
-        console.log("agobobo")
-        return redirect(308, downloadLink(event.url.href))
-        mode = "file";
+        console.log("agobobo");
+        return redirect(308, '/api/download?hash=' + ctn.metadata.hash);
+        // mode = "file";
 
-        text = ctn.toString("utf-8");
+        // text = ctn.content.toString("utf-8");
     }
     //@ts-expect-error returnfiles being used before assigned - intended behaviour
     if (!returnfiles) {
@@ -72,6 +71,7 @@ export const load = async (event: ServerLoadEvent) => {
         lang,
         // buffer: ctn,
         mime,
+        metadata: (ctn as FileReturn).metadata,
     };
 };
 async function formattedFiles(root = "/"): Promise<pathableItem<"folder">> {
@@ -217,6 +217,11 @@ async function fixFileDownloads(data: pathableItem) {
     return data;
 }
 
+type FileReturn = {
+    content: Buffer<ArrayBufferLike>;
+    metadata: file;
+}
+
 async function getFile(dir: string, file: string) {
     if (!file.includes(".")) {
         const err = new Error("400");
@@ -242,14 +247,42 @@ async function getFile(dir: string, file: string) {
             err.message = "Could not fetch from file storage";
             return err;
         }
-        return content;
+        return { content, metadata: tfile };;
         // return json({ "msg": "skissue" });
     }
     // force file previewer mode
     const err = new Error("500");
     err.name = "404";
-    err.message =
-        "Could not find markdown file matching: " + dir + file + ".md";
+    err.message = "Could not find file matching: " + dir + file;
+    return err;
+}
+
+async function getFileHash(hash: string):Promise<Error | FileReturn> {
+    let tfile: file | null = null;
+    for (const sf of tf ?? []) {
+        if (sf.hash == hash) tfile = sf;
+    }
+    if (tfile) {
+        let content: Buffer;
+        let usepath = "./files/" + tfile.rel;
+        while (usepath.includes("//")) usepath = usepath.replaceAll("//", "/");
+        if (fs.existsSync(usepath)) {
+            content = fs.readFileSync(usepath);
+        }
+        // @ts-expect-error content being used before it's assigned
+        if (!content) {
+            const err = new Error("500");
+            err.name = "500";
+            err.message = "Could not fetch from file storage";
+            return err;
+        }
+        return { content, metadata: tfile };
+        // return json({ "msg": "skissue" });
+    }
+    // force file previewer mode
+    const err = new Error("500");
+    err.name = "404";
+    err.message = "Could not find file matching: " + hash;
     return err;
 }
 
