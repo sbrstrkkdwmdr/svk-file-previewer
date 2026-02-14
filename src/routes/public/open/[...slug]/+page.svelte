@@ -68,6 +68,11 @@
         <a target="_blank" href={downloadurl}>
             <Icon icon="download" /> download
         </a>
+        {#if viewMode != "file"}
+           <br/> <a target="_blank" href={downloadurl + "&preview=true"}>
+                <Icon icon="show" /> preview file 
+            </a>
+        {/if}
         <hr />
     </div>
     {#if viewMode == "markdown"}
