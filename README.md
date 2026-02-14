@@ -52,8 +52,9 @@ Returns a list of all files
 
 ### TODO
 
--   [ ] download files directly by slug (eg /subfolder/test.png downloads the png)
--   [x] add download button to content previews
+- [ ] download files directly by slug (eg /subfolder/test.png downloads the png)
+- [x] add download button to content previews
+- [ ] add option to view folder on portrait screens
 
 ## Credits
 
