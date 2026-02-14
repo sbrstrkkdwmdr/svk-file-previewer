@@ -12,9 +12,11 @@
     let {
         files,
         showSearchbar = true,
+        isChild = false,
     }: {
         files: pathableItem<"folder">;
         showSearchbar?: boolean;
+        isChild?: boolean;
     } = $props();
     const childLink = (child: pathableItem) => {
         // if (
@@ -234,8 +236,9 @@
             oncontextmenu={(ev) => ctxmenu(ev, dir)}
         >
             {dir.name}/
-            <span class="fileExtra"
-                >{dir.children.length} item{dir.children.length == 1 ? "" : "s"} ({@html formatBytes(dir.size)})</span
+            <span class="fileExtra" style="white-space:collapse"
+                >{dir.children.length} item{dir.children.length == 1 ? "" : "s"}
+                ({@html formatBytes(dir.size)})</span
             >
         </summary>
         {#each dir.children as child}
@@ -254,7 +257,7 @@
                         class="fileIcon icon-fileGeneric icon-{extToImage(
                             child.name.split('.')?.pop() ?? '',
                         )}"
-                    ></span><a
+                    ></span> <a
                         target={openInCurrentWindow(child) ? "_self" : "_blank"}
                         class="fileName mono"
                         href={childLink(child)}
@@ -291,7 +294,12 @@
             isLoading={false}
             showResultsCount={true}
             initialValue={searchInitial}
-        />
+        /><br />
+    {/if}
+    {#if isChild}
+        <div style="width:100%;text-align:left;">
+            <a href="./" data-sveltekit-reload><Icon icon="leave" /></a><br />
+        </div>
     {/if}
     {@render folder(usefiles!, true)}
 {:else}

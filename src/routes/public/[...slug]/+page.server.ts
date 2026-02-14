@@ -20,58 +20,13 @@ type mode =
 
 export const load = async (event: ServerLoadEvent) => {
     updateFiles();
-    let returnfiles: pathableItem<"folder">;
-    let mode: mode = "folder";
-    let text = "";
-    let lang = "";
-    const floc = event.url.pathname.split("/");
-    const fname = floc.pop()!;
-    const ctn = await getFile(floc.join("/") + "/", fname);
-    const mime = getMime(fname);
-    if (Error.isError(ctn)) {
-        if ((ctn as Error).name.startsWith("40")) {
-            returnfiles = await formattedFiles(event.url.pathname);
-            mode = "folder";
-        } else {
-            const err = ctn as Error;
-            return error(+err.name, err.message);
-        }
-    } else if (mime.includes("markdown")) {
-        mode = "markdown";
-        text = await markdownParse(ctn.toString());
-        // text = ctn.toString('utf-8');
-    } else if (isCode(fname)) {
-        mode = "code";
-        lang = getLang(fname);
-        text = ctn.toString("utf-8");
-    } else if (mime.startsWith("text")) {
-        mode = "text";
-        text = ctn.toString("utf-8");
-    } else if (mime.startsWith("image")) {
-        mode = "image";
-    } else if (mime.startsWith("audio")) {
-        mode = "audio";
-    } else if (mime.startsWith("video")) {
-        mode = "video";
-    } else {
-        // redirect
-        console.log("agobobo")
-        return redirect(308, downloadLink(event.url.href))
-        mode = "file";
-
-        text = ctn.toString("utf-8");
-    }
-    //@ts-expect-error returnfiles being used before assigned - intended behaviour
+    let returnfiles: pathableItem<"folder">= await formattedFiles(event.url.pathname);
     if (!returnfiles) {
         returnfiles = await formattedFiles();
     }
     return {
         files: returnfiles,
-        mode,
-        text,
-        lang,
-        // buffer: ctn,
-        mime,
+        isChild: event.url.pathname != "/",
     };
 };
 async function formattedFiles(root = "/"): Promise<pathableItem<"folder">> {

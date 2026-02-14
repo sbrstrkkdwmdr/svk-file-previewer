@@ -53,6 +53,8 @@ Returns a list of all files
 - [ ] download files directly by slug (eg /subfolder/test.png downloads the png)
 - [x] add download button to content previews
 - [ ] add option to view folder on portrait screens
+- [ ] `/open/{slug}` uses direct parent folder
+- [ ] URLs in context menu use a tags instead of buttons
 
 ## Credits
 
