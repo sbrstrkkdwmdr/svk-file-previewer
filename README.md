@@ -55,6 +55,7 @@ Returns a list of all files
 - [ ] add option to view folder on portrait screens
 - [ ] `/open/{slug}` uses direct parent folder
 - [ ] URLs in context menu use a tags instead of buttons
+- [ ] for non-previewable files (e.g. zip archives) show the original file preview page but with only the download button
 
 ## Credits
 

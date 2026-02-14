@@ -76,9 +76,6 @@ export const downloadFileGET: RequestHandler = async ({ url }) => {
         } else {
             res.headers.set("Content-Disposition", "attachment; filename=" + tfile.fName);
         }
-        console.log(res.headers);
-        console.log(tfile.rel);
-        console.log(content)
 
         return res;
         // return json({ "msg": "skissue" });
