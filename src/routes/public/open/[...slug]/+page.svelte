@@ -1,5 +1,4 @@
 <script lang="ts">
-    import { browser } from "$app/environment";
     import { afterNavigate } from "$app/navigation";
     import AudioRender from "$lib/renders/audio-render.svelte";
     import CodeRender from "$lib/renders/code-render.svelte";
@@ -11,7 +10,6 @@
     import Icon from "$lib/svelte/icon.svelte";
     import { getColourMode } from "$lib/tools";
     import { onMount } from "svelte";
-    import * as utils from 'util';
     let { data } = $props();
     let viewMode = data.mode;
     let colourMode = $state("dark_default");
@@ -19,7 +17,7 @@
     let showFilePreview = $derived.by(() => {
         return innerWidth > 1000;
     });
-    let downloadurl = $derived(`/api/download?hash=${data.metadata.hash}&preview=true`)
+    let downloadurl = $derived(`/api/download?hash=${data.metadata.hash}`);
     onMount(() => {
         colourMode = getColourMode();
     });
@@ -35,46 +33,49 @@
         // showFilePreview = window.innerWidth > 900;
     });
 </script>
+
 <svelte:window bind:innerWidth />
 <div>
     {#if viewMode == "folder"}
-    <h1>Files</h1>
-    <FolderRender files={data.files} />
+        <h1>Files</h1>
+        <FolderRender files={data.files} />
     {:else if showFilePreview}
-    <div class="sbsparent">
-        <section class="sbs left">
-            <h1>Files</h1>
-            <FolderRender files={data.files} />
-        </section>
-        <section class="sbs right">
-            {@render renderContent()}
-        </section>
-    </div>
+        <div class="sbsparent">
+            <section class="sbs left">
+                <h1>Files</h1>
+                <FolderRender files={data.files} />
+            </section>
+            <section class="sbs right">
+                {@render renderContent()}
+            </section>
+        </div>
     {:else}
-    {@render renderContent()}
+        {@render renderContent()}
     {/if}
 </div>
 
 {#snippet renderContent()}
-<code>{data.metadata.rel}</code>
-<div>
-    <a target="_blank" href={downloadurl}>
-        <Icon icon="download" /> Click here for original {viewMode} file
-    </a>
-</div>
+    <div id="metadata">
+        <h2>File {data.metadata.fName}</h2>
+        <code>{data.metadata.rel}</code><br/>
+        <a target="_blank" href={downloadurl}>
+            <Icon icon="download" /> download
+        </a>
+        <hr />
+    </div>
     {#if viewMode == "markdown"}
         <MarkdownRender markdownText={data.text} {colourMode} />
     {:else if viewMode == "code"}
         <CodeRender lang={data.lang} code={data.text} {colourMode} />
     {:else if viewMode == "audio"}
-        <AudioRender src={downloadurl} mime={data.mime} />
-            {:else if viewMode == "image"}
-        <ImageRender src={downloadurl} />
-            {:else if viewMode == "text"}
+        <AudioRender src={downloadurl + "&preview=true"} mime={data.mime} />
+    {:else if viewMode == "image"}
+        <ImageRender src={downloadurl + "&preview=true"} />
+    {:else if viewMode == "text"}
         <TextRender text={data.text} />
-            {:else if viewMode == "video"}
-        <VideoRender src={downloadurl} mime={data.mime}/>
-        {:else}
+    {:else if viewMode == "video"}
+        <VideoRender src={downloadurl + "&preview=true"} mime={data.mime} />
+    {:else}
         Error???
     {/if}
 {/snippet}

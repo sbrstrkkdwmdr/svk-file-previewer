@@ -1,5 +1,4 @@
 <script lang="ts">
-    import { browser } from "$app/environment";
     import { afterNavigate } from "$app/navigation";
     import AudioRender from "$lib/renders/audio-render.svelte";
     import CodeRender from "$lib/renders/code-render.svelte";
