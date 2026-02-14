@@ -296,5 +296,6 @@ function fixLocation(data: pathableItem) {
         data = data.children[0];
     }
     data.name = name;
+    data.directory = name;
     return data;
 }
