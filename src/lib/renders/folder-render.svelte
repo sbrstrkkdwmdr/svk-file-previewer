@@ -127,7 +127,8 @@
             if (
                 file.type == "file" &&
                 (stringMatches(file.name, match) ||
-                    (stringMatches(file.directory, match) && file.directory != ""))
+                    (stringMatches(file.directory, match) &&
+                        file.directory != ""))
             ) {
                 temp.children.push(file);
             } else if (file.type == "folder") {
@@ -211,7 +212,8 @@
                         class="fileIcon icon-fileGeneric icon-{extToImage(
                             child.name.split('.')?.pop() ?? '',
                         )}"
-                    ></span> <a
+                    ></span>
+                    <a
                         target={openInCurrentWindow(child) ? "_self" : "_blank"}
                         class="fileName mono"
                         href={childLink(child)}
@@ -252,7 +254,9 @@
     {/if}
     {#if isChild}
         <div style="width:100%;text-align:left;margin-top: 10px;">
-            <a href="./" data-sveltekit-reload><Icon icon="leave" /> to parent folder... </a><br />
+            <a href="./" data-sveltekit-reload
+                ><Icon icon="leave" /> to parent folder...
+            </a><br />
         </div>
     {/if}
     {@render folder(usefiles!, true)}
@@ -393,6 +397,10 @@
         /* space for custom arrow */
     }
 
+    details {
+        padding-right: 30px;
+    }
+
     /* Hide default arrow in WebKit browsers (Chrome, Safari) */
     summary::-webkit-details-marker {
         display: none;
@@ -445,7 +453,7 @@ transform: rotate(90deg); */
     }
 
     .folder {
-        padding-left: 30px;
+        padding: 30px;
     }
 
     .folder > summary.fileName {
