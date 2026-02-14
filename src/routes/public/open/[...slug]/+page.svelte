@@ -63,7 +63,7 @@
 
 {#snippet renderContent()}
     <div id="metadata">
-        <h2>File {data.metadata.name}</h2>
+        <h2>{data.metadata.name}</h2>
         <code>{data.metadata.directory}</code><br />
         <a target="_blank" href={downloadurl}>
             <Icon icon="download" /> download
