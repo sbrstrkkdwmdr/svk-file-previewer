@@ -2,8 +2,6 @@
 
 basic sveltekit app for sharing files
 
-Is the source code behind [files.sbrstrkkdwmdr.me](https://files.sbrstrkkdwmdr.me/)
-
 ## Setup
 
 Install pre-requesites with `npm i`

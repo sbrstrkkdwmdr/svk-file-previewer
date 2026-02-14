@@ -244,7 +244,7 @@
             {:else}
                 <div
                     style="white-space-collapse: preserve;"
-                    class="file"
+                    class="file fileName mono"
                     oncontextmenu={(ev) => ctxmenu(ev, child)}
                     role="button"
                     tabindex="0"
