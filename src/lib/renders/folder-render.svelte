@@ -214,7 +214,7 @@
                         )}"
                     ></span>
                     <a
-                        target={openInCurrentWindow(child) ? "_self" : "_blank"}
+                        target="_self"
                         class="fileName mono"
                         href={childLink(child)}
                     >
