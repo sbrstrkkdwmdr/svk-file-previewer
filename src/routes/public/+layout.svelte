@@ -85,5 +85,3 @@
     {@render children?.()}
 </main>
 
-<link rel="stylesheet" href="/app/styles/base.css" />
-<link rel="stylesheet" href="/app/styles/palette.css" />
