@@ -8,7 +8,7 @@ export const GET: RequestHandler = ({ url }) => {
     const temp: string[] = [];
     if (files) {
         for (const file of files) {
-            temp.push(file.rel);
+            temp.push(file.path);
         }
     }
     return json(temp);

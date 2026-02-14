@@ -36,10 +36,10 @@
 
 <svelte:window bind:innerWidth />
 <div>
-    {#if viewMode == "folder"}
+    <!-- {#if viewMode == "folder"}
         <h1>Files</h1>
-        <FolderRender files={data.files} />
-    {:else if showFilePreview}
+        <FolderRender files={data.files} /> -->
+    {#if showFilePreview}
         <div class="sbsparent">
             <section class="sbs left">
                 <h1>Files</h1>
@@ -56,8 +56,8 @@
 
 {#snippet renderContent()}
     <div id="metadata">
-        <h2>File {data.metadata.fName}</h2>
-        <code>{data.metadata.rel}</code><br/>
+        <h2>File {data.metadata.name}</h2>
+        <code>{data.metadata.directory}</code><br/>
         <a target="_blank" href={downloadurl}>
             <Icon icon="download" /> download
         </a>

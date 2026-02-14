@@ -39,7 +39,7 @@ export const downloadFileGET: RequestHandler = async ({ url }) => {
     let tfile: file | null = null;
     if (file && dir) {
         for (const sf of files ?? []) {
-            if (sf.rel == dir + file) {
+            if (sf.path == dir + file) {
                 tfile = sf;
                 break;
             }
@@ -48,8 +48,8 @@ export const downloadFileGET: RequestHandler = async ({ url }) => {
         for (const sf of files ?? []) {
             if (sf.hash == hash) {
                 tfile = sf;
-                file = tfile.fName;
-                dir = tfile.aUrl.replace(tfile.fName, '');
+                file = tfile.name;
+                dir = tfile.directory;
                 break;
             }
         }
@@ -57,10 +57,9 @@ export const downloadFileGET: RequestHandler = async ({ url }) => {
         error(500, { "message": "Missing params. Please use either name={name}&location={location} or hash={hash}" });
     }
     if (tfile) {
-
         downloadUpdate(dir, file);
         let content: NonSharedBuffer | null = null;
-        if (fs.existsSync('./files/' + tfile.rel)) content = fs.readFileSync('./files/' + tfile.rel);
+        if (fs.existsSync('./files/' + tfile.path)) content = fs.readFileSync('./files/' + tfile.path);
         if (!content) {
             error(500, { "message": "Could not fetch from file storage" });
         }
@@ -70,11 +69,11 @@ export const downloadFileGET: RequestHandler = async ({ url }) => {
             },
         });
         if (preview == 'true') {
-            const mimetype = getMime(tfile.fName);
+            const mimetype = getMime(tfile.name);
             res.headers.set("Content-Type", mimetype);
             res.headers.set("Content-Length", content.byteLength + '');
         } else {
-            res.headers.set("Content-Disposition", "attachment; filename=" + tfile.fName);
+            res.headers.set("Content-Disposition", "attachment; filename=" + tfile.name);
         }
 
         return res;

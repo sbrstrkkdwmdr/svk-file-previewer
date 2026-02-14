@@ -173,7 +173,7 @@
             if (
                 file.type == "file" &&
                 (stringMatches(file.name, match) ||
-                    (stringMatches(file.path, match) && file.path != ""))
+                    (stringMatches(file.directory, match) && file.directory != ""))
             ) {
                 temp.children.push(file);
             } else if (file.type == "folder") {
@@ -332,7 +332,7 @@
         {#if contextItem?.type == "file"}
             <Ctxmenu
                 name={"File options"}
-                desc={contextItem?.path + "/" + (contextItem?.name ?? "")}
+                desc={contextItem?.directory + "/" + (contextItem?.name ?? "")}
                 mousevector={mouseVector}
                 mousevectorOverridden={true}
                 closeMenu={() => {
@@ -389,7 +389,7 @@
         {:else}
             <Ctxmenu
                 name={"Folder options"}
-                desc={contextItem!.path}
+                desc={contextItem!.directory}
                 mousevector={mouseVector}
                 mousevectorOverridden={true}
                 closeMenu={() => {
@@ -409,7 +409,7 @@
                 buttons={{
                     "Copy Link": [
                         () => {
-                            let url = window.origin + contextItem!.path;
+                            let url = window.origin + contextItem!.directory;
                             navigator.clipboard.writeText(url);
                         },
                         "link",
