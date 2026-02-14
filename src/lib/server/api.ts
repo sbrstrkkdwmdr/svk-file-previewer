@@ -73,7 +73,7 @@ export const downloadFileGET: RequestHandler = async ({ url }) => {
             res.headers.set("Content-Type", mimetype);
             res.headers.set("Content-Length", content.byteLength + '');
         } else {
-            res.headers.set("Content-Disposition", "attachment; filename=" + tfile.name);
+            res.headers.set("Content-Disposition", "attachment; filename=" + encodeURIComponent(tfile.name));
         }
 
         return res;
