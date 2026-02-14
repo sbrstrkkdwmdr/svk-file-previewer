@@ -229,7 +229,7 @@
                             {#if (child?.downloadCount ?? 0) > 0}
                                 / <Icon
                                     icon="download"
-                                    colour="var(--text-other)"
+                                    colour="var(--text-secondary)"
                                 /><span class="downloadCount"
                                     >{child.downloadCount}</span
                                 >
@@ -254,7 +254,13 @@
     {/if}
     {#if isChild}
         <div style="width:100%;text-align:left;margin-top: 10px;">
-            <a href="./" data-sveltekit-reload
+            <a
+                href={(() => {
+                    const temp = usefiles!.directory.split("/");
+                    temp.pop();
+                    return "/" + temp.join("/");
+                })()}
+                data-sveltekit-reload
                 ><Icon icon="leave" /> to parent folder...
             </a><br />
         </div>
@@ -314,26 +320,19 @@
                             ")",
                     ],
                 }}
-                buttons={{
+                links={{
                     Download: [
-                        () => {
-                            open(getLink(contextItem!, true), "_blank");
-                        },
+                        [getLink(contextItem!, true), "_blank"],
                         "download",
                         true,
                     ],
                     Preview: [
-                        () => {
-                            open(
-                                childLink(contextItem!),
-                                openInCurrentWindow(contextItem!)
-                                    ? "_self"
-                                    : "_blank",
-                            );
-                        },
+                        [childLink(contextItem!), "_self"],
                         "show",
                         isPreviewable(contextItem?.name ?? ""),
                     ],
+                }}
+                buttons={{
                     "Copy Link": [
                         () => {
                             let url = window.origin + getLink(contextItem!);
@@ -364,10 +363,18 @@
                         (contextItem?.children.length ?? 0) + "",
                     ],
                 }}
+                links={{
+                    Preview: [
+                        [window.origin + "/" + contextItem!.directory, "_self"],
+                        "show",
+                        true,
+                    ],
+                }}
                 buttons={{
                     "Copy Link": [
                         () => {
-                            let url = window.origin + contextItem!.directory;
+                            let url =
+                                window.origin + "/" + contextItem!.directory;
                             navigator.clipboard.writeText(url);
                         },
                         "link",
@@ -453,7 +460,7 @@ transform: rotate(90deg); */
     }
 
     .folder {
-        padding: 30px;
+        padding: 0px 30px;
     }
 
     .folder > summary.fileName {

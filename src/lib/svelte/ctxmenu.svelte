@@ -8,7 +8,8 @@
         desc,
         mousevector,
         mousevectorOverridden = false,
-        buttons,
+        buttons = {},
+        links = {},
         stats = {},
         closeMenu = () => {},
     }: {
@@ -16,7 +17,8 @@
         desc: string;
         mousevectorOverridden?: boolean;
         mousevector: [number, number];
-        buttons: Dict<[() => void, string, boolean]>;
+        buttons?: Dict<[() => void, string, boolean]>;
+        links?: Dict<[[string, string], string, boolean]>;
         stats?: Dict<[string, string]>;
         closeMenu: Function;
     } = $props();
@@ -74,6 +76,20 @@
     {#if Object.keys(stats).length > 0}
         <hr />
     {/if}
+    {#each Object.entries(links) as [key, [[href, target], icon, enabled]]}
+        {#if enabled}
+            <a class="ctxItem" {href} {target}><Icon {icon} /> {key}</a>
+        {:else}
+            <button class="ctxItem disabled" disabled
+                ><Icon
+                    {icon}
+                    colour="inherit"
+                    title="this button is disabled"
+                />
+                {key}</button
+            >
+        {/if}
+    {/each}
     {#each Object.entries(buttons) as [key, [fn, icon, enabled]]}
         {#if enabled}
             <button
@@ -142,9 +158,17 @@
     }
     .contextmenu button:disabled {
         /* text-decoration: line-through; */
-        color: var(--text-other);
+        color: var(--text-secondary);
     }
     .contextmenu button:hover:disabled {
         background-color: var(--none);
+    }
+
+    a, a.ctxItem {
+        color: var(--text-primary);
+    }
+    a:hover {
+        color: var(--text-primary);
+        text-decoration: none;
     }
 </style>
