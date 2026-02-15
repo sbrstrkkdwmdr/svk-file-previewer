@@ -2,7 +2,7 @@ import { code } from "$lib/data/extensions";
 import type { file, pathableItem } from "$lib/data/files";
 import { markdownParse } from "$lib/marked";
 import { getMime } from "$lib/MIME";
-import { formatFiles, files as tf, updateFiles } from "$lib/server/files";
+import { files as tf, toPathableItem, updateFiles } from "$lib/server/files";
 import { error, json, redirect, type ServerLoadEvent } from "@sveltejs/kit";
 import fs from "fs";
 
@@ -52,7 +52,7 @@ export const load = async (event: ServerLoadEvent) => {
     }
     //@ts-expect-error returnfiles being used before assigned - intended behaviour
     if (!returnfiles) {
-        returnfiles = await formatFiles(ctn.metadata.directory);
+        returnfiles = await toPathableItem(ctn.metadata.directory);
     }
     return {
         files: returnfiles,
