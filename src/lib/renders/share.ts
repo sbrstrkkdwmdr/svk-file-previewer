@@ -7,7 +7,8 @@ export function getLink(
 ) {
     if (mode == "download") {
         let url = `/api/download/${item.hash}`;
-        if (item.name) url += `/${item.name}`;
+        // some files have names with #s and other funky characters that break URLs
+        if (item.name) url += `/${encodeURIComponent(item.name)}`; 
         return url;
     }
     return `/open/${item.hash}`;
