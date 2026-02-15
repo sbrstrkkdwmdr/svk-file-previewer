@@ -6,6 +6,7 @@
     import FolderRender from "$lib/renders/folder-render.svelte";
     import ImageRender from "$lib/renders/image-render.svelte";
     import MarkdownRender from "$lib/renders/markdown-render.svelte";
+    import { getLink } from "$lib/renders/share";
     import TextRender from "$lib/renders/text-render.svelte";
     import VideoRender from "$lib/renders/video-render.svelte";
     import Icon from "$lib/svelte/icon.svelte";
@@ -18,7 +19,7 @@
     let showFilePreview = $derived.by(() => {
         return innerWidth > 1000;
     });
-    let downloadurl = $derived(`/api/download?hash=${data.metadata.hash}`);
+    let downloadurl = $derived(getLink(data.metadata, 'download'));
     onMount(() => {
         colourMode = getColourMode();
     });
@@ -64,15 +65,11 @@
 {#snippet renderContent()}
     <div id="metadata">
         <h2>{data.metadata.name}</h2>
-        <code>{data.metadata.directory}</code><br />
+        <code>{data.metadata.path}</code><br />
         <a target="_blank" href={downloadurl}>
             <Icon icon="download" /> download
         </a>
-        {#if viewMode != "file"}
-           <br/> <a target="_blank" href={downloadurl + "&preview=true"}>
-                <Icon icon="show" /> preview file 
-            </a>
-        {/if}
+ 
         <hr />
     </div>
     {#if viewMode == "markdown"}
@@ -80,13 +77,13 @@
     {:else if viewMode == "code"}
         <CodeRender lang={data.lang} code={data.text} {colourMode} />
     {:else if viewMode == "audio"}
-        <AudioRender src={downloadurl + "&preview=true"} mime={data.mime} />
+        <AudioRender src={downloadurl} mime={data.mime} />
     {:else if viewMode == "image"}
-        <ImageRender src={downloadurl + "&preview=true"} />
+        <ImageRender src={downloadurl} />
     {:else if viewMode == "text"}
         <TextRender text={data.text} />
     {:else if viewMode == "video"}
-        <VideoRender src={downloadurl + "&preview=true"} mime={data.mime} />
+        <VideoRender src={downloadurl} mime={data.mime} />
     {:else}
         <section id="data" class="centre-page">
             <Icon icon={extToImage(data.metadata.extension)} /> MIME type: {data.mime}

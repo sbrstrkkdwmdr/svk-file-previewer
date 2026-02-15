@@ -513,15 +513,15 @@ export function separateNum(number: string | number, separator?: string) {
     return ans;
 }
 
-export function pathToDownload(path: string, preview: boolean = true) {
-    let url = '/api/download';
-    const split = path.split('/');
-    const filename = split.pop()!;
-    url += '?name=' + filename;
-    url += '&location=' + split.join('/') + '/';
-    if (preview) url += '&preview=true';
-    return url;
-}
+// export function pathToDownload(path: string, preview: boolean = true) {
+//     let url = '/api/download';
+//     const split = path.split('/');
+//     const filename = split.pop()!;
+//     url += '?name=' + filename;
+//     url += '&location=' + split.join('/') + '/';
+//     if (preview) url += '&preview=true';
+//     return url;
+// }
 
 export type colourPalette = 'light_default' | 'dark_default';
 

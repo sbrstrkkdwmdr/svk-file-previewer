@@ -2,8 +2,6 @@ import { code } from "$lib/data/extensions";
 import type { file, pathableItem } from "$lib/data/files";
 import { markdownParse } from "$lib/marked";
 import { getMime } from "$lib/MIME";
-import { downloadLink } from "$lib/renders/share";
-import { downloadGet } from "$lib/server/database";
 import { formatFiles, files as tf, updateFiles } from "$lib/server/files";
 import { error, json, redirect, type ServerLoadEvent } from "@sveltejs/kit";
 import fs from "fs";

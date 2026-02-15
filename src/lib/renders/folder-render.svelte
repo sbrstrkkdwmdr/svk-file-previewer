@@ -3,6 +3,7 @@
     import { extToImage, extToType, previewables } from "$lib/data/extensions";
     import { type pathableItem } from "$lib/data/files";
     import { getMime, isPreviewable } from "$lib/MIME";
+    import { getLink } from "$lib/renders/share";
     import Ctxmenu from "$lib/svelte/ctxmenu.svelte";
     import Icon from "$lib/svelte/icon.svelte";
     import Searchbar from "$lib/svelte/searchbar.svelte";
@@ -28,18 +29,8 @@
         // return `/api/download?name=${encodeURIComponent(
         //     child.name
         // )}&location=${child.path}/&preview=${isPreviewable(child.name)}`;
-        return getLink(child, undefined, true);
+        return getLink(child, 'preview');
     };
-
-    function getLink(item: pathableItem, download = false, doPreview = false) {
-        if (download) {
-            let url = `/api/download?hash=${item.hash}`;
-            if (doPreview) url += `&preview=${isPreviewable(item.name)}`;
-            return url;
-        }
-        // return item.path + "/" + item.name;
-        return `/open/${item.hash}`;
-    }
 
     function openInCurrentWindow(item: pathableItem): boolean {
         const mime = getMime(item.name);
@@ -322,7 +313,7 @@
                 }}
                 links={{
                     Download: [
-                        [getLink(contextItem!, true), "_blank"],
+                        [getLink(contextItem!, 'download'), "_blank"],
                         "download",
                         true,
                     ],
@@ -335,7 +326,7 @@
                 buttons={{
                     "Copy Link": [
                         () => {
-                            let url = window.origin + getLink(contextItem!);
+                            let url = window.origin + getLink(contextItem!, 'preview');
                             navigator.clipboard.writeText(url);
                         },
                         "link",

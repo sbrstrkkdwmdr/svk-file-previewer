@@ -1,25 +1,23 @@
 <script lang="ts">
     import { afterNavigate } from "$app/navigation";
     import FolderRender from "$lib/renders/folder-render.svelte";
-    import { downloadLink } from "$lib/renders/share";
-    import Icon from "$lib/svelte/icon.svelte";
     import { getColourMode } from "$lib/tools";
     import { onMount } from "svelte";
     let { data } = $props();
     let colourMode = $state("dark_default");
     let innerWidth = $state(0);
-    let downloadurl = $state("./");
+    // let downloadurl = $state("./");
     onMount(() => {
         colourMode = getColourMode();
-        setTimeout(() => {
-            downloadurl = downloadLink();
-        }, 500);
+        // setTimeout(() => {
+        //     downloadurl = downloadLink();
+        // }, 500);
     });
     afterNavigate(() => {
         colourMode = getColourMode();
-        setTimeout(() => {
-            downloadurl = downloadLink();
-        }, 500);
+        // setTimeout(() => {
+        //     downloadurl = downloadLink();
+        // }, 500);
     });
     $effect(() => {
         try {

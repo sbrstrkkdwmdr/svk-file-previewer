@@ -5,23 +5,26 @@ import { downloadGet, downloadUpdate } from "$lib/server/database";
 import { files, updateFiles } from "$lib/server/files";
 import { UrlParser } from "$lib/tools";
 import type { RequestHandler } from "@sveltejs/kit";
-import { error, json, redirect } from '@sveltejs/kit';
-import * as fs from 'fs';
+import { error, json, redirect } from "@sveltejs/kit";
+import * as fs from "fs";
 /**
  * redirect to specific subdomain
  */
 export const subdomainRedirect: RequestHandler = (event) => {
     const parser = new UrlParser(event.url.href);
-    let path = event.url.searchParams.get('path')!;
-    const sbd = event.url.searchParams.getAll('subdomain')!;
+    let path = event.url.searchParams.get("path")!;
+    const sbd = event.url.searchParams.getAll("subdomain")!;
     if (!path) {
-        return error(400, "Missing parameters. Please make sure `path` and `subdomain` params are included in the URL");
+        return error(
+            400,
+            "Missing parameters. Please make sure `path` and `subdomain` params are included in the URL",
+        );
     }
-    if (!path.startsWith('/')) path = '/' + path;
+    if (!path.startsWith("/")) path = "/" + path;
     const url = parser.customUrl({
         subdomains: sbd,
         path,
-        params: ''
+        params: "",
     });
     // return json({
     //     url
@@ -29,13 +32,12 @@ export const subdomainRedirect: RequestHandler = (event) => {
     return redirect(308, url);
 };
 
-
 export const downloadFileGET: RequestHandler = async ({ url }) => {
     await updateFiles();
-    let file = url.searchParams.get('name') as string;
-    let dir = url.searchParams.get('location') as string;
-    const preview = url.searchParams.get('preview') as string;
-    const hash = url.searchParams.get('hash') as string;
+    let file = url.searchParams.get("name") as string;
+    let dir = url.searchParams.get("location") as string;
+    const preview = url.searchParams.get("preview") as string;
+    const hash = url.searchParams.get("hash") as string;
     let tfile: file | null = null;
     if (file && dir) {
         for (const sf of files ?? []) {
@@ -54,42 +56,98 @@ export const downloadFileGET: RequestHandler = async ({ url }) => {
             }
         }
     } else {
-        error(500, { "message": "Missing params. Please use either name={name}&location={location} or hash={hash}" });
+        error(500, {
+            message:
+                "Missing params. Please use either name={name}&location={location} or hash={hash}",
+        });
     }
     if (tfile) {
         downloadUpdate(dir, file);
         let content: NonSharedBuffer | null = null;
-        if (fs.existsSync('./files/' + tfile.path)) content = fs.readFileSync('./files/' + tfile.path);
+        if (fs.existsSync("./files/" + tfile.path))
+            content = fs.readFileSync("./files/" + tfile.path);
         if (!content) {
-            error(500, { "message": "Could not fetch from file storage" });
+            error(500, { message: "Could not fetch from file storage" });
         }
         const res = new Response(content, {
             status: 200,
-            headers: {
-            },
+            headers: {},
         });
-        if (preview == 'true') {
+        if (preview == "true") {
             const mimetype = getMime(tfile.name);
             res.headers.set("Content-Type", mimetype);
-            res.headers.set("Content-Length", content.byteLength + '');
+            res.headers.set("Content-Length", content.byteLength + "");
         } else {
-            res.headers.set("Content-Disposition", "attachment; filename=" + encodeURIComponent(tfile.name));
+            res.headers.set(
+                "Content-Disposition",
+                "attachment; filename=" + encodeURIComponent(tfile.name),
+            );
         }
 
         return res;
         // return json({ "msg": "skissue" });
     }
-    return error(404, { "message": "File not found" });
+    return error(404, { message: "File not found" });
+};
+
+function slugHash(slug: string): string {
+    if (slug.includes("/")) {
+        const slugsplit = slug.split("/");
+        const hash = slugsplit.shift()!;
+        if (hash.length > 0) return hash;
+    }
+    return slug;
+}
+
+export const downloadFileSlugGET: RequestHandler = async ({ params, url }) => {
+    await updateFiles();
+    const hash = slugHash(params.slug ?? "");
+    let tfile: file | null = null;
+    let file: string, dir: string;
+    for (const sf of files ?? []) {
+        if (sf.hash == hash) {
+            tfile = sf;
+            file = tfile.name;
+            dir = tfile.directory;
+            break;
+        }
+    }
+
+    //@ts-expect-error Variable 'dir' / 'file' is used before being assigned
+    if (tfile && dir && file) {
+        downloadUpdate(dir, file);
+        let content: NonSharedBuffer | null = null;
+        if (fs.existsSync("./files/" + tfile.path))
+            content = fs.readFileSync("./files/" + tfile.path);
+        if (!content) {
+            error(500, { message: "Could not fetch from file storage" });
+        }
+        const res = new Response(content, {
+            status: 200,
+            headers: {},
+        });
+        const mimetype = getMime(tfile.name);
+        res.headers.set("Content-Type", mimetype);
+        res.headers.set("Content-Length", content.byteLength + "");
+        // res.headers.set(
+        //     "Content-Disposition",
+        //     "attachment; filename=" + encodeURIComponent(tfile.name),
+        // );
+
+        return res;
+        // return json({ "msg": "skissue" });
+    }
+    return error(404, { message: "File not found" });
 };
 
 export const sitemapGET: RequestHandler = async ({ url }) => {
     const urls = getUrls(url);
     const sitemapdata = toSitemap(urls);
-    let content = Buffer.from(sitemapdata, 'utf-8');
+    let content = Buffer.from(sitemapdata, "utf-8");
     const res = new Response(content, {
         status: 200,
         headers: {
-            "Content-Type": "application/xml"
+            "Content-Type": "application/xml",
         },
     });
     return res;
@@ -97,11 +155,11 @@ export const sitemapGET: RequestHandler = async ({ url }) => {
 
 export const robotstxtGET: RequestHandler = async ({ url }) => {
     const data = robotsText(new UrlParser(url.href));
-    let content = Buffer.from(data, 'utf-8');
+    let content = Buffer.from(data, "utf-8");
     const res = new Response(content, {
         status: 200,
         headers: {
-            "Content-Type": "text/plain"
+            "Content-Type": "text/plain",
         },
     });
     return res;
@@ -109,21 +167,20 @@ export const robotstxtGET: RequestHandler = async ({ url }) => {
 
 export const downloadCountGET: RequestHandler = async ({ url }) => {
     await updateFiles();
-    const file = url.searchParams.get('name') as string;
-    const dir = url.searchParams.get('location') as string;
+    const file = url.searchParams.get("name") as string;
+    const dir = url.searchParams.get("location") as string;
     const number = await downloadGet(dir, file);
-    const res = json({ "number": number });
+    const res = json({ number: number });
     return res;
 };
 
-
 export const boo: RequestHandler = async ({ url }) => {
     const data = "boo!";
-    let content = Buffer.from(data, 'utf-8');
+    let content = Buffer.from(data, "utf-8");
     const res = new Response(content, {
         status: 200,
         headers: {
-            "Content-Type": "text/plain"
+            "Content-Type": "text/plain",
         },
     });
     return res;
