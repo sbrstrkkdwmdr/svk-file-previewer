@@ -102,6 +102,7 @@ function slugHash(slug: string): string {
 export const downloadFileSlugGET: RequestHandler = async ({ params, url }) => {
     await updateFiles();
     const hash = slugHash(params.slug ?? "");
+    const direct = url.searchParams.get("direct") as string;
     let tfile: file | null = null;
     let file: string, dir: string;
     for (const sf of files ?? []) {
@@ -129,10 +130,15 @@ export const downloadFileSlugGET: RequestHandler = async ({ params, url }) => {
         const mimetype = getMime(tfile.name);
         res.headers.set("Content-Type", mimetype);
         res.headers.set("Content-Length", content.byteLength + "");
-        // res.headers.set(
-        //     "Content-Disposition",
-        //     "attachment; filename=" + encodeURIComponent(tfile.name),
-        // );
+        
+        // without this header, browsers just show the content of the file 
+        // pc browsers can still download just fine w/ shortcuts but on mobile its a bit harder esp. for text files
+        if (direct) {
+            res.headers.set(
+                "Content-Disposition",
+                "attachment; filename=" + encodeURIComponent(tfile.name),
+            );
+        }
 
         return res;
         // return json({ "msg": "skissue" });

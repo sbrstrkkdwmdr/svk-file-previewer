@@ -43,16 +43,17 @@ Downloads a file
 | `name={string}`     | File name including extension eg. `rafis2018hddt.osk`                                       |
 | `location={string}` | File path encased in `/` eg. `/skins/farm/`                                                 |
 | `hash={string}`     | File hash. Can be used instead of name and location                                         |
-| `preview={boolean}` | Whether to directly download the file or load the preview (if available). Defaults to false |
+| `preview={boolean}` | Whether to directly download the file or display contents (if available). Defaults to false |
 
 ### /api/download/{hash}/{filename?}
 
 Downloads a file
 
-| Params              |                                               |
-| ------------------- | --------------------------------------------- |
-| Hash                | File hash                                     |
-| Filename (optional) | File name (used specifically for downloading) |
+| Params              |                                                                                                                                                                      |
+| ------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Hash                | File hash                                                                                                                                                            |
+| Filename (optional) | File name (used specifically for downloading)                                                                                                                        |
+| `direct={boolean}`  | Whether to download the file or just display the contents. (e.g. if its an image, the browser will show the image instead of force downloading it) Defaults to false |
 
 ### /api/files
 

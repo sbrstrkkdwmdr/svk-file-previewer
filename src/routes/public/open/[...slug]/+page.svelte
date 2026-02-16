@@ -19,7 +19,7 @@
     let showFilePreview = $derived.by(() => {
         return innerWidth > 1000;
     });
-    let downloadurl = $derived(getLink(data.metadata, 'download'));
+    let downloadurl = $derived(getLink(data.metadata, "download"));
     onMount(() => {
         colourMode = getColourMode();
     });
@@ -66,10 +66,14 @@
     <div id="metadata">
         <h2>{data.metadata.name}</h2>
         <code>{data.metadata.path}</code><br />
-        <a target="_blank" href={downloadurl}>
+        <a target="_blank" href={downloadurl + "?direct=true"}>
             <Icon icon="download" /> download
         </a>
- 
+        {#if viewMode != "file"}
+            <a target="_blank" href={downloadurl}>
+                <Icon icon="download" /> Raw file
+            </a>
+        {/if}
         <hr />
     </div>
     {#if viewMode == "markdown"}

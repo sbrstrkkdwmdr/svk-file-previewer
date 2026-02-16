@@ -19,18 +19,6 @@
         showSearchbar?: boolean;
         isChild?: boolean;
     } = $props();
-    const childLink = (child: pathableItem) => {
-        // if (
-        //     encodeURIComponent(child.name).trim() == child.name.trim() &&
-        //     !fileShouldBuffer(child.name)
-        // ) {
-        //     return `${child.path.endsWith("/") ? child.path : child.path + "/"}${child.name}`;
-        // }
-        // return `/api/download?name=${encodeURIComponent(
-        //     child.name
-        // )}&location=${child.path}/&preview=${isPreviewable(child.name)}`;
-        return getLink(child, 'preview');
-    };
 
     function openInCurrentWindow(item: pathableItem): boolean {
         const mime = getMime(item.name);
@@ -207,7 +195,7 @@
                     <a
                         target="_self"
                         class="fileName mono"
-                        href={childLink(child)}
+                        href={getLink(child, "preview")}
                     >
                         {fileName(
                             child.name,
@@ -313,12 +301,12 @@
                 }}
                 links={{
                     Download: [
-                        [getLink(contextItem!, 'download'), "_blank"],
+                        [getLink(contextItem!, 'download') + "?direct=true", "_blank"],
                         "download",
                         true,
                     ],
                     Preview: [
-                        [childLink(contextItem!), "_self"],
+                        [getLink(contextItem!, "preview"), "_self"],
                         "show",
                         isPreviewable(contextItem?.name ?? ""),
                     ],
