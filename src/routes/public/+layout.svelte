@@ -82,6 +82,12 @@
             glowOnHover={true}
         />
     </div>
+    <hr/>
     {@render children?.()}
 </main>
+<style>
+    .layoutForcedSpecialButtons {
+        text-align: left;
+    }
+</style>
 
