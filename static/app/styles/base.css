@@ -15,6 +15,7 @@
 
 html,
 body {
+    height: 100%;
     margin: 0;
     padding: 0;
 }
@@ -79,20 +80,21 @@ a:active {
 main {
     background-color: var(--bg-primary);
     /* background-image: var(--gradient); */
-    overflow: auto;
     /* position: fixed; */
+    overflow: auto;
     padding: 35px;
+    padding-bottom: 0px;
     /* padding-top: calc(15% + 3px); */
     /* padding-left: calc(15% + 3px); */
     /* width: calc(auto - 33px); */
     width: auto;
     /* margin-left: 33px; */
     text-align: center;
-    height: calc(100vh - 70px);
+    /* height: calc(100vh - 70px); */
 }
 
 main.sdml {
-    height: calc(100vh - 147px);
+    /* height: calc(100vh - 147px); */
 }
 
 .force-whole-page {
