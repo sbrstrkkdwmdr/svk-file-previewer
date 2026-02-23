@@ -40,14 +40,14 @@
 <!-- {#if viewMode == "folder"}
         <h1>Files</h1>
         <FolderRender files={data.files} /> -->
-<div class="sbsparent">
+<div class="content-container">
     {#if showFilePreview}
-        <section class="sbs left">
+        <section class="content left">
             <h1>Files</h1>
             <FolderRender files={data.files} isChild={data.isChild} />
         </section>
     {/if}
-    <section class="sbs right">
+    <section class="content right">
         {#if !showFilePreview}
             <a
                 target="_self"
@@ -107,25 +107,32 @@
 {/snippet}
 
 <style>
-    .sbsparent {
+    .content-container {
+        display: flex;
+        flex-direction: row;
         text-align: left;
         max-width: 100%;
     }
-    .sbs {
-        display: inline-block;
-        vertical-align: top;
-    }
-    .left {
-        padding-right: 15px;
-        width: fit-content;
-        width: 30%;
-        border-right: 3px solid var(--border);
+
+    .content {
+        height: calc(100vh - 35px - 40px);
         overflow-x: auto;
-        height: 100%;
+        overflow-y: auto;
+
     }
-    .right {
-        max-width: 70%;
+
+    .content.left {
+        padding-right: 15px;
+        border-right: 3px solid var(--border);
+        flex-basis: 30%;
+    }
+    .content.right {
         /* border-left: 3px solid var(--border); */
+        /* flex-basis: 60%; */
+        flex: 5 0 70%;
+    }
+    .content.right hr {
+        width: 99%; /* 100% extends past parent */
     }
 
     .data-button {
