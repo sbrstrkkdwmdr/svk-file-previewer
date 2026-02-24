@@ -5,19 +5,12 @@
     import { onMount } from "svelte";
     let { data } = $props();
     let colourMode = $state("dark_default");
-    let innerWidth = $state(0);
     // let downloadurl = $state("./");
     onMount(() => {
         colourMode = getColourMode();
-        // setTimeout(() => {
-        //     downloadurl = downloadLink();
-        // }, 500);
     });
     afterNavigate(() => {
         colourMode = getColourMode();
-        // setTimeout(() => {
-        //     downloadurl = downloadLink();
-        // }, 500);
     });
     $effect(() => {
         try {
@@ -28,8 +21,27 @@
         // showFilePreview = window.innerWidth > 900;
     });
 </script>
-<svelte:window bind:innerWidth />
-<div>
-    <h1>Files</h1>
-    <FolderRender files={data.files} isChild={data.isChild} />
+
+<div class="content-container">
+    <section class="content left">
+        <h1>Files</h1>
+        <FolderRender files={data.files} isChild={data.isChild} />
+    </section>
 </div>
+
+<style>
+    .content-container {
+        /* display: flex; */
+        /* flex-direction: row; */
+        /* text-align: left; */
+        max-width: 100%;
+    }
+    .content {
+        height: calc(100vh - 100px);
+        overflow-x: auto;
+        overflow-y: auto;
+    }
+
+    .content.left {
+    }
+</style>

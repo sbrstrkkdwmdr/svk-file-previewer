@@ -115,10 +115,9 @@
     }
 
     .content {
-        height: calc(100vh - 35px - 40px);
+        height: calc(100% - 100px);
         overflow-x: auto;
         overflow-y: auto;
-
     }
 
     .content.left {
