@@ -4,7 +4,7 @@ import { error, type ClientInit, type Reroute } from "@sveltejs/kit";
 /**
  * subdomain handling
 */
-export const reroute: Reroute = ({ url }) => {
+// export const reroute: Reroute = ({ url }) => {
     // const path = url.pathname.split('/');
     // const file = path.pop();
     // if file and no built-in previewer, return file buffer
@@ -14,21 +14,21 @@ export const reroute: Reroute = ({ url }) => {
     //     return temp;
     // }
 
-    return `/public${url.pathname}`;
-};
+    // return `/public${url.pathname}`;
+// };
 
-const previewed = [
-    'md'
-];
+// const previewed = [
+//     'md'
+// ];
 
-function fileIsBuffer(path: string) {
-    for (const t of previewed) {
-        if (path.endsWith('.' + t)) return false;
-    }
-    return true;
-}
+// function fileIsBuffer(path: string) {
+//     for (const t of previewed) {
+//         if (path.endsWith('.' + t)) return false;
+//     }
+//     return true;
+// }
 
-function isPublicFile(path: string) {
-    if (path.startsWith('/app')) return true;
-    return false;
-}
+// function isPublicFile(path: string) {
+//     if (path.startsWith('/app')) return true;
+//     return false;
+// }
