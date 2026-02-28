@@ -62,7 +62,7 @@ export const downloadFileGET: RequestHandler = async ({ url }) => {
         });
     }
     if (tfile) {
-        downloadUpdate(dir, file);
+        downloadUpdate(tfile.hash);
         let content: NonSharedBuffer | null = null;
         if (fs.existsSync("./files/" + tfile.path))
             content = fs.readFileSync("./files/" + tfile.path);
@@ -116,7 +116,7 @@ export const downloadFileSlugGET: RequestHandler = async ({ params, url }) => {
 
     //@ts-expect-error Variable 'dir' / 'file' is used before being assigned
     if (tfile && dir && file) {
-        downloadUpdate(dir, file);
+        downloadUpdate(tfile.hash);
         let content: NonSharedBuffer | null = null;
         if (fs.existsSync("./files/" + tfile.path))
             content = fs.readFileSync("./files/" + tfile.path);
@@ -173,9 +173,10 @@ export const robotstxtGET: RequestHandler = async ({ url }) => {
 
 export const downloadCountGET: RequestHandler = async ({ url }) => {
     await updateFiles();
-    const file = url.searchParams.get("name") as string;
-    const dir = url.searchParams.get("location") as string;
-    const number = await downloadGet(dir, file);
+    // const file = url.searchParams.get("name") as string;
+    // const dir = url.searchParams.get("location") as string;
+    const hash = url.searchParams.get("hash") as string;
+    const number = await downloadGet(hash);
     const res = json({ number: number });
     return res;
 };

@@ -282,8 +282,9 @@ async function fixFileDownloads(data: pathableItem) {
             child = await fixFileDownloads(child);
         } else {
             child.downloadCount = await downloadGet(
-                child.directory,
-                child.name,
+                child.hash
+                // child.directory,
+                // child.name,
             );
         }
     }

@@ -42,12 +42,12 @@ export function setupDb() {
     counters.sync();
 }
 
-export async function downloadUpdate(location: string, name: string, tries = 0) {
-    let input =
-        location +
-        (location.endsWith('/') ? '' : '/')
-        + name;
-    let findFile = await fileData.findOne({ where: { file: input } }).catch(err => {
+export async function downloadUpdate(hash:string, tries = 0) {
+    // let input =
+    //     location +
+    //     (location.endsWith('/') ? '' : '/')
+    //     + name;
+    let findFile = await fileData.findOne({ where: { file: hash } }).catch(err => {
         debugData({
             time: '',
             message: 'Error fetching file',
@@ -56,17 +56,17 @@ export async function downloadUpdate(location: string, name: string, tries = 0) 
     });;
     if (!findFile) {
         await fileData.create({
-            file: input,
+            file: hash,
             count: 1
         }).catch(err => {
             debugData({
                 time: '',
-                message: 'Error creating file counter for ' + input,
+                message: 'Error creating file counter for ' + hash,
                 err
             }, 'errors');
             if (tries < 2) {
                 setTimeout(() => {
-                    downloadUpdate(location, name, tries + 1);
+                    downloadUpdate(hash, tries + 1);
                 }, 500);
             }
         });
@@ -76,7 +76,7 @@ export async function downloadUpdate(location: string, name: string, tries = 0) 
         }).catch(err => {
             debugData({
                 time: '',
-                message: 'Error updating file counter for ' + input,
+                message: 'Error updating file counter for ' + hash,
                 err
             }, 'errors');
         });
@@ -93,12 +93,12 @@ export function checkForInject(str: string) {
     return false;
 }
 
-export async function downloadGet(location: string, name: string) {
-    let input =
-        location +
-        (location.endsWith('/') ? '' : '/')
-        + name;
-    let findFile = await fileData.findOne({ where: { file: input } }).catch(err => {
+export async function downloadGet(hash:string) {
+    // let input =
+    //     location +
+    //     (location.endsWith('/') ? '' : '/')
+    //     + name;
+    let findFile = await fileData.findOne({ where: { file: hash } }).catch(err => {
         debugData({
             time: '',
             message: 'Error fetching file',
