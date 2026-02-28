@@ -2,6 +2,7 @@ import { code } from "$lib/data/extensions";
 import type { file, pathableItem } from "$lib/data/files";
 import { markdownParse } from "$lib/marked";
 import { getMime } from "$lib/MIME";
+import { downloadGet } from "$lib/server/database";
 import { files as tf, toPathableItem, updateFiles } from "$lib/server/files";
 import { error, json, redirect, type ServerLoadEvent } from "@sveltejs/kit";
 import fs from "fs";
@@ -54,6 +55,9 @@ export const load = async (event: ServerLoadEvent) => {
     if (!returnfiles) {
         returnfiles = await toPathableItem(ctn.metadata.directory);
     }
+
+    let dlc = await downloadGet(ctn.metadata.hash);
+
     return {
         files: returnfiles,
         mode,
@@ -62,10 +66,11 @@ export const load = async (event: ServerLoadEvent) => {
         // buffer: ctn,
         mime,
         metadata: (ctn as FileReturn).metadata,
-        isChild: ctn.metadata.directory != "/" && ctn.metadata.directory.length != 0,
+        downloadCount: dlc,
+        isChild:
+            ctn.metadata.directory != "/" && ctn.metadata.directory.length != 0,
     };
 };
-
 
 type FileReturn = {
     content: Buffer<ArrayBufferLike>;
