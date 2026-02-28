@@ -61,7 +61,8 @@ export function editFiles(results: result[]): file[] {
 }
 
 function sortFiles(a: file, b: file) {
-    if (a.directory != b.directory) return a.directory.localeCompare(b.directory);
+    if (a.directory != b.directory)
+        return a.directory.localeCompare(b.directory);
     return a.name.localeCompare(b.name);
 }
 
@@ -171,7 +172,9 @@ export function createHash(str: string): string {
 /**
  * convert files into pathableItem type for readability
  */
-export async function toPathableItem(root = "/"): Promise<pathableItem<"folder">> {
+export async function toPathableItem(
+    root = "/",
+): Promise<pathableItem<"folder">> {
     root = stripFolder(root).join("/");
     const data: pathableItem<"folder"> = {
         type: "folder",
@@ -206,11 +209,26 @@ export async function toPathableItem(root = "/"): Promise<pathableItem<"folder">
     }
 
     const sizefix = fixFolderSizes(data);
+    console.log("size: " + sizefix.children[0].directory);
     const dlfix = await fixFileDownloads(sizefix);
-    const pathfix = fixPaths(dlfix, root);
-    const locationFix = fixLocation(pathfix);
-    const sorted = sortPathable(locationFix as pathableItem<"folder">);
+    console.log("dolo: " + dlfix.children[0].directory);
+    const locationFix = fixRootLocation(dlfix);
+    console.log("loca: " + locationFix.children[0].directory);
+    const pathfix = fixPaths(locationFix, root);
+    console.log("path: " + pathfix.children[0].directory);
+    const sorted = sortPathable(pathfix as pathableItem<"folder">);
+    // printChildren(sorted);
+    console.log("sort: " + sorted.children[0].directory);
     return sorted;
+}
+
+function printChildren(item: pathableItem<"folder">) {
+    for (const file of item.children) {
+        console.log(file.directory + " / " + file.name);
+        if (file.type == "folder") {
+            printChildren(file as pathableItem<"folder">);
+        }
+    }
 }
 
 function formatFileSubfolder(
@@ -255,7 +273,8 @@ function stripFolder(path: string) {
 function fixPaths(data: pathableItem, root: string) {
     for (let child of data.children) {
         if (child.type == "folder") {
-            child.directory = root + "/" + child.name;
+            if (root.startsWith(child.name)) child.directory = root;
+            else child.directory = root + "/" + child.name;
             child = fixPaths(child, child.directory);
         } else {
             child.directory = data.directory;
@@ -282,7 +301,7 @@ async function fixFileDownloads(data: pathableItem) {
             child = await fixFileDownloads(child);
         } else {
             child.downloadCount = await downloadGet(
-                child.hash
+                child.hash,
                 // child.directory,
                 // child.name,
             );
@@ -291,28 +310,29 @@ async function fixFileDownloads(data: pathableItem) {
     return data;
 }
 
-function fixLocation(data: pathableItem) {
+function fixRootLocation(data: pathableItem) {
     const name = data.name;
     while (data.children.length == 1 && data.children[0].type == "folder") {
         data = data.children[0];
+        console.log(data.name);
     }
     data.name = name;
     data.directory = name;
     return data;
 }
 
-function sortPathable(data:pathableItem<"folder">){
+function sortPathable(data: pathableItem<"folder">) {
     data.children.sort(sortPathableDirect);
-    for(const child of data.children){
-        if(child.type == "folder"){
+    for (const child of data.children) {
+        if (child.type == "folder") {
             sortPathable(child as pathableItem<"folder">);
         }
     }
     return data;
 }
 
-function sortPathableDirect(a: pathableItem,b: pathableItem){
-    if(a.type == b.type) return a.name.localeCompare(b.name);
-    if(a.type == "folder") return 1;
+function sortPathableDirect(a: pathableItem, b: pathableItem) {
+    if (a.type == b.type) return a.name.localeCompare(b.name);
+    if (a.type == "folder") return 1;
     return -1;
 }

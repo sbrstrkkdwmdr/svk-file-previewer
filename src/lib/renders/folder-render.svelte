@@ -164,10 +164,13 @@
 </script>
 
 {#snippet folder(dir: pathableItem, isPrimary: boolean = false)}
-    <details class="folder" open={isPrimary || dir.forceInitialOpen}>
+    <details class="folder" open={true/* isPrimary || dir.forceInitialOpen */}
+    
+    >
         <summary
-            class="file fileName mono"
+            class="file fileName mono ignore-summary"
             oncontextmenu={(ev) => ctxmenu(ev, dir)}
+            tabindex="-1"
         >
             {dir.name}/
             <span class="fileExtra" style="white-space:collapse"
@@ -177,7 +180,8 @@
         </summary>
         {#each dir.children as child}
             {#if child.type == "folder"}
-                {@render folder(child)}
+                <!-- {@render folder(child)} -->
+                {@render childFolder(child)}
             {:else}
                 <div
                     style="white-space-collapse: preserve;"
@@ -219,6 +223,32 @@
             {/if}
         {/each}
     </details>
+{/snippet}
+{#snippet childFolder(child: pathableItem)}
+    <div
+    style="white-space-collapse: preserve;"
+    class="file fileName mono"
+    oncontextmenu={(ev) => ctxmenu(ev, child)}
+    role="button"
+    tabindex="0"
+>
+    <span></span>
+    <span
+        class="fileIcon icon-fileGeneric icon-folder"
+    ></span>
+    <a
+        target="_self"
+        class="fileName mono"
+        href="/{child.directory}"
+    >
+        {fileName(
+            child.name,
+        )[0]}
+        <span class="fileExtra">
+            {child.children.length} item{child.children.length == 1 ? "" : "s"} ({@html formatBytes(child.size)})
+        </span>
+    </a>
+    </div>  
 {/snippet}
 {#if files}
     {#if showSearchbar}
@@ -410,6 +440,11 @@
         content: "\e930";
         /* OR if you're using a rotating icon instead:
 transform: rotate(90deg); */
+    }
+
+    .ignore-summary {
+        pointer-events: none;
+        /* user-select: none; */
     }
 
     .file {
