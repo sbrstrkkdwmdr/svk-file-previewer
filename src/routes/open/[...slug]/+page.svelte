@@ -40,8 +40,8 @@
 <!-- {#if viewMode == "folder"}
         <h1>Files</h1>
         <FolderRender files={data.files} /> -->
-<div class="content-container">
-    <!-- {#if showFilePreview}
+<!-- <div class="content-container"> -->
+<!-- {#if showFilePreview}
         <section class="content left">
             <h1>Files</h1>
             <FolderRender files={data.files} isChild={data.isChild} />
@@ -60,12 +60,14 @@
 
         {@render renderContent()}
     </section> -->
-    <div class="content">
-        <a target="_self" href={data.metadata.directory} class="data-button">
-            Go to folder
-        </a>
-        {@render renderContent()}
-    </div>
+<!-- <div class="content"> -->
+<!-- </div> -->
+<!-- </div> -->
+<div class="centre-page content">
+    <a target="_self" href={data.metadata.directory} class="data-button">
+        Go to folder
+    </a>
+    {@render renderContent()}
 </div>
 
 {#snippet renderContent()}
@@ -116,17 +118,19 @@
 
 <style>
     .content-container {
-        display: flex;
-        flex-direction: row;
+        /* display: flex; */
+        /* flex-direction: row; */
         text-align: left;
         max-width: 100%;
     }
 
     .content {
-        height: calc(100% - 100px);
+        /* max-height: calc(100vh - 150px); */
+        height: calc(100vh - 160px);  
         overflow-x: auto;
         overflow-y: auto;
     }
+
 
     .content.left {
         padding-right: 15px;
