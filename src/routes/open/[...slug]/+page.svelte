@@ -41,7 +41,7 @@
         <h1>Files</h1>
         <FolderRender files={data.files} /> -->
 <div class="content-container">
-    {#if showFilePreview}
+    <!-- {#if showFilePreview}
         <section class="content left">
             <h1>Files</h1>
             <FolderRender files={data.files} isChild={data.isChild} />
@@ -59,7 +59,13 @@
         {/if}
 
         {@render renderContent()}
-    </section>
+    </section> -->
+    <div class="content">
+        <a target="_self" href={data.metadata.directory} class="data-button">
+            Go to folder
+        </a>
+        {@render renderContent()}
+    </div>
 </div>
 
 {#snippet renderContent()}
