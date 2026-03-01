@@ -2,14 +2,7 @@
     import { browser } from "$app/environment";
     import { onMount } from "svelte";
     let { code, lang, colourMode } = $props();
-    console.log(lang)
-    let fn = $state('')
-    onMount(()=>{
-        fn = window.location.pathname;
-    })
 </script>
-
-    <code>{fn}</code>
     <pre class="language-{lang}">
         <code class="language-{lang}">{code}</code>
     </pre>
