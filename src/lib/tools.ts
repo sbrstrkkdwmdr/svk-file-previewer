@@ -618,3 +618,22 @@ export function formatBytes(bytes: number, decimals = 2, k = 1024) {
 
     return `${parseFloat((bytes / Math.pow(k, i)).toFixed(dm))} ${sizes[i]}`;
 }
+
+// accept:
+// /folder/file
+// /folder/subfolder/file
+export function pathToAllFolderLinks(str: string) {
+    const split = str.split("/");
+    if (split[0].length == 0) split.shift();
+    if (split[split.length - 1].length == 0) split.pop();
+
+    const links: string[][] = [];
+    for (const sub of split) {
+        let link = links.map((x) => x[0]).join("/") + "/" + sub;
+        if (link.startsWith("//")) link = link.replace("/", "");
+        if (!link.startsWith("/")) link = "/" + link;
+        console.log(link);
+        links.push([sub, link]);
+    }
+    return links;
+}

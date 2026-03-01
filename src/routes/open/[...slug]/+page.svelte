@@ -10,7 +10,7 @@
     import TextRender from "$lib/renders/text-render.svelte";
     import VideoRender from "$lib/renders/video-render.svelte";
     import Icon from "$lib/svelte/icon.svelte";
-    import { formatBytes, getColourMode, separateNum } from "$lib/tools";
+    import { formatBytes, getColourMode, pathToAllFolderLinks, separateNum } from "$lib/tools";
     import { onMount } from "svelte";
     let { data } = $props();
     let viewMode = data.mode;
@@ -70,10 +70,19 @@
     {@render renderContent()}
 </div>
 
+{#snippet parseFolder(fullpath:string, filename:string, hash:string)}
+{@const folders = pathToAllFolderLinks(fullpath)}
+{#each folders as [name, link]}
+/<a href={link}>{name}</a>
+{/each}/<a href="/open/{hash}">{filename}</a>
+{/snippet}
+
 {#snippet renderContent()}
     <div id="metadata">
         <h2>{data.metadata.name}</h2>
-        <Icon icon="folder" /> <code>{data.metadata.path}</code><br />
+        <Icon icon="folder" /> {@render parseFolder(data.metadata.directory, data.metadata.name, data.metadata.hash)}
+        
+        <br />
         <Icon icon="hash" /> <code>{data.metadata.hash}</code><br />
         <a target="_blank" href={downloadurl + "?direct=true"}>
             <Icon icon="download" /> download
