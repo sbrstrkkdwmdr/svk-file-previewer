@@ -10,7 +10,12 @@
     import TextRender from "$lib/renders/text-render.svelte";
     import VideoRender from "$lib/renders/video-render.svelte";
     import Icon from "$lib/svelte/icon.svelte";
-    import { formatBytes, getColourMode, pathToAllFolderLinks, separateNum } from "$lib/tools";
+    import {
+        formatBytes,
+        getColourMode,
+        pathToAllFolderLinks,
+        separateNum,
+    } from "$lib/tools";
     import { onMount } from "svelte";
     let { data } = $props();
     let viewMode = data.mode;
@@ -70,33 +75,39 @@
     {@render renderContent()}
 </div>
 
-{#snippet parseFolder(fullpath:string, filename:string, hash:string)}
-{@const folders = pathToAllFolderLinks(fullpath)}
-{#each folders as [name, link]}
-/<a href={link}>{name}</a>
-{/each}/<a href="/open/{hash}">{filename}</a>
+{#snippet parseFolder(fullpath: string, filename: string, hash: string)}
+    {@const folders = pathToAllFolderLinks(fullpath)}
+    <a href="/">root</a>{#each folders as [name, link]}
+        /<a href={link}>{name}</a>
+    {/each}/<a href="/open/{hash}">{filename}</a>
 {/snippet}
 
 {#snippet renderContent()}
     <div id="metadata">
         <h2>{data.metadata.name}</h2>
-        <Icon icon="folder" /> {@render parseFolder(data.metadata.directory, data.metadata.name, data.metadata.hash)}
-        
+        <Icon icon="folder" />
+        {@render parseFolder(
+            data.metadata.directory,
+            data.metadata.name,
+            data.metadata.hash,
+        )}
+
         <br />
-        <Icon icon="hash" /> <code>{data.metadata.hash}</code><br />
+        <Icon icon="hash" /> {data.metadata.hash}<br />
+        <Icon icon="fileGeneric" /> {formatBytes(data.metadata.size)}
+        ({separateNum(data.metadata.size)} bytes)<br />
         <a target="_blank" href={downloadurl + "?direct=true"}>
             <Icon icon="download" /> download
         </a>
-        (<code>{formatBytes(data.metadata.size)}</code>,
-        <code>{separateNum(data.metadata.size)} bytes</code>)
         {#if viewMode != "file"}
             <br /><a target="_blank" href={downloadurl}>
-                <Icon icon="download" /> Raw file
+                <Icon icon="download" /> raw file
             </a>
         {/if}
         {#if data.downloadCount > 0}<br /><Icon icon="download" />
             {data.downloadCount} downloads
         {/if}
+        <br /><Icon icon={extToImage(data.metadata.extension)} /> MIME type: {data.mime}
         <hr />
     </div>
     <section id="data" class="centre-page">
@@ -113,7 +124,6 @@
         {:else if viewMode == "video"}
             <VideoRender src={downloadurl} mime={data.mime} />
         {:else}
-            <Icon icon={extToImage(data.metadata.extension)} /> MIME type: {data.mime}
             <a target="_blank" href={downloadurl} class="data-button">
                 <Icon icon="download" fsize="inherit" /> download
             </a>
