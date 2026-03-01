@@ -632,7 +632,6 @@ export function pathToAllFolderLinks(str: string) {
         let link = links.map((x) => x[0]).join("/") + "/" + sub;
         if (link.startsWith("//")) link = link.replace("/", "");
         if (!link.startsWith("/")) link = "/" + link;
-        console.log(link);
         links.push([sub, link]);
     }
     return links;

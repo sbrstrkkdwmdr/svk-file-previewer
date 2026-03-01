@@ -273,6 +273,7 @@ function fixPaths(data: pathableItem, root: string) {
         if (child.type == "folder") {
             if (root.startsWith(child.name)) child.directory = root;
             else child.directory = root + "/" + child.name;
+            if(!child.directory.startsWith("/")) child.directory = "/" + child.directory;
             child = fixPaths(child, child.directory);
         } else {
             child.directory = data.directory;
