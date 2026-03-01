@@ -4,11 +4,9 @@
 </script>
 
 
-<section id="data" class="centre-page">
     <a href={src}>
         <img {src} alt="Preview" />
     </a>
-</section>
 <style>
     img {
         max-width: 100%;

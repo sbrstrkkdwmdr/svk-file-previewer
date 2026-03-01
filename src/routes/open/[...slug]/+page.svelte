@@ -10,7 +10,7 @@
     import TextRender from "$lib/renders/text-render.svelte";
     import VideoRender from "$lib/renders/video-render.svelte";
     import Icon from "$lib/svelte/icon.svelte";
-    import { getColourMode } from "$lib/tools";
+    import { formatBytes, getColourMode, separateNum } from "$lib/tools";
     import { onMount } from "svelte";
     let { data } = $props();
     let viewMode = data.mode;
@@ -73,33 +73,37 @@
 {#snippet renderContent()}
     <div id="metadata">
         <h2>{data.metadata.name}</h2>
-        <code>{data.metadata.path}</code><br />
-        <code>{data.metadata.hash}</code><br />
+        <Icon icon="folder" /> <code>{data.metadata.path}</code><br />
+        <Icon icon="hash" /> <code>{data.metadata.hash}</code><br />
         <a target="_blank" href={downloadurl + "?direct=true"}>
             <Icon icon="download" /> download
         </a>
-        {#if data.downloadCount > 0}({data.downloadCount}){/if}
+        (<code>{formatBytes(data.metadata.size)}</code>,
+        <code>{separateNum(data.metadata.size)} bytes</code>)
         {#if viewMode != "file"}
             <br /><a target="_blank" href={downloadurl}>
                 <Icon icon="download" /> Raw file
             </a>
         {/if}
+        {#if data.downloadCount > 0}<br /><Icon icon="download" />
+            {data.downloadCount} downloads
+        {/if}
         <hr />
     </div>
-    {#if viewMode == "markdown"}
-        <MarkdownRender markdownText={data.text} {colourMode} />
-    {:else if viewMode == "code"}
-        <CodeRender lang={data.lang} code={data.text} {colourMode} />
-    {:else if viewMode == "audio"}
-        <AudioRender src={downloadurl} mime={data.mime} />
-    {:else if viewMode == "image"}
-        <ImageRender src={downloadurl} />
-    {:else if viewMode == "text"}
-        <TextRender text={data.text} />
-    {:else if viewMode == "video"}
-        <VideoRender src={downloadurl} mime={data.mime} />
-    {:else}
-        <section id="data" class="centre-page">
+    <section id="data" class="centre-page">
+        {#if viewMode == "markdown"}
+            <MarkdownRender markdownText={data.text} {colourMode} />
+        {:else if viewMode == "code"}
+            <CodeRender lang={data.lang} code={data.text} {colourMode} />
+        {:else if viewMode == "audio"}
+            <AudioRender src={downloadurl} mime={data.mime} />
+        {:else if viewMode == "image"}
+            <ImageRender src={downloadurl} />
+        {:else if viewMode == "text"}
+            <TextRender text={data.text} />
+        {:else if viewMode == "video"}
+            <VideoRender src={downloadurl} mime={data.mime} />
+        {:else}
             <Icon icon={extToImage(data.metadata.extension)} /> MIME type: {data.mime}
             <a target="_blank" href={downloadurl} class="data-button">
                 <Icon icon="download" fsize="inherit" /> download
@@ -112,38 +116,18 @@
             >
                 <Icon icon="copy" fsize="inherit" /> Copy link to clipboard
             </button>
-        </section>
-    {/if}
+        {/if}
+    </section>
 {/snippet}
 
 <style>
-    .content-container {
-        /* display: flex; */
-        /* flex-direction: row; */
-        text-align: left;
-        max-width: 100%;
-    }
-
-    .content {
-        /* max-height: calc(100vh - 150px); */
-        height: calc(100vh - 160px);  
-        overflow-x: auto;
-        overflow-y: auto;
-    }
-
-
-    .content.left {
-        padding-right: 15px;
-        border-right: 3px solid var(--border);
-        flex-basis: 30%;
-    }
-    .content.right {
-        /* border-left: 3px solid var(--border); */
-        /* flex-basis: 60%; */
-        flex: 5 0 70%;
-    }
     .content hr {
         width: 99%; /* 100% extends past parent */
+    }
+
+    #data {
+        overflow-y: auto;
+        height: 62vh;
     }
 
     .data-button {

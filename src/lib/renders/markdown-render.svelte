@@ -5,7 +5,7 @@
 
     onMount(async () => {
         setTimeout(() => {
-            fixMarkdown();
+            // fixMarkdown();
             // prism.highlightAll();
         }, 500);
     });
@@ -69,9 +69,9 @@
         });
     }
 </script>
-<section id="markdownData" class="centre-page">
+<div id="markdownData">
     {@html markdownText}
-</section>
+</div>
 
 {#if colourMode == "light_default"}
     <link href="https://prismjs.catppuccin.com/latte.css" rel="stylesheet" />

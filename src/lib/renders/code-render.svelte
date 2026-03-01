@@ -9,12 +9,10 @@
     })
 </script>
 
-<div>
     <code>{fn}</code>
     <pre class="language-{lang}">
         <code class="language-{lang}">{code}</code>
     </pre>
-</div>
 {#if colourMode == "light_default"}
     <link href="https://prismjs.catppuccin.com/latte.css" rel="stylesheet" />
 {:else}
