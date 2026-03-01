@@ -82,7 +82,6 @@ main {
     /* background-image: var(--gradient); */
     /* position: fixed; */
     overflow: auto;
-    padding: 35px;
     padding-bottom: 0px;
     /* padding-top: calc(15% + 3px); */
     /* padding-left: calc(15% + 3px); */
@@ -159,7 +158,7 @@ h6 {
 hr {
     color: var(--border);
     border: 1px solid var(--border);
-    width: 100%;
+    width: calc(100% - 2px);
 }
 
 .vr {
