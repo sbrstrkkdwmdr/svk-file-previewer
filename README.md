@@ -61,12 +61,13 @@ Returns a list of all files
 
 ### TODO
 
-- [ ] download files directly by slug (eg /subfolder/test.png downloads the png)
+<!-- - [ ] download files directly by slug (eg /subfolder/test.png downloads the png) -->
 - [x] add download button to content previews
-- [ ] add option to view folder on portrait screens
-- [ ] `/open/{slug}` uses direct parent folder
+<!-- - [ ] add option to view folder on portrait screens -->
+<!-- - [ ] `/open/{slug}` uses direct parent folder -->
 - [ ] URLs in context menu use a tags instead of buttons
-- [ ] for non-previewable files (e.g. zip archives) show the original file preview page but with only the download button
+- [x] for non-previewable files (e.g. zip archives) show the original file preview page but with only the download button
+- [ ] fix layout (scroll bars are positioned weirdly and content sometimes goes out of screen)
 
 ## Credits
 
