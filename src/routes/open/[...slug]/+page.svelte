@@ -145,8 +145,8 @@
     }
 
     #data {
-        overflow-y: auto;
-        height: 62vh;
+        /* overflow-y: auto; */
+        /* height: 62vh; */
     }
 
     .data-button {
