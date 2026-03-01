@@ -7,7 +7,7 @@
     import Ctxmenu from "$lib/svelte/ctxmenu.svelte";
     import Icon from "$lib/svelte/icon.svelte";
     import Searchbar from "$lib/svelte/searchbar.svelte";
-    import { separateNum, stringMatches } from "$lib/tools";
+    import { formatBytes, separateNum, stringMatches } from "$lib/tools";
     import { onMount } from "svelte";
     import { fade, fly, scale, slide } from "svelte/transition";
     let {
@@ -45,27 +45,7 @@
             previnVal = query;
         }
     });
-    function formatBytes(bytes: number, decimals = 2, k = 1024) {
-        if (!+bytes) return "0 Bytes";
-        const dm = decimals < 0 ? 0 : decimals;
-        let sizes = [
-            "Bytes",
-            "KiB",
-            "MiB",
-            "GiB",
-            "TiB",
-            "PiB",
-            "EiB",
-            "ZiB",
-            "YiB",
-        ];
-        if (k == 1000) {
-            sizes = ["Bytes", "KB", "MB", "GB", "TB", "PB", "EB", "ZB", "YB"];
-        }
-        const i = Math.floor(Math.log(bytes) / Math.log(k));
 
-        return `${parseFloat((bytes / Math.pow(k, i)).toFixed(dm))} ${sizes[i]}`;
-    }
 
     function fileName(str: string) {
         let name = str;
@@ -239,7 +219,7 @@
     <a
         target="_self"
         class="fileName mono"
-        href="/{child.directory}"
+        href="{child.directory}"
     >
         {fileName(
             child.name,
@@ -374,7 +354,7 @@
                 }}
                 links={{
                     Preview: [
-                        [window.origin + "/" + contextItem!.directory, "_self"],
+                        [window.origin + /* "/" + */ contextItem!.directory, "_self"],
                         "show",
                         true,
                     ],

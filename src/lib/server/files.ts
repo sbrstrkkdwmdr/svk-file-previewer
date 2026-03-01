@@ -207,18 +207,16 @@ export async function toPathableItem(
             formatFileSubfolder(data, parents, newFile);
         }
     }
+    // if(data.children.length == 0){
+    //     return fixRootLocation(data as pathableItem<"folder">) as pathableItem<"folder">;
+    // }
 
     const sizefix = fixFolderSizes(data);
-    console.log("size: " + sizefix.children[0].directory);
     const dlfix = await fixFileDownloads(sizefix);
-    console.log("dolo: " + dlfix.children[0].directory);
     const locationFix = fixRootLocation(dlfix);
-    console.log("loca: " + locationFix.children[0].directory);
     const pathfix = fixPaths(locationFix, root);
-    console.log("path: " + pathfix.children[0].directory);
     const sorted = sortPathable(pathfix as pathableItem<"folder">);
     // printChildren(sorted);
-    console.log("sort: " + sorted.children[0].directory);
     return sorted;
 }
 
@@ -314,7 +312,6 @@ function fixRootLocation(data: pathableItem) {
     const name = data.name;
     while (data.children.length == 1 && data.children[0].type == "folder") {
         data = data.children[0];
-        console.log(data.name);
     }
     data.name = name;
     data.directory = name;
