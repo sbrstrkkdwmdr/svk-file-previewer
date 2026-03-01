@@ -111,6 +111,10 @@
     background-color: var(--bg-highlight);
 }
 
+#markdownData img {
+    max-width: 100%;
+}
+
 #raw {
     width: fit-content;
     padding: 35px;
