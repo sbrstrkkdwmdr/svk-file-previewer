@@ -13,3 +13,10 @@ export function getLink(
     }
     return `/open/${item.hash}`;
 }
+
+export function getViewable(hash:string,name?: string){
+        let url = `/api/view/${hash}`;
+        // some files have names with #s and other funky characters that break URLs
+        if (name) url += `/${encodeURIComponent(name)}`; 
+        return url; 
+}

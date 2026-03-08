@@ -6,7 +6,7 @@
     import FolderRender from "$lib/renders/folder-render.svelte";
     import ImageRender from "$lib/renders/image-render.svelte";
     import MarkdownRender from "$lib/renders/markdown-render.svelte";
-    import { getLink } from "$lib/renders/share";
+    import { getLink, getViewable } from "$lib/renders/share";
     import TextRender from "$lib/renders/text-render.svelte";
     import VideoRender from "$lib/renders/video-render.svelte";
     import Icon from "$lib/svelte/icon.svelte";
@@ -25,6 +25,7 @@
         return innerWidth > 1000;
     });
     let downloadurl = $derived(getLink(data.metadata, "download"));
+    let viewLink = $derived(getViewable(data.metadata.hash, data.metadata.name))
     onMount(() => {
         colourMode = getColourMode();
     });
@@ -116,13 +117,13 @@
         {:else if viewMode == "code"}
             <CodeRender lang={data.lang} code={data.text} {colourMode} />
         {:else if viewMode == "audio"}
-            <AudioRender src={downloadurl} mime={data.mime} />
+            <AudioRender src={viewLink} mime={data.mime} />
         {:else if viewMode == "image"}
-            <ImageRender src={downloadurl} />
+            <ImageRender src={viewLink} />
         {:else if viewMode == "text"}
             <TextRender text={data.text} />
         {:else if viewMode == "video"}
-            <VideoRender src={downloadurl} mime={data.mime} />
+            <VideoRender src={viewLink} mime={data.mime} />
         {:else}
             <a target="_blank" href={downloadurl} class="data-button">
                 <Icon icon="download" fsize="inherit" /> download

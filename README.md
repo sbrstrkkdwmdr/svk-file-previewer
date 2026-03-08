@@ -59,6 +59,17 @@ Downloads a file
 
 Returns a list of all files
 
+
+### /api/view/{hash}/{filename?}
+
+Downloads a file. Is identical to download, the only difference is that `direct` is true by default and this link doesn't bump the download counter
+
+| Params              |                                                                                                                                                                      |
+| ------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Hash                | File hash                                                                                                                                                            |
+| Filename (optional) | File name (used specifically for downloading)                                                                                                                        |
+
+
 ### TODO
 
 <!-- - [ ] download files directly by slug (eg /subfolder/test.png downloads the png) -->

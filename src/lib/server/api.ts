@@ -2,7 +2,7 @@ import type { file } from "$lib/data/files";
 import { getMime } from "$lib/MIME";
 import { getUrls, robotsText, toSitemap } from "$lib/seo";
 import { downloadGet, downloadUpdate } from "$lib/server/database";
-import { files, updateFiles } from "$lib/server/files";
+import { createHash, files, updateFiles } from "$lib/server/files";
 import { UrlParser } from "$lib/tools";
 import type { RequestHandler } from "@sveltejs/kit";
 import { error, json, redirect } from "@sveltejs/kit";
@@ -37,54 +37,21 @@ export const downloadFileGET: RequestHandler = async ({ url }) => {
     let file = url.searchParams.get("name") as string;
     let dir = url.searchParams.get("location") as string;
     const preview = url.searchParams.get("preview") as string;
-    const hash = url.searchParams.get("hash") as string;
-    let tfile: file | null = null;
-    if (file && dir) {
-        for (const sf of files ?? []) {
-            if (sf.path == dir + file) {
-                tfile = sf;
-                break;
-            }
-        }
-    } else if (hash) {
-        for (const sf of files ?? []) {
-            if (sf.hash == hash) {
-                tfile = sf;
-                file = tfile.name;
-                dir = tfile.directory;
-                break;
-            }
-        }
-    } else {
-        error(500, {
+    let hash = url.searchParams.get("hash") as string;
+
+    if((dir || file) && !hash){
+        return error(500, {
             message:
-                "Missing params. Please use either name={name}&location={location} or hash={hash}",
+                "name and location params have been disabled. Use hash.",
         });
     }
+
+    let tfile: file | null = fileFromHash(hash);
+
     if (tfile) {
         downloadUpdate(tfile.hash);
-        let content: NonSharedBuffer | null = null;
-        if (fs.existsSync("./files/" + tfile.path))
-            content = fs.readFileSync("./files/" + tfile.path);
-        if (!content) {
-            error(500, { message: "Could not fetch from file storage" });
-        }
-        const res = new Response(content, {
-            status: 200,
-            headers: {},
-        });
-        if (preview == "true") {
-            const mimetype = getMime(tfile.name);
-            res.headers.set("Content-Type", mimetype);
-            res.headers.set("Content-Length", content.byteLength + "");
-        } else {
-            res.headers.set(
-                "Content-Disposition",
-                "attachment; filename=" + encodeURIComponent(tfile.name),
-            );
-        }
-
-        return res;
+        let content: NonSharedBuffer | null = getFileContent(tfile);
+        return fileResponse(content, !Boolean(preview), tfile)
         // return json({ "msg": "skissue" });
     }
     return error(404, { message: "File not found" });
@@ -103,45 +70,12 @@ export const downloadFileSlugGET: RequestHandler = async ({ params, url }) => {
     await updateFiles();
     const hash = slugHash(params.slug ?? "");
     const direct = url.searchParams.get("direct") as string;
-    let tfile: file | null = null;
-    let file: string, dir: string;
-    for (const sf of files ?? []) {
-        if (sf.hash == hash) {
-            tfile = sf;
-            file = tfile.name;
-            dir = tfile.directory;
-            break;
-        }
-    }
+    let tfile = fileFromHash(hash);
 
-    //@ts-expect-error Variable 'dir' / 'file' is used before being assigned
-    if (tfile && dir && file) {
+    if (tfile) {
         downloadUpdate(tfile.hash);
-        let content: NonSharedBuffer | null = null;
-        if (fs.existsSync("./files/" + tfile.path))
-            content = fs.readFileSync("./files/" + tfile.path);
-        if (!content) {
-            error(500, { message: "Could not fetch from file storage" });
-        }
-        const res = new Response(content, {
-            status: 200,
-            headers: {},
-        });
-        const mimetype = getMime(tfile.name);
-        res.headers.set("Content-Type", mimetype);
-        res.headers.set("Content-Length", content.byteLength + "");
-        
-        // without this header, browsers just show the content of the file 
-        // pc browsers can still download just fine w/ shortcuts but on mobile its a bit harder esp. for text files
-        if (direct) {
-            res.headers.set(
-                "Content-Disposition",
-                "attachment; filename=" + encodeURIComponent(tfile.name),
-            );
-        }
-
-        return res;
-        // return json({ "msg": "skissue" });
+        let content = getFileContent(tfile);
+        return fileResponse(content, Boolean(direct), tfile);
     }
     return error(404, { message: "File not found" });
 };
@@ -192,3 +126,58 @@ export const boo: RequestHandler = async ({ url }) => {
     });
     return res;
 };
+
+function fileFromHash(hash: string): file | null {
+    // let tfile: file | null = null;
+    for (const sf of files ?? []) {
+        if (sf.hash == hash) {
+            return sf;
+        }
+    }
+    return null;
+}
+
+function getFileContent(file: file) {
+    let content: NonSharedBuffer | null = null;
+    if (fs.existsSync("./files/" + file.path)) {
+        content = fs.readFileSync("./files/" + file.path);
+    }
+    if (!content) {
+        return error(500, { message: "Could not fetch from file storage" });
+    }
+    return content;
+}
+
+function fileResponse(content: NonSharedBuffer, isDirect: boolean, file: file) {
+    const res = new Response(content, {
+        status: 200,
+        headers: {},
+    });
+    const mimetype = getMime(file.name);
+    res.headers.set("Content-Type", mimetype);
+    res.headers.set("Content-Length", content.byteLength + "");
+
+    // without this header, browsers just show the content of the file
+    // pc browsers can still download just fine w/ shortcuts but on mobile its a bit harder esp. for text files
+    if (isDirect) {
+        res.headers.set(
+            "Content-Disposition",
+            "attachment; filename=" + encodeURIComponent(file.name),
+        );
+    }
+    return res;
+}
+
+export const viewFileSlugGET: RequestHandler = async ({ params, url }) => {
+    await updateFiles();
+    const hash = slugHash(params.slug ?? "");
+    let tfile = fileFromHash(hash);
+
+    if (tfile) {
+        let content = getFileContent(tfile);
+        return fileResponse(content, false, tfile);
+    }
+    return error(404, { message: "File not found" });
+};
+
+
