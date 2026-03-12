@@ -25,7 +25,9 @@
         return innerWidth > 1000;
     });
     let downloadurl = $derived(getLink(data.metadata, "download"));
-    let viewLink = $derived(getViewable(data.metadata.hash, data.metadata.name))
+    let viewLink = $derived(
+        getViewable(data.metadata.hash, data.metadata.name),
+    );
     onMount(() => {
         colourMode = getColourMode();
     });
@@ -94,8 +96,10 @@
         )}
 
         <br />
-        <Icon icon="hash" /> {data.metadata.hash}<br />
-        <Icon icon="fileGeneric" /> {formatBytes(data.metadata.size)}
+        <Icon icon="hash" />
+        {data.metadata.hash}<br />
+        <Icon icon="fileGeneric" />
+        {formatBytes(data.metadata.size)}
         ({separateNum(data.metadata.size)} bytes)<br />
         <a target="_blank" href={downloadurl + "?direct=true"}>
             <Icon icon="download" /> download
@@ -135,6 +139,14 @@
                 }}
             >
                 <Icon icon="copy" fsize="inherit" /> Copy link to clipboard
+            </button>
+            <button
+                class="data-button"
+                onclick={(ev) => {
+                    navigator.clipboard.writeText(downloadurl);
+                }}
+            >
+                <Icon icon="copy" fsize="inherit" /> Copy direct link to clipboard
             </button>
         {/if}
     </section>
