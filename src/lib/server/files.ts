@@ -11,7 +11,7 @@ export let files: file[] | null = null;
 let fLastUpdate = new Date().getTime();
 const rootFolder = "files";
 let currentlyUpdating = false;
-const fileSyncTimer = 1000 * 60 * 60;
+const fileSyncTimer = 1000 * 60 * 15;
 
 export async function updateFiles() {
     if (currentlyUpdating) return;
@@ -21,7 +21,8 @@ export async function updateFiles() {
     ) {
         currentlyUpdating = true;
         files = null;
-        console.log("Updating file explorer...");
+        const iso = new Date().toISOString();
+        console.log(iso + ": Updating file explorer...");
         fLastUpdate = new Date().getTime();
         await new Promise((resolve, reject) => {
             walk(`./${rootFolder}`, (err, res) => {
