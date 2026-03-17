@@ -106,13 +106,13 @@
         </a>
         {#if viewMode != "file"}
             <br /><a target="_blank" href={downloadurl}>
-                <Icon icon="download" /> raw file
+                <Icon icon="download" /> open raw file in browser
             </a>
         {/if}
         {#if data.downloadCount > 0}<br /><Icon icon="download" />
             {data.downloadCount} downloads
         {/if}
-        <br /><Icon icon={extToImage(data.metadata.extension)} /> MIME type: {data.mime}
+        <br /><Icon icon={extToImage(data.metadata.extension)} /> MIME: {data.mime}
         <hr />
     </div>
     <section id="data" class="centre-page">
