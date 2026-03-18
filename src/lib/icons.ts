@@ -124,7 +124,7 @@ export const utils = {
     fileText: 'e968',
     fileImage: 'edc5',
     fileAudio: 'edc6',
-    fileVideo: 'edc5',
+    fileVideo: 'edc7',
     folder: 'e96c',
     folderOpen: 'e96e',
 
