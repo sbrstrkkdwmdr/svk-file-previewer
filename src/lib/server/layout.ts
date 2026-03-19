@@ -43,11 +43,15 @@ function toMetaData(parser: UrlParser, url: URL) {
         }
         const fname = `File preview - ${tfile?.name ?? "unknown"}`;
         const mime = getMime(fname);
+        let icon = `"${url.origin}/icons/favicon-64x64.png"`
+    if(mime.startsWith("image")){
+        icon = `"${url.origin}/view/${tfile?.hash}"`
+    }
         return `<title>${fname}</title>
 <meta content="${fname}" property="og:title" />
 <meta content="File preview - ${mime}" property="og:description" />
 <meta content="${parser.href}" property="og:url" />
-<meta content="${url.origin}/icons/favicon-64x64.png" property="og:image" />
+<meta content=${icon} property="og:image" />
 <meta content="#FF1921" data-react-helmet="true" name="theme-color" />`;
     }
     const fname = `Folder preview - ${path.join("/") ?? "unknown"}`;
