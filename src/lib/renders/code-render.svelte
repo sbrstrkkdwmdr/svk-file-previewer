@@ -3,9 +3,10 @@
     import { onMount } from "svelte";
     let { code, lang, colourMode } = $props();
 </script>
-    <pre class="language-{lang}">
+    <pre class="language-{lang} line-numbers">
         <code class="language-{lang}">{code}</code>
     </pre>
+    <link href="/app/libs/prism.css" rel="stylesheet" />
 {#if colourMode == "light_default"}
     <link href="https://prismjs.catppuccin.com/latte.css" rel="stylesheet" />
 {:else}
