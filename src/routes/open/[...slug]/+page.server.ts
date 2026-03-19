@@ -1,4 +1,4 @@
-import { code } from "$lib/data/extensions";
+import { codeDict } from "$lib/data/extensions";
 import type { file, pathableItem } from "$lib/data/files";
 import { markdownParse } from "$lib/marked";
 import { getMime } from "$lib/MIME";
@@ -142,15 +142,29 @@ async function getFileHash(hash: string): Promise<Error | FileReturn> {
 }
 
 function isCode(file: string) {
-    for (const ext of code) {
-        if (file.endsWith("." + ext)) return true;
-    }
-    return false;
+    return Boolean(getLang(file));
 }
 
 function getLang(file: string) {
-    for (const ext of code) {
-        if (file.endsWith("." + ext)) return ext;
+    for (const lang in codeDict) {
+        for (const ext of codeDict[lang as keyof typeof codeDict]) {
+            if (file.toLowerCase().endsWith("." + ext)) return fix(lang);
+        }
     }
     return "";
+}
+
+function fix(lang:string){
+    const dict = {
+        "shell-session": ["cmd", "bat"],
+        "gdscript": ["gd"],
+        "jsx": ["reactjsx"],
+        "tsx": ["reacttsx"],
+        "rust": ["rs"],
+        "html": ["svelte"],
+    }
+    for(const key in dict){
+        if(dict[key as keyof typeof dict].includes(lang)) return key;
+    }
+    return lang;
 }
