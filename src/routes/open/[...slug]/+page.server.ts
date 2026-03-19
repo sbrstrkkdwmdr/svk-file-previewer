@@ -22,6 +22,7 @@ export const load = async (event: ServerLoadEvent) => {
     let returnfiles: pathableItem<"folder">;
     let mode: mode = "folder";
     let text = "";
+    let mdtext = "";
     let lang = "";
     const hash = event.params.slug;
     const ctn = await getFileHash(hash ?? "");
@@ -31,7 +32,8 @@ export const load = async (event: ServerLoadEvent) => {
         return error(+err.name, err.message);
     } else if (mime.includes("markdown")) {
         mode = "markdown";
-        text = await markdownParse(ctn.content.toString());
+        text = ctn.content.toString();
+        mdtext = await markdownParse(ctn.content.toString());
         // text = ctn.toString('utf-8');
     } else if (isCode(ctn.metadata.name)) {
         mode = "code";
@@ -62,6 +64,7 @@ export const load = async (event: ServerLoadEvent) => {
         files: returnfiles,
         mode,
         text,
+        mdtext,
         lang,
         // buffer: ctn,
         mime,

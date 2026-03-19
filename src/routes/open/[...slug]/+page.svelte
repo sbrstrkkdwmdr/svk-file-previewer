@@ -96,28 +96,46 @@
         )}
 
         <br />
-        <Icon icon="hash" />
-        {data.metadata.hash}<br />
-        <Icon icon="fileGeneric" />
-        {formatBytes(data.metadata.size)}
-        ({separateNum(data.metadata.size)} bytes)<br />
-        <a target="_blank" href={downloadurl + "?direct=true"}>
+        <span title="File hash">
+            <Icon icon="hash" />
+            {data.metadata.hash}
+        </span>
+        <br />
+        <span title="File size">
+            <Icon icon="fileGeneric" />
+            {formatBytes(data.metadata.size)}
+            ({separateNum(data.metadata.size)} bytes)
+        </span>
+        <br />
+        <a target="_blank" href={downloadurl + "?direct=true"} title="Download">
             <Icon icon="download" /> download
         </a>
         {#if viewMode != "file"}
-            <br /><a target="_blank" href={downloadurl}>
-                <Icon icon="download" /> open raw file in browser
+            <br /><a
+                target="_blank"
+                href={downloadurl}
+                title="Open file in browser"
+            >
+                <Icon icon="download" /> open file in browser
             </a>
         {/if}
-        {#if data.downloadCount > 0}<br /><Icon icon="download" />
-            {data.downloadCount} downloads
+        {#if data.downloadCount > 0}<br />
+            <span title="Download count">
+                <Icon icon="download" />
+                {data.downloadCount} downloads
+            </span>
         {/if}
-        <br /><Icon icon={extToImage(data.metadata.extension)} /> MIME: {data.mime}
+        <br />
+        <span title="MIME type">
+            <Icon icon={extToImage(data.metadata.extension)} /> MIME: {data.mime}
+        </span>
         <hr />
     </div>
     <section id="data" class="centre-page">
         {#if viewMode == "markdown"}
-            <MarkdownRender markdownText={data.text} {colourMode} />
+            <MarkdownRender markdownText={data.mdtext} {colourMode} />
+            <hr />
+            <CodeRender lang="md" code={data.text} {colourMode} />
         {:else if viewMode == "code"}
             <CodeRender lang={data.lang} code={data.text} {colourMode} />
         {:else if viewMode == "audio"}
