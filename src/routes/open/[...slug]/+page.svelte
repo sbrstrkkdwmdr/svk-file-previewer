@@ -42,6 +42,8 @@
         }
         // showFilePreview = window.innerWidth > 900;
     });
+
+    let [metadataWidth, metadataHeight] = $state([0, 0]);
 </script>
 
 <svelte:window bind:innerWidth />
@@ -85,7 +87,7 @@
     {/each}/<a href="/open/{hash}">{filename}</a>
 {/snippet}
 
-{#snippet renderContent()}
+{#snippet renderMetadata()}
     <div id="metadata">
         <h2>{data.metadata.name}</h2>
         <Icon icon="folder" />
@@ -129,8 +131,18 @@
         <span title="MIME type">
             <Icon icon={extToImage(data.metadata.extension)} /> MIME: {data.mime}
         </span>
+        {#if viewMode == "image" || viewMode == "video"}
+                <br />
+        <span title="Media Resolution (pixels)">
+            <Icon icon="maximise" /> {metadataWidth}x{metadataHeight}px
+        </span>
+{/if}
         <hr />
     </div>
+{/snippet}
+
+{#snippet renderContent()}
+    {@render renderMetadata()}
     <section id="data" class="centre-page">
         {#if viewMode == "markdown"}
             <MarkdownRender markdownText={data.mdtext} {colourMode} />
@@ -141,11 +153,20 @@
         {:else if viewMode == "audio"}
             <AudioRender src={viewLink} mime={data.mime} />
         {:else if viewMode == "image"}
-            <ImageRender src={viewLink} />
+            <ImageRender
+                src={viewLink}
+                bind:w={metadataWidth}
+                bind:h={metadataHeight}
+            />
         {:else if viewMode == "text"}
             <TextRender text={data.text} />
         {:else if viewMode == "video"}
-            <VideoRender src={viewLink} mime={data.mime} />
+            <VideoRender
+                src={viewLink}
+                mime={data.mime}
+                bind:w={metadataWidth}
+                bind:h={metadataHeight}
+            />
         {:else}
             <a target="_blank" href={downloadurl} class="data-button">
                 <Icon icon="download" fsize="inherit" /> download
@@ -179,7 +200,6 @@
         /* overflow-y: auto; */
         /* height: 62vh; */
     }
-
     .data-button {
         font-family: "JetBrainsMono";
         text-align: center;
