@@ -15,6 +15,7 @@
         altIcon = icon,
         altIconCondition,
         usePresetColours = false,
+        valign = "middle",
     }: {
         icon: string;
         inline?: boolean;
@@ -29,9 +30,10 @@
         altIcon?: string;
         altIconCondition?: () => boolean;
         usePresetColours?: boolean;
+        valign?: string
     } = $props();
 
-    let style = $state(`font-size:${fsize};color:${colour};`);
+    let style = $state(`font-size:${fsize};color:${colour};vertical-align:${valign};`);
     let isAlt = $state(false);
     let iconClass = $derived("icon-" + (isAlt ? altIcon : icon));
     if (inline) {
@@ -101,7 +103,7 @@
 
 <style>
     * {
-        vertical-align: top;
+        /* vertical-align: top; */
         border: none;
         background-color: var(--none);
         padding: 0;

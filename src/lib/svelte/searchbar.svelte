@@ -24,7 +24,7 @@
 <div class="searchContainer" style="text-align: center;">
     <div class="icon-input">
         <div>
-            <Icon icon="search" fsize="24px" />
+            <Icon icon="search" fsize="24px" valign="top" />
             <input
                 type="search"
                 {placeholder}
