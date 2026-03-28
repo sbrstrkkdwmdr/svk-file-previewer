@@ -405,7 +405,7 @@
     /* Custom arrow (closed state) */
     summary::before {
         font-family: "icomoon" !important;
-        content: "\e96c";
+        content: "\ed4e";
         position: absolute;
         left: 0;
         top: 0.2rem;
@@ -417,7 +417,7 @@
     /* When <details> is open, rotate or change the image */
     details[open] > summary::before {
         font-family: "icomoon" !important;
-        content: "\e96c";
+        content: "\ed4e";
         /* OR if you're using a rotating icon instead:
 transform: rotate(90deg); */
     }

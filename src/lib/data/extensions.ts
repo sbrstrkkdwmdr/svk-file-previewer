@@ -2,7 +2,7 @@ export const codeDict = {
     "arm-asm": ["asm"],
     bash: ["sh"],
     c: ["c"],
-    cmd: ["bat", "cmd"],
+    cmd: ["bat", "btm", "cmd"],
     cpp: ["cpp", "h"],
     cs: ["cs"],
     css: ["css"],
