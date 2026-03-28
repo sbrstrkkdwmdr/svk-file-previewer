@@ -294,18 +294,18 @@ export function getIcons(): string {
 }
 
 .icon-drivegoogle.path1:before {
-    content: "\\edc1";
+    content: "\\e921";
     color: #3777e3;
 }
 
 .icon-drivegoogle.path2:before {
-    content: "\\edc2";
+    content: "\\e922";
     color: #ffcf63;
     margin-left: -1em;
 }
 
 .icon-drivegoogle.path3:before {
-    content: "\\edc3";
+    content: "\\e923";
     color: #11a861;
     margin-left: -1em;
 }
