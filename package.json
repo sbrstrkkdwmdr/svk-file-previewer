@@ -8,7 +8,7 @@
         "sequelize": "^6.37.7",
         "sqlite3": "^5.1.7"
     },
-    "name": "mainweb_fullstack",
+    "name": "mainweb_files",
     "private": true,
     "version": "1.0.0",
     "main": "index.js",
