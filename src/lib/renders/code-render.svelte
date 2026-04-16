@@ -32,6 +32,7 @@
         /* background-color: var(--codeInline-bg); */
         color: var(--code);
         padding: 2px 6px;
+        border: 1px solid var(--border);
         border-radius: 5px;
         font-family: monospace;
         font-size: 0.95em;
