@@ -27,7 +27,8 @@ export const load = async (event: ServerLoadEvent) => {
     const hash = event.params.slug;
     const ctn = await getFileHash(hash ?? "");
     const mime = getMime((ctn as FileReturn)?.metadata?.name ?? "");
-    if (Error.isError(ctn)) {
+    
+    if (ctn instanceof Error) {
         const err = ctn as Error;
         return error(+err.name, err.message);
     } else if (mime.includes("markdown")) {
