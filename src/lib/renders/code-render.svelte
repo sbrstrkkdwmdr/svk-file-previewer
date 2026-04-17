@@ -7,11 +7,12 @@
         <code class="language-{lang}">{code}</code>
     </pre>
     <link href="/app/libs/prism.css" rel="stylesheet" />
-{#if colourMode == "light_default"}
+<!-- {#if colourMode == "light_default"}
     <link href="https://prismjs.catppuccin.com/latte.css" rel="stylesheet" />
 {:else}
     <link href="https://prismjs.catppuccin.com/mocha.css" rel="stylesheet" />
-{/if}
+{/if} -->
+    <link href="https://prismjs.catppuccin.com/mocha.css" rel="stylesheet" />
 {#if browser}
     <script src="/app/libs/prism.js"></script>
     <script>
@@ -32,10 +33,13 @@
         /* background-color: var(--codeInline-bg); */
         color: var(--code);
         padding: 2px 6px;
-        border: 1px solid var(--border);
         border-radius: 5px;
         font-family: monospace;
         font-size: 0.95em;
+    }
+        pre {
+        border: 1px solid var(--border);
+        border-radius: 0px;
     }
     pre code {
         display: block;
