@@ -60,6 +60,7 @@ export const utils = {
     unlock: "e939",
     location: "e934",
     mouse: "ed7e",
+    hash: "ed5c",
 
     // media
     play: "e99d",
@@ -132,6 +133,8 @@ export const utils = {
     fileImage: "edf7",
     fileAudio: "edf8",
     fileVideo: "edf9",
+    fileExecutable: "ed38", // cpu
+    fileInstaller: "ed38", // cpu
     folder: "ed4e",
     folderOpen: "edff",
 
@@ -223,6 +226,7 @@ export const sites = {
     filekotlin: ["eb11", "#7F52FF"],
     filelatex: ["eb19", "#008080"],
     filelua: ["eb2f", "#000080"],
+    filemarkdown: ["eb3c"],
     filephp: ["ebb0", "#474A8A"],
     filepowershell: ["ebc8", "#012456"], // colour of bg default ps
     filepy: ["ebd6", "#3776AB"],
