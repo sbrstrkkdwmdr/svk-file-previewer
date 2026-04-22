@@ -193,8 +193,12 @@
                         <td>
                             <span class="fileExtra">
                                 {@html formatBytes(item.size)}
+                            </span>
+                        </td>
+                        <td>
+                            <span class="fileExtra">
                                 {#if (item?.downloadCount ?? 0) > 0}
-                                    / <Icon
+                                    <Icon
                                         icon="download"
                                         colour="var(--text-secondary)"
                                     /><span class="downloadCount"
@@ -235,75 +239,92 @@
                 ({@html formatBytes(dir.size)})</span
             >
         </summary>
-        {#each dir.children as child}
-            {#if child.type == "folder"}
-                <!-- {@render folder(child)} -->
-                {@render childFolder(child)}
-            {:else}
-                <div
-                    style="white-space-collapse: preserve;"
-                    class="file fileName mono"
-                    oncontextmenu={(ev) => ctxmenu(ev, child)}
-                    role="button"
-                    tabindex="0"
-                >
-                    <span></span>
-                    <span
-                        class="fileIcon icon-fileGeneric icon-{extToImage(
-                            child.name.split('.')?.pop() ?? '',
-                        )}"
-                    ></span>
-                    <a
-                        target="_self"
-                        class="fileName mono"
-                        href={getLink(child, "preview")}
-                    >
-                        {fileName(
-                            child.name,
-                        )[0]}{#if fileName(child.name)[1]}<span
-                                class="extension mono"
-                                >{fileName(child.name)[1]}</span
-                            >{/if}
-                        <span class="fileExtra">
-                            {@html formatBytes(child.size)}
-                            {#if (child?.downloadCount ?? 0) > 0}
-                                / <Icon
-                                    icon="download"
-                                    colour="var(--text-secondary)"
-                                /><span class="downloadCount"
-                                    >{child.downloadCount}</span
+        <table class="table-folder">
+            <tbody>
+                {#each dir.children as child}
+                    {#if child.type == "folder"}
+                        <!-- {@render folder(child)} -->
+                        {@render childFolder(child)}
+                    {:else}
+                        <tr
+                            style="white-space-collapse: preserve;"
+                            class="file fileName mono"
+                            oncontextmenu={(ev) => ctxmenu(ev, child)}
+                            role="button"
+                            tabindex="0"
+                        >
+                            <td>
+                                <span
+                                    class="fileIcon icon-fileGeneric icon-{extToImage(
+                                        child.name.split('.')?.pop() ?? '',
+                                    )}"
+                                ></span>
+                                <a
+                                    target="_self"
+                                    class="fileName mono"
+                                    href={getLink(child, "preview")}
                                 >
-                            {/if}
-                        </span>
-                    </a>
-                </div>
-            {/if}
-        {/each}
+                                    {fileName(
+                                        child.name,
+                                    )[0]}{#if fileName(child.name)[1]}<span
+                                            class="extension mono"
+                                            >{fileName(child.name)[1]}</span
+                                        >{/if}
+                                </a>
+                            </td>
+                            <td>
+                                <span class="fileExtra">
+                                    {@html formatBytes(child.size)}
+                                </span>
+                            </td>
+                            <td>
+                                <span class="fileExtra">
+                                    {#if (child?.downloadCount ?? 0) > 0}
+                                        <Icon
+                                            icon="download"
+                                            colour="var(--text-secondary)"
+                                        /><span class="downloadCount"
+                                            >{child.downloadCount}</span
+                                        >
+                                    {/if}
+                                </span>
+                            </td>
+                            <td>{getMime(child.name)}</td>
+                        </tr>
+                    {/if}
+                {/each}
+            </tbody>
+        </table>
     </details>
 {/snippet}
 {#snippet childFolder(child: pathableItem)}
-    <div
+    <tr
         style="white-space-collapse: preserve;"
         class="file fileName mono"
         oncontextmenu={(ev) => ctxmenu(ev, child)}
         role="button"
         tabindex="0"
     >
-        <span></span>
-        <span class="fileIcon icon-fileGeneric icon-folder"></span>
-        <a
-            target="_self"
-            class="fileName mono"
-            href="{child.directory}{previnVal ? '?q=' + previnVal : ''}"
-        >
-            {fileName(child.name)[0]}
-            <span class="fileExtra">
-                {child.children.length} item{child.children.length == 1
+        <td>
+            <span class="fileIcon icon-fileGeneric icon-folder"></span>
+            <a
+                target="_self"
+                class="fileName mono"
+                href="{child.directory}{previnVal ? '?q=' + previnVal : ''}"
+            >
+                {fileName(child.name)[0]}
+            </a>
+        </td>
+        <td><span class="fileExtra">{@html formatBytes(child.size)}</span></td>
+        <td
+            ><span class="fileExtra"
+                >{child.children.length} item{child.children.length == 1
                     ? ""
-                    : "s"} ({@html formatBytes(child.size)})
-            </span>
-        </a>
-    </div>
+                    : "s"}</span
+            ></td
+        >
+        <td>Folder</td>
+    </tr>
 {/snippet}
 {#if files}
     {#if showSearchbar}
