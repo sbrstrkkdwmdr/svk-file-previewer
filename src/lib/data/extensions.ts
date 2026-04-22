@@ -53,11 +53,12 @@ export const extensions = {
     Image: ["png", "jpg", "svg", "jpeg", "gif", "pdn", "heic"],
     Video: ["mp4", "mkv", "mov", "avi"],
     Audio: ["mp3", "ogg", "wav", "flac", "aac"],
-    Text: ["txt", "log", "osb", "osu"],
+    Text: ["txt", "log", "osb", "osu", "m", "hbs", "asm"],
     Archive: ["zip", "rar", "osk", "7z", "osz", "xpi", "tar.gz", "tar"],
     Executable: ["exe"],
     Installer: ["msi", "apk"],
     markdown: ["md"],
+    db: ["sql"],
     ...codeDict,
 };
 export const extensions_full = {

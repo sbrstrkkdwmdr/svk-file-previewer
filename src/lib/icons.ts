@@ -208,6 +208,8 @@ export const sites = {
     svelte: ["ec6a", "#FF3E00"],
     ts: ["ec9d", "#3178C6"],
 
+    filedb: ["ed3b"],
+
     filebash: ["e901", "#4EAA25"],
     filec: ["e9d0", "#A9BACD"],
     filecmd: ["ecd3", "#0078D6"],
