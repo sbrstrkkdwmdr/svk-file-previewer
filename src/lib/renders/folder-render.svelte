@@ -7,7 +7,12 @@
     import Ctxmenu from "$lib/svelte/ctxmenu.svelte";
     import Icon from "$lib/svelte/icon.svelte";
     import Searchbar from "$lib/svelte/searchbar.svelte";
-    import { formatBytes, separateNum, stringMatches } from "$lib/tools";
+    import {
+        filesOnly,
+        formatBytes,
+        separateNum,
+        stringMatches,
+    } from "$lib/tools";
     import { onMount } from "svelte";
     import { fade, fly, scale, slide } from "svelte/transition";
     let {
@@ -46,7 +51,6 @@
         }
     });
 
-
     function fileName(str: string) {
         let name = str;
         let ext = "";
@@ -59,7 +63,7 @@
         if (ext.length > 0) fullString.push("." + ext);
         return fullString;
     }
-    let previnVal = "";
+    let previnVal = $state("");
     function filterFilesEvent(e: KeyboardEvent) {
         const val = (e.target! as HTMLInputElement).value?.trim() ?? "";
         if (previnVal != val) {
@@ -143,10 +147,83 @@
     let fileNumber = $derived(fileCount(usefiles));
 </script>
 
+{#snippet search_result(dir: pathableItem)}
+    {@const items = filesOnly(dir)}
+    <details class="folder" open={true}>
+        <summary
+            class="file fileName mono ignore-summary"
+            oncontextmenu={(ev) => ctxmenu(ev, dir)}
+            tabindex="-1"
+        >
+            {dir.name}/
+            <span class="fileExtra" style="white-space:collapse"
+                >{dir.children.length} item{dir.children.length == 1 ? "" : "s"}
+                ({@html formatBytes(dir.size)})</span
+            >
+        </summary>
+        <table class="table-folder">
+            <tbody>
+                {#each items as item}
+                    <tr
+                        style="white-space-collapse: preserve;"
+                        class="file fileName mono"
+                        oncontextmenu={(ev) => ctxmenu(ev, item)}
+                        role="button"
+                        tabindex="0"
+                    >
+                        <td>
+                            <span
+                                class="fileIcon icon-fileGeneric icon-{extToImage(
+                                    item.name.split('.')?.pop() ?? '',
+                                )}"
+                            ></span>
+                            <a
+                                target="_self"
+                                class="fileName mono"
+                                href={getLink(item, "preview")}
+                            >
+                                {fileName(
+                                    item.name,
+                                )[0]}{#if fileName(item.name)[1]}<span
+                                        class="extension mono"
+                                        >{fileName(item.name)[1]}</span
+                                    >{/if}
+                            </a>
+                        </td>
+                        <td>
+                            <span class="fileExtra">
+                                {@html formatBytes(item.size)}
+                                {#if (item?.downloadCount ?? 0) > 0}
+                                    / <Icon
+                                        icon="download"
+                                        colour="var(--text-secondary)"
+                                    /><span class="downloadCount"
+                                        >{item.downloadCount}</span
+                                    >
+                                {/if}
+                            </span>
+                        </td>
+                        <td>
+                            {#if item.directory}
+                                <span class="mono inFolder">
+                                    (in
+                                    <a
+                                        href={item.directory}
+                                        class="mono inFolder"
+                                    >
+                                        {item.directory}
+                                    </a>)
+                                </span>
+                            {/if}
+                        </td>
+                    </tr>
+                {/each}
+            </tbody>
+        </table>
+    </details>
+{/snippet}
 {#snippet folder(dir: pathableItem, isPrimary: boolean = false)}
-    <details class="folder" open={true/* isPrimary || dir.forceInitialOpen */}
-    
-    >
+    <details class="folder" open={true}>
         <summary
             class="file fileName mono ignore-summary"
             oncontextmenu={(ev) => ctxmenu(ev, dir)}
@@ -206,29 +283,27 @@
 {/snippet}
 {#snippet childFolder(child: pathableItem)}
     <div
-    style="white-space-collapse: preserve;"
-    class="file fileName mono"
-    oncontextmenu={(ev) => ctxmenu(ev, child)}
-    role="button"
-    tabindex="0"
->
-    <span></span>
-    <span
-        class="fileIcon icon-fileGeneric icon-folder"
-    ></span>
-    <a
-        target="_self"
-        class="fileName mono"
-        href="{child.directory}"
+        style="white-space-collapse: preserve;"
+        class="file fileName mono"
+        oncontextmenu={(ev) => ctxmenu(ev, child)}
+        role="button"
+        tabindex="0"
     >
-        {fileName(
-            child.name,
-        )[0]}
-        <span class="fileExtra">
-            {child.children.length} item{child.children.length == 1 ? "" : "s"} ({@html formatBytes(child.size)})
-        </span>
-    </a>
-    </div>  
+        <span></span>
+        <span class="fileIcon icon-fileGeneric icon-folder"></span>
+        <a
+            target="_self"
+            class="fileName mono"
+            href="{child.directory}{previnVal ? '?q=' + previnVal : ''}"
+        >
+            {fileName(child.name)[0]}
+            <span class="fileExtra">
+                {child.children.length} item{child.children.length == 1
+                    ? ""
+                    : "s"} ({@html formatBytes(child.size)})
+            </span>
+        </a>
+    </div>
 {/snippet}
 {#if files}
     {#if showSearchbar}
@@ -254,7 +329,11 @@
             </a><br />
         </div>
     {/if}
-    {@render folder(usefiles!, true)}
+    {#if previnVal}
+        {@render search_result(usefiles!)}
+    {:else}
+        {@render folder(usefiles!, true)}
+    {/if}
 {:else}
     <p class="pageSubtitle">There was an error trying to fetch files</p>
     <button
@@ -311,7 +390,10 @@
                 }}
                 links={{
                     Download: [
-                        [getLink(contextItem!, 'download') + "?direct=true", "_blank"],
+                        [
+                            getLink(contextItem!, "download") + "?direct=true",
+                            "_blank",
+                        ],
                         "download",
                         true,
                     ],
@@ -324,7 +406,9 @@
                 buttons={{
                     "Copy Link": [
                         () => {
-                            let url = window.origin + getLink(contextItem!, 'preview');
+                            let url =
+                                window.origin +
+                                getLink(contextItem!, "preview");
                             navigator.clipboard.writeText(url);
                         },
                         "link",
@@ -354,7 +438,10 @@
                 }}
                 links={{
                     Preview: [
-                        [window.origin + /* "/" + */ contextItem!.directory, "_self"],
+                        [
+                            window.origin + /* "/" + */ contextItem!.directory,
+                            "_self",
+                        ],
                         "show",
                         true,
                     ],
@@ -436,6 +523,9 @@ transform: rotate(90deg); */
         background-color: var(--bg-highlight);
     }
 
+    .table-folder {
+    }
+
     .fileName {
         color: var(--accent-primary);
     }
@@ -446,6 +536,13 @@ transform: rotate(90deg); */
 
     .fileExtra {
         color: var(--text-secondary);
+    }
+
+    .inFolder {
+        color: var(--text-secondary);
+    }
+    .inFolder:hover * {
+        color: var(--text-link-hover);
     }
 
     .downloadCount {

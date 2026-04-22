@@ -1,3 +1,4 @@
+import type { pathableItem } from "./data/files";
 import { subdomainoffset } from "./data/std";
 import type { Dict } from "./data/types";
 
@@ -644,4 +645,17 @@ export function pathToAllFolderLinks(str: string) {
         links.push([sub, link]);
     }
     return links;
+}
+
+export function filesOnly(item:pathableItem): pathableItem[] {
+    let temp:pathableItem[] = [];
+    for(const file of item.children ?? []){
+        if (file.type == "folder"){
+            const temp2 = filesOnly(file);
+            temp = temp.concat(temp2);
+        } else {
+            temp.push(file)
+        }
+    }
+    return temp;
 }
