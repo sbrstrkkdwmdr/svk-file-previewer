@@ -442,9 +442,18 @@ export function fisherYatesShuffle(arr: any[]) {
     return arr;
 }
 
-export function stringMatches(str1: string, str2: string) {
-    const a = str1.toLowerCase();
-    const b = str2.toLowerCase();
+// special search
+export function stringMatches(str: string, search: string) {
+    const a = str.toLowerCase();
+    const b = search.toLowerCase();
+    if(search.startsWith("\"") && search.endsWith("\"") || search.startsWith("=")){
+        return a.replaceAll('\"', '') == b.replaceAll('\"', '').replace('=', '');
+    }
+    if(search.includes('*')){
+        const regexPattern =
+        new RegExp('^' + b.replace('.', '\.').replace(/\?/g, '.').replace(/\*/g, '.*') + '$');
+        return regexPattern.test(a);
+    }
     return a == b || a.includes(b) || b.includes(a);
 }
 
