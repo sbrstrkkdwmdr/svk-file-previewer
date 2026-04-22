@@ -171,7 +171,12 @@
                         role="button"
                         tabindex="0"
                     >
-                        <td>
+                        <td
+                            data-url={getLink(item, "preview")}
+                            onclick={(ev) => {
+                                window.location.href = getLink(item, "preview");
+                            }}
+                        >
                             <span
                                 class="fileIcon icon-fileGeneric icon-{extToImage(
                                     item.name.split('.')?.pop() ?? '',
@@ -190,12 +195,22 @@
                                     >{/if}
                             </a>
                         </td>
-                        <td>
+                        <td
+                            data-url={getLink(item, "preview")}
+                            onclick={(ev) => {
+                                window.location.href = getLink(item, "preview");
+                            }}
+                        >
                             <span class="fileExtra">
                                 {@html formatBytes(item.size)}
                             </span>
                         </td>
-                        <td>
+                        <td
+                            data-url={getLink(item, "preview")}
+                            onclick={(ev) => {
+                                window.location.href = getLink(item, "preview");
+                            }}
+                        >
                             <span class="fileExtra">
                                 {#if (item?.downloadCount ?? 0) > 0}
                                     <Icon
@@ -208,14 +223,18 @@
                             </span>
                         </td>
                         <td>
-                            {#if item.directory}
+                            {#if item.directory && item.directory != window.location.pathname.replace("/", "")}
+                                {@const fixed = item.directory.replace(
+                                    window.location.pathname,
+                                    "",
+                                )}
                                 <span class="mono inFolder">
                                     (in
                                     <a
                                         href={item.directory}
                                         class="mono inFolder"
                                     >
-                                        {item.directory}
+                                        {#if fixed.startsWith("/")}.{:else}./{/if}{fixed}
                                     </a>)
                                 </span>
                             {/if}
@@ -252,6 +271,13 @@
                             oncontextmenu={(ev) => ctxmenu(ev, child)}
                             role="button"
                             tabindex="0"
+                            data-url={getLink(child, "preview")}
+                            onclick={(ev) => {
+                                window.location.href = getLink(
+                                    child,
+                                    "preview",
+                                );
+                            }}
                         >
                             <td>
                                 <span
@@ -304,6 +330,11 @@
         oncontextmenu={(ev) => ctxmenu(ev, child)}
         role="button"
         tabindex="0"
+        data-url="{child.directory}{previnVal ? '?q=' + previnVal : ''}"
+        onclick={(ev) => {
+            window.location.href =
+                child.directory + (previnVal ? "?q=" + previnVal : "");
+        }}
     >
         <td>
             <span class="fileIcon icon-fileGeneric icon-folder"></span>
