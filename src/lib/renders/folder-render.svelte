@@ -40,7 +40,12 @@
     }
 
     let usefiles = $state(forceOpenFolders(files));
+
+    let inTO: NodeJS.Timeout;
+    let resultsAreLoading = $state(false);
+
     let searchInitial = $state("");
+    let previnVal = $state("");
     onMount(async () => {
         const url = new URL(window.location.href);
         const query = url.searchParams.get("q");
@@ -63,12 +68,19 @@
         if (ext.length > 0) fullString.push("." + ext);
         return fullString;
     }
-    let previnVal = $state("");
+
     function filterFilesEvent(e: KeyboardEvent) {
         const val = (e.target! as HTMLInputElement).value?.trim() ?? "";
+        console.log(val);
         if (previnVal != val) {
-            filterFiles(val);
-            previnVal = val;
+            clearTimeout(inTO);
+            resultsAreLoading = true;
+            inTO = setTimeout(() => {
+                previnVal = val;
+                filterFiles(val);
+                resultsAreLoading = false;
+                return;
+            }, 500);
         }
     }
     function filterFiles(val: string) {
@@ -76,7 +88,9 @@
         usefiles = temp;
         const nurl = new URL(window.location.href);
         nurl.searchParams.set("q", val);
-        pushState(nurl, {});
+        try {
+            pushState(nurl, {});
+        } catch (err) {}
     }
     function checkFolder(
         parent: pathableItem<"folder">,
@@ -363,7 +377,7 @@
             placeholder="File name"
             callback={(ev) => filterFilesEvent(ev)}
             resultsCount={fileNumber}
-            isLoading={false}
+            isLoading={resultsAreLoading}
             showResultsCount={true}
             initialValue={searchInitial}
         /><br />
