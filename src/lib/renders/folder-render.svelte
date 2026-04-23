@@ -247,6 +247,7 @@
                                     <a
                                         href={item.directory}
                                         class="mono inFolder"
+                                        data-sveltekit-reload
                                     >
                                         {#if fixed.startsWith("/")}.{:else}./{/if}{fixed}
                                     </a>)
