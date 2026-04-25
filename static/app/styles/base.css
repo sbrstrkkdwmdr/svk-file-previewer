@@ -84,8 +84,7 @@ h2 {
     width: fit-content;
     font-size: 2.5rem;
     color: var(--accent-secondary);
-    clear: both;
-    margin: auto;
+    margin: 0;
 }
 
 h3 {

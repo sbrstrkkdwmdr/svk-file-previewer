@@ -147,6 +147,7 @@
         {#if viewMode == "markdown"}
             <MarkdownRender markdownText={data.mdtext} {colourMode} />
             <hr />
+            <h2>Raw text</h2>
             <CodeRender lang="md" code={data.text} {colourMode} />
         {:else if viewMode == "code"}
             <CodeRender lang={data.lang} code={data.text} {colourMode} />
