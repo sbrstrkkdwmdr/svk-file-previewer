@@ -2,8 +2,8 @@
     import { browser } from "$app/environment";
     let { text } = $props();
 </script>
-<pre class="language-placeholder line-numbers">
-        <code class="language-placeholder">{text}</code>
+<pre class="language-text line-numbers">
+        <code class="language-text">{text}</code>
     </pre>
 <link href="/app/libs/prism.css" rel="stylesheet" />
 <!-- {#if colourMode == "light_default"} -->
