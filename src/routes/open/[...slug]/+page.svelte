@@ -18,7 +18,7 @@
     } from "$lib/tools";
     import { onMount } from "svelte";
     let { data } = $props();
-    let viewMode = data.mode;
+    let viewMode = $derived(data.preview.mode);
     let colourMode = $state("dark_default");
     let innerWidth = $state(0);
     let showFilePreview = $derived.by(() => {
@@ -42,8 +42,16 @@
         }
         // showFilePreview = window.innerWidth > 900;
     });
-
     let [metadataWidth, metadataHeight] = $state([0, 0]);
+
+    let forceTextMode = $state(false);
+    let forceTextProcessed = $state(false);
+    let ntext = $state("");
+    async function forceText() {
+        const url = viewLink;
+        const data = await fetch(url).then((res) => res.text());
+        ntext = data.trim();
+    }
 </script>
 
 <svelte:window bind:innerWidth />
@@ -132,11 +140,12 @@
             <Icon icon={extToImage(data.metadata.extension)} /> MIME: {data.mime}
         </span>
         {#if viewMode == "image" || viewMode == "video"}
-                <br />
-        <span title="Media Resolution (pixels)">
-            <Icon icon="maximise" /> {metadataWidth}x{metadataHeight}px
-        </span>
-{/if}
+            <br />
+            <span title="Media Resolution (pixels)">
+                <Icon icon="maximise" />
+                {metadataWidth}x{metadataHeight}px
+            </span>
+        {/if}
         <hr />
     </div>
 {/snippet}
@@ -145,12 +154,16 @@
     {@render renderMetadata()}
     <section id="data" class="centre-page">
         {#if viewMode == "markdown"}
-            <MarkdownRender markdownText={data.mdtext} {colourMode} />
+            <MarkdownRender markdownText={data.preview.mdtext} {colourMode} />
             <hr />
             <h2>Raw text</h2>
-            <CodeRender lang="md" code={data.text} {colourMode} />
+            <CodeRender lang="md" code={data.preview.text} {colourMode} />
         {:else if viewMode == "code"}
-            <CodeRender lang={data.lang} code={data.text} {colourMode} />
+            <CodeRender
+                lang={data.preview.lang}
+                code={data.preview.text}
+                {colourMode}
+            />
         {:else if viewMode == "audio"}
             <AudioRender src={viewLink} mime={data.mime} />
         {:else if viewMode == "image"}
@@ -160,7 +173,7 @@
                 bind:h={metadataHeight}
             />
         {:else if viewMode == "text"}
-            <TextRender text={data.text} />
+            <TextRender text={data.preview.text} />
         {:else if viewMode == "video"}
             <VideoRender
                 src={viewLink}
@@ -168,28 +181,51 @@
                 bind:w={metadataWidth}
                 bind:h={metadataHeight}
             />
+        {:else if viewMode == "disabled"}
+            <TextRender text="File exceeds 50MB. Preview has been disabled" />
+            {@render file()}
         {:else}
-            <a target="_blank" href={downloadurl} class="data-button">
-                <Icon icon="download" fsize="inherit" /> download
-            </a>
-            <button
-                class="data-button"
-                onclick={(ev) => {
-                    navigator.clipboard.writeText(window.location.href);
-                }}
-            >
-                <Icon icon="copy" fsize="inherit" /> Copy link to clipboard
-            </button>
-            <button
-                class="data-button"
-                onclick={(ev) => {
-                    navigator.clipboard.writeText(downloadurl);
-                }}
-            >
-                <Icon icon="copy" fsize="inherit" /> Copy direct link to clipboard
-            </button>
+            {@render file()}
+            {#if !data.preview.disabled}
+                <button
+                    class="data-button"
+                    onclick={async (ev) => {
+                        forceTextMode = !forceTextMode;
+                        if (!forceTextProcessed) {
+                            await forceText();
+                            forceTextProcessed = true;
+                        }
+                    }}
+                >
+                    <Icon icon="eye" fsize="inherit" /> Preview as raw text
+                </button>
+                {#if forceTextMode}
+                    <TextRender text={ntext} />
+                {/if}
+            {/if}
         {/if}
     </section>
+{/snippet}
+{#snippet file()}
+    <a target="_blank" href={downloadurl} class="data-button">
+        <Icon icon="download" fsize="inherit" /> download
+    </a>
+    <button
+        class="data-button"
+        onclick={(ev) => {
+            navigator.clipboard.writeText(window.location.href);
+        }}
+    >
+        <Icon icon="copy" fsize="inherit" /> Copy link to clipboard
+    </button>
+    <button
+        class="data-button"
+        onclick={(ev) => {
+            navigator.clipboard.writeText(downloadurl);
+        }}
+    >
+        <Icon icon="copy" fsize="inherit" /> Copy direct link to clipboard
+    </button>
 {/snippet}
 
 <style>

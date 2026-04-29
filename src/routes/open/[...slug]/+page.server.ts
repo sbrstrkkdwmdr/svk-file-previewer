@@ -8,6 +8,7 @@ import { error, json, redirect, type ServerLoadEvent } from "@sveltejs/kit";
 import fs from "fs";
 
 type mode =
+    | "disabled"
     | "folder"
     | "markdown"
     | "file"
@@ -17,21 +18,24 @@ type mode =
     | "audio"
     | "video";
 
-export const load = async (event: ServerLoadEvent) => {
-    updateFiles();
-    let returnfiles: pathableItem<"folder">;
-    let mode: mode = "folder";
+function previewSupport(mime: string) {
+    const startswith = ["text", "image", "audio", "video"];
+    const endswith = ["markdown"];
+    for (const m of startswith) {
+        if (mime.startsWith(m)) return true;
+    }
+    for (const m of endswith) {
+        if (mime.endsWith(m)) return true;
+    }
+    return false;
+}
+
+async function previews(ctn: FileReturn, mime: string) {
+    let mode: mode = "file";
     let text = "";
     let mdtext = "";
     let lang = "";
-    const hash = event.params.slug;
-    const ctn = await getFileHash(hash ?? "");
-    const mime = getMime((ctn as FileReturn)?.metadata?.name ?? "");
-    
-    if (ctn instanceof Error) {
-        const err = ctn as Error;
-        return error(+err.name, err.message);
-    } else if (mime.includes("markdown")) {
+    if (mime.includes("markdown")) {
         mode = "markdown";
         text = ctn.content.toString();
         mdtext = await markdownParse(ctn.content.toString());
@@ -49,11 +53,35 @@ export const load = async (event: ServerLoadEvent) => {
         mode = "audio";
     } else if (mime.startsWith("video")) {
         mode = "video";
+    }
+    return { mode, text, mdtext, lang };
+}
+
+export const load = async (event: ServerLoadEvent) => {
+    updateFiles();
+    let returnfiles: pathableItem<"folder">;
+    let mode: mode = "folder";
+    let text = "";
+    let mdtext = "";
+    let lang = "";
+    const hash = event.params.slug;
+    const ctn = await getFileHash(hash ?? "");
+    const mime = getMime((ctn as FileReturn)?.metadata?.name ?? "");
+
+    if (ctn instanceof Error) {
+        const err = ctn as Error;
+        return error(+err.name, err.message);
+    } else if (previewSupport(mime)) {
+        if(ctn.hasData){
+            const pre = await previews(ctn, mime);
+            [mode, text, mdtext, lang] = [pre.mode, pre.text, pre.mdtext, pre.lang];
+        } else {
+            mode = "disabled";
+        }
     } else {
-        // redirect
-        // return redirect(308, "/api/download?hash=" + ctn.metadata.hash);
         mode = "file";
     }
+
     //@ts-expect-error returnfiles being used before assigned - intended behaviour
     if (!returnfiles) {
         returnfiles = await toPathableItem(ctn.metadata.directory);
@@ -63,10 +91,13 @@ export const load = async (event: ServerLoadEvent) => {
 
     return {
         files: returnfiles,
-        mode,
-        text,
-        mdtext,
-        lang,
+        preview: {
+            mode,
+            text,
+            mdtext,
+            lang,
+            disabled: !ctn.hasData,
+        },
         // buffer: ctn,
         mime,
         metadata: (ctn as FileReturn).metadata,
@@ -78,7 +109,9 @@ export const load = async (event: ServerLoadEvent) => {
 
 type FileReturn = {
     content: Buffer<ArrayBufferLike>;
+    message: string;
     metadata: file;
+    hasData: boolean;
 };
 
 async function getFile(dir: string, file: string) {
@@ -123,19 +156,30 @@ async function getFileHash(hash: string): Promise<Error | FileReturn> {
     }
     if (tfile) {
         let content: Buffer;
+        let message = "";
+        let hasData: boolean = false;
         let usepath = "./files/" + tfile.path;
         while (usepath.includes("//")) usepath = usepath.replaceAll("//", "/");
         if (fs.existsSync(usepath)) {
-            content = fs.readFileSync(usepath);
-        }
-        // @ts-expect-error content being used before it's assigned
-        if (!content) {
+            const data = fs.statSync(usepath);
+            // only pass data if less than 50MB
+            if (data.size < 5e7) {
+                content = fs.readFileSync(usepath);
+                hasData = true;
+            } else {
+                content = Buffer.from([]);
+                message = "File too large";
+                hasData = false;
+            }
+        } else {
             const err = new Error("500");
             err.name = "500";
             err.message = "Could not fetch from file storage";
+            message = "Could not find file data";
+            hasData = false;
             return err;
         }
-        return { content, metadata: tfile };
+        return { content, message, metadata: tfile, hasData };
         // return json({ "msg": "skissue" });
     }
     // force file previewer mode
@@ -158,17 +202,17 @@ function getLang(file: string) {
     return "";
 }
 
-function fix(lang:string){
+function fix(lang: string) {
     const dict = {
         "shell-session": ["cmd", "bat"],
-        "gdscript": ["gd"],
-        "jsx": ["reactjsx"],
-        "tsx": ["reacttsx"],
-        "rust": ["rs"],
-        "html": ["svelte"],
-    }
-    for(const key in dict){
-        if(dict[key as keyof typeof dict].includes(lang)) return key;
+        gdscript: ["gd"],
+        jsx: ["reactjsx"],
+        tsx: ["reacttsx"],
+        rust: ["rs"],
+        html: ["svelte"],
+    };
+    for (const key in dict) {
+        if (dict[key as keyof typeof dict].includes(lang)) return key;
     }
     return lang;
 }
