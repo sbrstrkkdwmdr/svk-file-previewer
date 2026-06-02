@@ -18,16 +18,20 @@ type mode =
     | "audio"
     | "video";
 
-function previewSupport(mime: string) {
+function previewSupport(mime: string, extension: string) {
     const startswith = ["text", "image", "audio", "video"];
     const endswith = ["markdown"];
+    const equal = ["application/json"];
     for (const m of startswith) {
         if (mime.startsWith(m)) return true;
     }
     for (const m of endswith) {
         if (mime.endsWith(m)) return true;
     }
-    return false;
+    for (const m of equal) {
+        if (mime == m) return true;
+    }
+    return isCode("." + extension);
 }
 
 async function previews(ctn: FileReturn, mime: string) {
@@ -71,10 +75,15 @@ export const load = async (event: ServerLoadEvent) => {
     if (ctn instanceof Error) {
         const err = ctn as Error;
         return error(+err.name, err.message);
-    } else if (previewSupport(mime)) {
-        if(ctn.hasData){
+    } else if (previewSupport(mime, (ctn as FileReturn)?.metadata?.extension)) {
+        if (ctn.hasData) {
             const pre = await previews(ctn, mime);
-            [mode, text, mdtext, lang] = [pre.mode, pre.text, pre.mdtext, pre.lang];
+            [mode, text, mdtext, lang] = [
+                pre.mode,
+                pre.text,
+                pre.mdtext,
+                pre.lang,
+            ];
         } else {
             mode = "disabled";
         }
