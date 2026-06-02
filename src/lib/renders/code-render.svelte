@@ -3,16 +3,17 @@
     import { onMount } from "svelte";
     let { code, lang, colourMode } = $props();
 </script>
-    <pre class="language-{lang} line-numbers">
+
+<pre class="language-{lang} line-numbers">
         <code class="language-{lang}">{code}</code>
     </pre>
-    <link href="/app/libs/prism.css" rel="stylesheet" />
+<link href="/app/libs/prism.css" rel="stylesheet" />
 <!-- {#if colourMode == "light_default"}
     <link href="https://prismjs.catppuccin.com/latte.css" rel="stylesheet" />
 {:else}
     <link href="https://prismjs.catppuccin.com/mocha.css" rel="stylesheet" />
 {/if} -->
-    <link href="https://prismjs.catppuccin.com/mocha.css" rel="stylesheet" />
+<link href="https://prismjs.catppuccin.com/mocha.css" rel="stylesheet" />
 {#if browser}
     <script src="/app/libs/prism.js"></script>
     <script>
@@ -37,7 +38,7 @@
         font-family: monospace;
         font-size: 0.95em;
     }
-        pre {
+    pre {
         border: 1px solid var(--border);
         border-radius: 0px;
     }

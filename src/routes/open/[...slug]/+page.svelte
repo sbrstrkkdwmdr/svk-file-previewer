@@ -164,6 +164,8 @@
                 code={data.preview.text}
                 {colourMode}
             />
+        {:else if viewMode == "text"}
+            <TextRender text={data.preview.text} {colourMode} />
         {:else if viewMode == "audio"}
             <AudioRender src={viewLink} mime={data.mime} />
         {:else if viewMode == "image"}
@@ -172,8 +174,6 @@
                 bind:w={metadataWidth}
                 bind:h={metadataHeight}
             />
-        {:else if viewMode == "text"}
-            <TextRender text={data.preview.text} />
         {:else if viewMode == "video"}
             <VideoRender
                 src={viewLink}

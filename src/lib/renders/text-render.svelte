@@ -1,28 +1,7 @@
 <script lang="ts">
     import { browser } from "$app/environment";
-    let { text } = $props();
+    import CodeRender from "./code-render.svelte";
+    let { text, colourMode } = $props();
 </script>
-<pre class="language-text line-numbers">
-        <code class="language-text">{text}</code>
-    </pre>
-<link href="/app/libs/prism.css" rel="stylesheet" />
-<!-- {#if colourMode == "light_default"} -->
-    <!-- <link href="https://prismjs.catppuccin.com/latte.css" rel="stylesheet" /> -->
-<!-- {:else} -->
-<!-- {/if} -->
-<!-- <link href="https://prismjs.catppuccin.com/mocha.css" rel="stylesheet" /> -->
-{#if browser}
-    <script src="/app/libs/prism.js"></script>
-    <script>
-        window.Prism = window.Prism || {};
-        Prism.disableWorkerMessageHandler = true;
-        prism.highlightAll();
-    </script>
-{/if}
 
-<style>
-    pre {
-        border: 1px solid var(--border);
-        border-radius: 0px;
-    }
-</style>
+<CodeRender lang="text" code={text} {colourMode} />
