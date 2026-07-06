@@ -6,13 +6,15 @@ basic sveltekit app for sharing files
 
 Install pre-requesites with `npm i`
 
-Run in development mode with `npm run dev`
-
 Compile the app with `npm run build`
+
+Set environment variables by creating `.env` (use `.env.example` as a template)
+
+Run in development mode with `npm run dev`
 
 Run in preview mode with `npm run preview`
 
-Run in production mode with `npm run preview --host`
+Run in production mode with `npm run deploy`
 
 ## File sharing
 
@@ -59,23 +61,24 @@ Downloads a file
 
 Returns a list of all files
 
-
 ### /api/view/{hash}/{filename?}
 
 Downloads a file. Is identical to download, the only difference is that `direct` is true by default and this link doesn't bump the download counter
 
-| Params              |                                                                                                                                                                      |
-| ------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Hash                | File hash                                                                                                                                                            |
-| Filename (optional) | File name (used specifically for downloading)                                                                                                                        |
-
+| Params              |                                               |
+| ------------------- | --------------------------------------------- |
+| Hash                | File hash                                     |
+| Filename (optional) | File name (used specifically for downloading) |
 
 ### TODO
 
 <!-- - [ ] download files directly by slug (eg /subfolder/test.png downloads the png) -->
+
 - [x] add download button to content previews
+
 <!-- - [ ] add option to view folder on portrait screens -->
 <!-- - [ ] `/open/{slug}` uses direct parent folder -->
+
 - [ ] URLs in context menu use a tags instead of buttons
 - [x] for non-previewable files (e.g. zip archives) show the original file preview page but with only the download button
 - [ ] fix layout (scroll bars are positioned weirdly and content sometimes goes out of screen)
