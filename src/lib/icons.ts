@@ -217,6 +217,7 @@ export const sites = {
     filecs: ["ea07", "#239120"],
     filecss: ["ea08", "#1572b6"],
     filedart: ["ea0d", "#0175C2"],
+    fileejs: ["eaf1", "#B4CA65"],
     filegd: ["ea8f", "#478cbf"],
     filego: ["ea8e", "#4ec6e4"],
     filehaskell: ["eab9", "#5D4F85"],
@@ -242,6 +243,7 @@ export const sites = {
     filesvelte: ["ec6a", "#FF3E00"],
     fileswift: ["ec6f", "#F05138"],
     filets: ["ec9d", "#3178C6"],
+    filevue: ["ecc2", "#4FC08D"],
     filexml: ["e900", "#005FAD"],
 };
 

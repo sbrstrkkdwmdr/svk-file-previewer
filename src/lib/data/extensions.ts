@@ -7,6 +7,7 @@ export const codeDict = {
     cs: ["cs"],
     css: ["css"],
     dart: ["dart"],
+    ejs: ["ejs"],
     gd: ["gd"],
     go: ["go"],
     haskell: ["hs", "lhs"],
@@ -33,6 +34,7 @@ export const codeDict = {
     svelte: ["svelte"],
     swift: ["swift"],
     ts: ["ts"],
+    vue: ["vue"],
     xml: ["xml"],
 };
 
