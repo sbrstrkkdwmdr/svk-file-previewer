@@ -4,6 +4,7 @@ import fs from "fs";
 import path from "path";
 import { downloadGet } from "./database";
 import { fileNameSeparate, fixWindowsPath, relativePath } from "./tool";
+import { TIMER } from "$env/static/private";
 type result = { file: string; size: number };
 
 export let files: file[] | null = null;
@@ -11,13 +12,13 @@ export let files: file[] | null = null;
 let fLastUpdate = new Date().getTime();
 const rootFolder = "files";
 let currentlyUpdating = false;
-const fileSyncTimer = 1000 * 60 * 15;
+const fileSyncTimer = +TIMER || 1000 * 60 * 15;
 
 export async function updateFiles() {
     if (currentlyUpdating) return;
     if (
         !Boolean(files) ||
-        Math.abs(fLastUpdate - new Date().getTime()) > fileSyncTimer
+        Math.abs(fLastUpdate - new Date().getTime()) > TIMER
     ) {
         currentlyUpdating = true;
         files = null;
@@ -274,7 +275,8 @@ function fixPaths(data: pathableItem, root: string) {
         if (child.type == "folder") {
             if (root.startsWith(child.name)) child.directory = root;
             else child.directory = root + "/" + child.name;
-            if(!child.directory.startsWith("/")) child.directory = "/" + child.directory;
+            if (!child.directory.startsWith("/"))
+                child.directory = "/" + child.directory;
             child = fixPaths(child, child.directory);
         } else {
             child.directory = data.directory;
