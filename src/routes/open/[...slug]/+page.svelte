@@ -182,7 +182,10 @@
                 bind:h={metadataHeight}
             />
         {:else if viewMode == "disabled"}
-            <TextRender text="File exceeds 50MB. Preview has been disabled" />
+            <TextRender
+                text="File exceeds 50MB. Preview has been disabled"
+                {colourMode}
+            />
             {@render file()}
         {:else}
             {@render file()}
@@ -200,7 +203,7 @@
                     <Icon icon="eye" fsize="inherit" /> Preview as raw text
                 </button>
                 {#if forceTextMode}
-                    <TextRender text={ntext} />
+                    <TextRender text={ntext} {colourMode} />
                 {/if}
             {/if}
         {/if}
