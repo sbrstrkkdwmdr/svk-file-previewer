@@ -2,7 +2,7 @@ import type { file } from "$lib/data/files";
 import { getMime } from "$lib/MIME";
 import { UrlParser } from "$lib/tools";
 import type { LayoutServerLoad } from "../../routes/$types";
-import { files } from "./files";
+import { getFiles } from "$lib/server/files/index";
 // import type { LayoutServerLoad } from
 export const load: LayoutServerLoad = async (ld) => {
     const parser = new UrlParser(ld.url.href);
@@ -33,6 +33,7 @@ function validateColourmode(str: string | undefined): colourMode {
 function toMetaData(parser: UrlParser, url: URL) {
     const type = url.pathname.startsWith("/open/") ? "file" : "folder";
     const path = url.pathname.split("/");
+    const files = getFiles();
     if (type == "file") {
         let tfile: file | null = null;
         for (const sf of files ?? []) {
@@ -43,10 +44,10 @@ function toMetaData(parser: UrlParser, url: URL) {
         }
         const fname = `File preview - ${tfile?.name ?? "unknown"}`;
         const mime = getMime(fname);
-        let icon = `"${url.origin}/icons/favicon-64x64.png"`
-    if(mime.startsWith("image")){
-        icon = `"${url.origin}/view/${tfile?.hash}"`
-    }
+        let icon = `"${url.origin}/icons/favicon-64x64.png"`;
+        if (mime.startsWith("image")) {
+            icon = `"${url.origin}/view/${tfile?.hash}"`;
+        }
         return `<title>${fname}</title>
 <meta content="${fname}" property="og:title" />
 <meta content="File preview - ${mime}" property="og:description" />

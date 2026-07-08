@@ -2,7 +2,7 @@ import type { file } from "$lib/data/files";
 import { getMime } from "$lib/MIME";
 import { getUrls, robotsText, toSitemap } from "$lib/seo";
 import { downloadGet, downloadUpdate } from "$lib/server/database";
-import { createHash, files, updateFiles } from "$lib/server/files";
+import { getFiles, updateFiles } from "$lib/server/files";
 import { UrlParser } from "$lib/tools";
 import type { RequestHandler } from "@sveltejs/kit";
 import { error, json, redirect } from "@sveltejs/kit";
@@ -39,10 +39,9 @@ export const downloadFileGET: RequestHandler = async ({ url }) => {
     const preview = url.searchParams.get("preview") as string;
     let hash = url.searchParams.get("hash") as string;
 
-    if((dir || file) && !hash){
+    if ((dir || file) && !hash) {
         return error(500, {
-            message:
-                "name and location params have been disabled. Use hash.",
+            message: "name and location params have been disabled. Use hash.",
         });
     }
 
@@ -51,7 +50,7 @@ export const downloadFileGET: RequestHandler = async ({ url }) => {
     if (tfile) {
         downloadUpdate(tfile.hash);
         let content: NonSharedBuffer | null = getFileContent(tfile);
-        return fileResponse(content, !Boolean(preview), tfile)
+        return fileResponse(content, !Boolean(preview), tfile);
         // return json({ "msg": "skissue" });
     }
     return error(404, { message: "File not found" });
@@ -128,6 +127,7 @@ export const boo: RequestHandler = async ({ url }) => {
 };
 
 function fileFromHash(hash: string): file | null {
+    const files = getFiles();
     // let tfile: file | null = null;
     for (const sf of files ?? []) {
         if (sf.hash == hash) {
@@ -148,7 +148,11 @@ function getFileContent(file: file) {
     return content;
 }
 
-function fileResponse(content: NonSharedBuffer, isDirect: boolean, file: file) {
+function fileResponse(
+    content: Buffer<ArrayBuffer>,
+    isDirect: boolean,
+    file: file,
+) {
     const res = new Response(content, {
         status: 200,
         headers: {},
@@ -179,5 +183,3 @@ export const viewFileSlugGET: RequestHandler = async ({ params, url }) => {
     }
     return error(404, { message: "File not found" });
 };
-
-

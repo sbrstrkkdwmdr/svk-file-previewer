@@ -11,7 +11,8 @@ export const load = async (event: ServerLoadEvent) => {
         returnfiles = await toPathableItem();
     }
 
-    if(returnfiles.children.length == 0){}
+    if (returnfiles.children.length == 0) {
+    }
 
     return {
         files: returnfiles,

@@ -3,7 +3,7 @@ import type { file, pathableItem } from "$lib/data/files";
 import { markdownParse } from "$lib/marked";
 import { getMime } from "$lib/MIME";
 import { downloadGet } from "$lib/server/database";
-import { files as tf, toPathableItem, updateFiles } from "$lib/server/files";
+import { getFiles, toPathableItem, updateFiles } from "$lib/server/files";
 import { error, json, redirect, type ServerLoadEvent } from "@sveltejs/kit";
 import fs from "fs";
 
@@ -131,6 +131,7 @@ async function getFile(dir: string, file: string) {
         return err;
     }
     let tfile: file | null = null;
+    const tf = getFiles();
     for (const sf of tf ?? []) {
         if (sf.path == dir + file) tfile = sf;
     }
@@ -160,6 +161,7 @@ async function getFile(dir: string, file: string) {
 
 async function getFileHash(hash: string): Promise<Error | FileReturn> {
     let tfile: file | null = null;
+    const tf = getFiles();
     for (const sf of tf ?? []) {
         if (sf.hash == hash) tfile = sf;
     }

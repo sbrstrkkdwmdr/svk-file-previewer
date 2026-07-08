@@ -1,155 +1,10 @@
-import type { file, pathableItem } from "$lib/data/files";
-import crypto from "crypto";
-import fs from "fs";
-import path from "path";
-import { downloadGet } from "./database";
-import { fileNameSeparate, fixWindowsPath, relativePath } from "./tool";
-import { TIMER } from "$env/static/private";
-type result = { file: string; size: number };
-
-export let files: file[] | null = null;
-
-let fLastUpdate = new Date().getTime();
-const rootFolder = "files";
-let currentlyUpdating = false;
-const fileSyncTimer = +TIMER || 1000 * 60 * 15;
-
-export async function updateFiles() {
-    if (currentlyUpdating) return;
-    if (
-        !Boolean(files) ||
-        Math.abs(fLastUpdate - new Date().getTime()) > TIMER
-    ) {
-        currentlyUpdating = true;
-        files = null;
-        const iso = new Date().toISOString();
-        console.log(iso + ": Updating file explorer...");
-        fLastUpdate = new Date().getTime();
-        await new Promise((resolve, reject) => {
-            walk(`./${rootFolder}`, (err, res) => {
-                walkCallback(err!, res!, resolve, reject, [
-                    /* add more folder paths if necessary */
-                ]);
-            });
-        });
-        currentlyUpdating = false;
-    }
-    return files;
-}
-
-// convert all files to somewhat readable format
-export function editFiles(results: result[]): file[] {
-    const data = results
-        .map((x) => {
-            let p = fixWindowsPath(x.file);
-            let rel = relativePath(p);
-            const pathspecific = fileNameSeparate(rel);
-            return {
-                directory: pathspecific.path,
-                name: pathspecific.filename,
-                extension: pathspecific.extension,
-                path: rel,
-                size: x.size,
-                hash: createHash(rel),
-            } as file;
-        })
-        .sort(sortFiles);
-    for (const item of data) {
-        if (!item.path.startsWith("/")) item.path = "/" + item.path;
-        if (!item.directory.startsWith("/"))
-            item.directory = "/" + item.directory;
-    }
-    return data;
-}
-
-function sortFiles(a: file, b: file) {
-    if (a.directory != b.directory)
-        return a.directory.localeCompare(b.directory);
-    return a.name.localeCompare(b.name);
-}
-
-// modified from stackoverflow
-export function walk(
-    dir: string,
-    done: (err?: Error | null, results?: result[]) => void,
-) {
-    var results: result[] = [];
-    fs.readdir(dir, function (err, list) {
-        // if error on read
-        if (err) return done(err);
-        // if no files found
-        let pending = list.length;
-        if (!pending) return done(null, results);
-
-        list.forEach(function (file) {
-            // idk what this does. check if file valid??
-            file = path.resolve(dir, file);
-
-            // get file stats
-            fs.stat(file, function (err, stat) {
-                if (stat && stat.isDirectory()) {
-                    // if "file" is actually a folder, then recursively call this function on its children
-                    walk(file, function (err?: Error | null, res?: result[]) {
-                        // append results to output
-                        if (res) results = results.concat(res);
-                        if (!--pending) done(null, results);
-                    });
-                } else {
-                    // append results to output
-                    results.push({ file: file, size: stat?.size ?? 0 });
-                    if (!--pending) done(null, results);
-                }
-            });
-        });
-    });
-}
-
-const walkCallback = (
-    err: Error,
-    results: result[],
-    resolve: (value?: unknown) => void,
-    reject: (reason?: any) => void,
-    nextDirs: string[],
-) => {
-    if (err) {
-        console.log(err);
-        files = [
-            {
-                directory: "error",
-                name: "error",
-                extension: "error",
-                path: "error",
-                size: 0,
-                hash: "error",
-            },
-        ];
-        resolve(false);
-        files = null;
-    } else {
-        // if no more directories to parse through, end function
-        if (nextDirs.length == 0) {
-            walkCallback_addFiles(results);
-            resolve(true);
-        } else {
-            // walk through next directory
-            walkCallback_addFiles(results);
-            const next = nextDirs.shift();
-            walk(next!, (errNew, res) => {
-                walkCallback(errNew!, res!, resolve, reject, nextDirs);
-            });
-        }
-    }
-};
-
-function walkCallback_addFiles(results: result[]) {
-    if (files) {
-        files = files.concat(editFiles(results));
-    } else {
-        files = editFiles(results);
-    }
-}
+import type { pathableItem } from "$lib/data/files";
+import { downloadGet } from "$lib/server/database";
+import { createHash } from "$lib/server/tool";
+import { getFiles } from "$lib/server/files/updater";
 
 export function getFile(dir: string, fileName: string) {
+    const files = getFiles();
     const searchFiles = files?.slice() ?? [];
     const temp = searchFiles.filter(
         (x) =>
@@ -159,24 +14,13 @@ export function getFile(dir: string, fileName: string) {
     return temp;
 }
 
-async function addCounters() {}
-
-// create hash based off file location
-export function createHash(str: string): string {
-    let hash = crypto.createHash("md5");
-    hash.setEncoding("hex");
-    hash.write(str);
-    hash.end();
-    let sum = hash.read();
-    return sum;
-}
-
 /**
  * convert files into pathableItem type for readability
  */
 export async function toPathableItem(
     root = "/",
 ): Promise<pathableItem<"folder">> {
+    const files = getFiles();
     root = stripFolder(root).join("/");
     const data: pathableItem<"folder"> = {
         type: "folder",
