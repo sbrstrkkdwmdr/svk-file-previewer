@@ -63,31 +63,42 @@
         href="/icons/apple-touch-icon.png"
     /> -->
 </svelte:head>
+<div class="header">
+    <Icon
+        icon="moon"
+        callback={() => {
+            if (colourMode == "light_default") {
+                colourMode = "dark_default";
+            } else {
+                colourMode = "light_default";
+            }
+        }}
+        altIcon="sun"
+        altIconCondition={() => colourMode == "light_default"}
+        fsize="40px"
+        textGlowColour="var(--navSocialGlow)"
+        glowColour="var(--navSocialGlowText)"
+        glowOnHover={true}
+    />
+    <a
+        href="https://github.com/sbrstrkkdwmdr/svk-file-previewer"
+        title="source code"
+    >
+        <Icon icon="github" fsize="40px" />
+    </a>
+    <hr />
+</div>
 <main class="theme-{colourMode}">
-    <div class="layoutForcedSpecialButtons">
-        <Icon
-            icon="moon"
-            callback={() => {
-                if (colourMode == "light_default") {
-                    colourMode = "dark_default";
-                } else {
-                    colourMode = "light_default";
-                }
-            }}
-            altIcon="sun"
-            altIconCondition={() => colourMode == "light_default"}
-            fsize="40px"
-            textGlowColour="var(--navSocialGlow)"
-            glowColour="var(--navSocialGlowText)"
-            glowOnHover={true}
-        />
-    </div>
-    <hr/>
     {@render children?.()}
 </main>
+
 <style>
-    .layoutForcedSpecialButtons {
+    .header {
         text-align: left;
+        position: sticky;
+        width: 100%;
+        top: 0;
+        background-color: var(--bg-primary);
+        /*overflow: none !important;*/
     }
 </style>
-
