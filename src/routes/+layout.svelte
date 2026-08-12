@@ -89,7 +89,9 @@
     <hr />
 </div>
 <main class="theme-{colourMode}">
-    {@render children?.()}
+    <div class="centre-page">
+        {@render children?.()}
+    </div>
 </main>
 
 <style>
