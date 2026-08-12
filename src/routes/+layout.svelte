@@ -98,7 +98,7 @@
         position: sticky;
         width: 100%;
         top: 0;
-        background-color: var(--bg-primary);
+        background-color: var(--theme-bg-primary);
         /*overflow: none !important;*/
     }
 </style>

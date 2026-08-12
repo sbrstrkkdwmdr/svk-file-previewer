@@ -33,7 +33,7 @@
         <input
             type="search"
             class="fix-search-font"
-            id={id}
+            {id}
             {placeholder}
             onkeyup={async (ev) => {
                 await callback(ev);
@@ -78,13 +78,13 @@
         /* width: 250px; */
         width: 100%;
         background: none;
-        background-color: var(--bg-secondary);
-        border: 3px solid var(--border);
+        background-color: var(--theme-bg-secondary);
+        border: 3px solid var(--theme-border);
         justify-content: space-between;
     }
 
     .search-container-child:focus-within {
-        background-color: var(--bg-primary);
+        background-color: var(--theme-bg-primary);
     }
 
     :global(.search-container-child i) {
@@ -105,8 +105,8 @@
         border-radius: 5px;
         text-align: center;
         vertical-align: middle;
-        color: var(--bg-secondary);
-        background-color: var(--accent-primary);
+        color: var(--theme-bg-secondary);
+        background-color: var(--theme-accent-primary);
         /* display: inline-block; */
     }
     .fix-search-font {

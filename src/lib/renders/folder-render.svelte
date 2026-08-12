@@ -229,7 +229,7 @@
                                 {#if (item?.downloadCount ?? 0) > 0}
                                     <Icon
                                         icon="download"
-                                        colour="var(--text-secondary)"
+                                        colour="var(--theme-text-secondary)"
                                     /><span class="downloadCount"
                                         >{item.downloadCount}</span
                                     >
@@ -323,7 +323,7 @@
                                     {#if (child?.downloadCount ?? 0) > 0}
                                         <Icon
                                             icon="download"
-                                            colour="var(--text-secondary)"
+                                            colour="var(--theme-text-secondary)"
                                         /><span class="downloadCount"
                                             >{child.downloadCount}</span
                                         >
@@ -587,29 +587,29 @@ transform: rotate(90deg); */
     }
 
     .file:hover {
-        background-color: var(--bg-highlight);
+        background-color: var(--theme-bg-highlight);
     }
 
     .table-folder {
     }
 
     .fileName {
-        color: var(--accent-primary);
+        color: var(--theme-accent-primary);
     }
 
     .extension {
-        color: var(--accent-tertiary);
+        color: var(--theme-accent-tertiary);
     }
 
     .fileExtra {
-        color: var(--text-secondary);
+        color: var(--theme-text-secondary);
     }
 
     .inFolder {
-        color: var(--text-secondary);
+        color: var(--theme-text-secondary);
     }
     .inFolder:hover * {
-        color: var(--text-link-hover);
+        color: var(--theme-text-link-hover);
     }
 
     .downloadCount {
@@ -626,6 +626,6 @@ transform: rotate(90deg); */
         /* pull summaries back to align left */
     }
     .underlay {
-        background-color: var(--bg-under);
+        background-color: var(--theme-bg-under);
     }
 </style>

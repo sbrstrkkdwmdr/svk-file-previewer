@@ -1,8 +1,8 @@
-#markdownData pre {
+.markdownData pre {
     background: none;
 }
 
-#markdownData h1 {
+.markdownData h1 {
     width: fit-content;
     font-size: 4rem;
     clear: both;
@@ -12,7 +12,7 @@
     padding: 15px;
 }
 
-#markdownData h2 {
+.markdownData h2 {
     width: fit-content;
     font-size: 2.5rem;
     clear: both;
@@ -21,7 +21,7 @@
     padding: 15px;
 }
 
-#markdownData h3 {
+.markdownData h3 {
     font-size: 1.5rem;
     padding: 0;
     margin: 0;
@@ -29,7 +29,7 @@
     padding: 15px;
 }
 
-#markdownData h4 {
+.markdownData h4 {
     text-align: left;
     font-size: 1rem;
     padding: 0;
@@ -38,26 +38,26 @@
     padding: 15px;
 }
 
-#markdownData p,
-#markdownData ul {
+.markdownData p,
+.markdownData ul {
     width: fit-content;
     clear: both;
     margin: 0;
     /* margin: auto; */
 }
 
-#markdownData code {
-    background-color: var(--code-bg);
-    color: var(--code);
+.markdownData code {
+    background-color: var(--theme-code-bg);
+    color: var(--theme-code);
     padding: 2px 6px;
     border-radius: 3px;
     font-family: monospace;
     font-size: 0.95em;
 }
 
-#markdownData pre code {
+.markdownData pre code {
     display: block;
-    border: var(--border) 3px solid;
+    border: var(--theme-border) 3px solid;
     padding: 2px 6px;
     border-radius: 3px;
     font-family: monospace;
@@ -67,52 +67,36 @@
     margin: 5px;
 }
 
-#markdownData a {
+.markdownData a {
     font-size: inherit;
 }
 
-#markdownData a:link,
-#markdownData a:visited {
-    color: var(--text-link);
+.markdownData a:link,
+.markdownData a:visited {
+    color: var(--theme-text-link);
 }
 
-#markdownData a:hover,
-#markdownData a:active {
-    color: var(--text-link-hover);
+.markdownData a:hover,
+.markdownData a:active {
+    color: var(--theme-text-link-hover);
 }
 
-#markdownData mark {
-    color: var(--mark-text);
-    background-color: var(--mark-bg);
+.markdownData mark {
+    color: var(--theme-mark-text);
+    background-color: var(--theme-mark-bg);
 }
 
-#markdownData sup>*,
-#markdownData sub>*,
-#markdownData sup,
-#markdownData sub {
+.markdownData sup>*,
+.markdownData sub>*,
+.markdownData sup,
+.markdownData sub {
     font-size: 0.8rem;
 }
 
-#markdownData blockquote {
-    background-color: var(--bg-highlight);
-    border-left: var(--blockquote-border) 5px solid;
+.markdownData blockquote {
+    background-color: var(--theme-bg-highlight);
+    border-left: var(--theme-blockquoteborder) 5px solid;
     padding-left: 5px;
-}
-
-#markdownData thead {
-    background-color: var(--bg-highlight);
-}
-
-#markdownData tr:nth-child(even) {
-    background-color: var(--table-even);
-}
-
-#markdownData tr:hover {
-    background-color: var(--bg-highlight);
-}
-
-#markdownData img {
-    max-width: 100%;
 }
 
 #raw {
@@ -124,7 +108,7 @@
 }
 
 .markdownHoverCopyable:hover {
-    background-color: var(--bg-highlight);
+    background-color: var(--theme-bg-highlight);
 }
 
 .checkmark {
@@ -138,13 +122,13 @@
     list-style-type: none;
 }
 
-input[type=checkbox] {
-    border: 1px solid var(--border);
+.markdownData input[type=checkbox] {
+    border: 1px solid var(--theme-border);
     appearance: none;
     -webkit-appearance: none;
     width: 25px;
     height: 25px;
-    background-color: var(--bg-primary);
+    background-color: var(--theme-bg-primary);
     position: relative;
     transition: background-color 300ms ease;
     vertical-align: top;
@@ -157,28 +141,28 @@ input[type=checkbox] {
         width: calc(100% - 1px);
         text-align: center;
         /* content: "✖"; */
-        color: var(--disable);
-        /* background-color: var(--border); */
+        color: var(--theme-enable-);
+        /* background-color: var(--theme-border); */
     }
 
     &:checked {
-        background-color: var(--bg-primary);
+        background-color: var(--theme-bg-secondary);
 
         &::after {
             width: 100%;
             text-align: center;
             content: "✔";
-            color: var(--enable);
+            color: var(--theme-enable-);
             /* background-color: #67ff67; */
         }
     }
 }
 
-#markdownData .markdown-alert {
+.markdownData .markdown-alert {
     padding: 10px;
 }
 
-#markdownData .markdown-alert-title {
+.markdownData .markdown-alert-title {
     margin-bottom: 15px;
 }
 
@@ -189,54 +173,54 @@ input[type=checkbox] {
 }
 
 .markdown-alert-note {
-    border-left: var(--alert-note) 5px solid;
+    border-left: var(--theme-alert-note) 5px solid;
 }
 
 .markdown-alert-note>.markdown-alert-title {
-    color: var(--alert-note);
-    fill: var(--alert-note);
+    color: var(--theme-alert-note);
+    fill: var(--theme-alert-note);
     font-weight: 700;
 }
 
 .markdown-alert-tip {
-    border-left: var(--alert-tip) 5px solid;
+    border-left: var(--theme-alert-tip) 5px solid;
 
 }
 
 .markdown-alert-tip>.markdown-alert-title {
-    color: var(--alert-tip);
-    fill: var(--alert-tip);
+    color: var(--theme-alert-tip);
+    fill: var(--theme-alert-tip);
     font-weight: 700;
 }
 
 .markdown-alert-important {
-    border-left: var(--alert-important) 5px solid;
+    border-left: var(--theme-alert-important) 5px solid;
 
 }
 
 .markdown-alert-important>.markdown-alert-title {
-    color: var(--alert-important);
-    fill: var(--alert-important);
+    color: var(--theme-alert-important);
+    fill: var(--theme-alert-important);
     font-weight: 700;
 }
 
 .markdown-alert-warning {
-    border-left: var(--alert-warning) 5px solid;
+    border-left: var(--theme-alert-warning) 5px solid;
 
 }
 
 .markdown-alert-warning>.markdown-alert-title {
-    color: var(--alert-warning);
-    fill: var(--alert-warning);
+    color: var(--theme-alert-warning);
+    fill: var(--theme-alert-warning);
     font-weight: 700;
 }
 
 .markdown-alert-caution {
-    border-left: var(--alert-caution) 5px solid;
+    border-left: var(--theme-alert-caution) 5px solid;
 }
 
 .markdown-alert-caution>.markdown-alert-title {
-    color: var(--alert-caution);
-    fill: var(--alert-caution);
+    color: var(--theme-alert-caution);
+    fill: var(--theme-alert-caution);
     font-weight: 700;
 }

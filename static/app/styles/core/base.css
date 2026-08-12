@@ -1,0 +1,248 @@
+/* base elements, no classes */
+
+:root {
+    font-family:
+        "Inter", "Zen Kaku Gothic", "JetBrainsMono", Arial, Helvetica,
+        sans-serif;
+}
+
+* {
+    /* background-color: var(--theme-bg-secondary); */
+    color: var(--theme-text-primary);
+
+    scrollbar-color: var(--theme-scrollbar);
+    /* scrollbar-width: thin; */
+    scroll-behavior: smooth;
+    /* transition: var(--sidebarAnim); */
+    font-size: 18px;
+}
+
+/* basic layout */
+
+html,
+body {
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    background-color: var(--theme-bg-primary);
+    height: 100vh;
+    width: 100vw;
+    max-height: 100%;
+    max-width: 100%;
+    overflow: hidden;
+}
+
+main {
+    background-color: var(--theme-bg-primary);
+    /* background-image: var(--gradient); */
+    overflow: auto;
+    /* position: fixed; */
+    padding: 35px;
+    /* padding-top: calc(15% + 3px); */
+    /* padding-left: calc(15% + 3px); */
+    /* width: calc(auto - 33px); */
+    width: auto;
+    /* margin-left: 33px; */
+    text-align: center;
+    height: calc(100vh - 70px);
+    scrollbar-gutter: stable;
+}
+
+/* inline */
+
+h1 {
+    width: fit-content;
+    font-size: 4rem;
+    color: var(--theme-accent-primary);
+    clear: both;
+    margin: auto;
+    text-align: center;
+}
+
+h2 {
+    width: fit-content;
+    font-size: 2.5rem;
+    color: var(--theme-accent-secondary);
+    padding: 0;
+    margin: 0;
+    /* clear: both; */
+    /* margin: auto; */
+}
+
+h3 {
+    color: var(--theme-accent-tertiary);
+    font-size: 1.5rem;
+    padding: 0;
+    margin: 0;
+    /* padding-top: 15px */
+}
+
+h4 {
+    color: var(--theme-accent-four);
+}
+
+h5 {
+    color: var(--theme-accent-five);
+}
+
+h6 {
+    color: var(--theme-accent-six);
+}
+
+h4,
+h5,
+h6 {
+    padding: 0;
+    margin: 0;
+}
+
+a {
+    color: var(--theme-text-link);
+    text-decoration: none;
+    font-size: inherit;
+}
+
+a:link,
+a:visited {
+    color: var(--theme-text-link);
+}
+
+a:hover,
+a:active,
+a:focus {
+    color: var(--theme-text-link-hover);
+    text-decoration: underline;
+}
+
+blockquote {
+    background-color: var(--theme-bg-highlight);
+    border-left: var(--theme-blockquoteborder) 5px solid;
+    padding-left: 5px;
+}
+
+code {
+    background-color: var(--theme-code-bg);
+    color: var(--theme-code);
+    padding: 2px 6px;
+    border-radius: 3px;
+    font-family: "JetBrainsMono", "Lucida Console", monospace;
+    font-size: 0.95em;
+}
+
+pre code {
+    display: inline-block;
+}
+
+mark {
+    color: var(--theme-mark-text);
+    background-color: var(--theme-mark-bg);
+}
+
+sup > *,
+sub > *,
+sup,
+sub {
+    font-size: 0.8rem;
+    display: inline;
+}
+
+sup {
+    vertical-align: super;
+}
+
+sub {
+    vertical-align: sub;
+}
+
+kbd {
+    display: inline-block;
+    border: solid 1px var(--theme-border);
+    background-color: var(--theme-bg-secondary);
+    box-shadow:
+        0 1px 1px rgba(0, 0, 0, 0.2),
+        0 -2px 2px 0 var(--theme-bg-primary) inset;
+    font-size: 0.85em;
+    padding: 2px 4px;
+    white-space: nowrap;
+    font-family: "JetBrainsMono", "FiraCodeNerdFont", monospace;
+    font-weight: 600;
+}
+
+/* table */
+
+table {
+    /* border-spacing: 0px; */
+    border-collapse: collapse;
+}
+
+tr:nth-child(odd) {
+    background-color: var(--theme-table-even);
+}
+
+tr:hover,
+tr:focus {
+    /*background-color: var(--theme-bg-highlight);*/
+    /*outline: 0;*/
+    background-color: var(--theme-bg-primary);
+    box-shadow: 0 0 0 0.2rem
+        color-mix(in srgb, var(--theme-accent-primary), transparent 50%);
+    /* these two force the highlight to overlay neighbours */
+    position: relative;
+    z-index: 299;
+}
+
+thead,
+thead tr,
+thead th,
+thead td {
+    background-color: var(--theme-table-head);
+}
+
+th,
+td {
+    padding: 5px;
+}
+
+/* other */
+
+hr {
+    color: var(--theme-border);
+    border: 1px solid var(--theme-border);
+    width: 100%;
+}
+
+vr {
+    color: var(--theme-border);
+    border-left: 1px solid var(--theme-border);
+}
+
+ul,
+ol {
+    margin: 0px;
+    padding-left: 8px;
+}
+
+/* media rules */
+
+@media only screen and (max-width: 600px) and (-webkit-min-device-pixel-ratio: 2) and (orientation: portrait) {
+    h1 {
+        width: fit-content;
+        font-size: 3rem;
+        clear: both;
+        margin: auto;
+        text-align: center;
+    }
+
+    h2 {
+        width: fit-content;
+        font-size: 2rem;
+        clear: both;
+        /* margin: auto; */
+    }
+
+    main {
+        padding-left: 15px;
+    }
+}

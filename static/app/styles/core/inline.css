@@ -1,0 +1,38 @@
+/* inline - text */
+
+/* monospaced font only */
+.mono-font {
+    font-family: "JetBrainsMono", "FiraCodeNerdFont", monospace;
+    font-weight: 600;
+}
+
+/* monospace including whitespace */
+.mono {
+    font-family: "JetBrainsMono", "FiraCodeNerdFont", monospace;
+    font-weight: 600;
+    white-space: pre;
+}
+
+/* ignore litgatures (eg. -> becoming an arrow) */
+.no-liga {
+    font-feature-settings: "liga" 0;
+    font-variant-ligatures: none;
+}
+
+/* glow on hover */
+.highlight-glow {
+    text-shadow: 0;
+    transition: 0.3s ease;
+}
+
+.highlight-glow:hover,
+.highlight-glow:focus {
+    color: #fff;
+    /* background-color: var(--theme-bg-highlight); */
+    text-shadow: var(--theme-glow-text);
+    -webkit-filter: drop-shadow(var(--theme-glow));
+    -moz-filter: drop-shadow(var(--theme-glow));
+    -ms-filter: drop-shadow(var(--theme-glow));
+    -o-filter: drop-shadow(var(--theme-glow));
+    filter: drop-shadow(var(--theme-glow));
+}

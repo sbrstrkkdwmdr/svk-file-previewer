@@ -1,0 +1,148 @@
+/* stuff i couldnt categorise */
+
+.unset {
+    all: unset;
+}
+
+.inherit-all {
+    all: inherit;
+}
+
+.aside-sticky {
+    top: 50%;
+    transform: translateY(-25%);
+    right: 0;
+    height: 250px;
+    width: 250px;
+    position: fixed;
+    z-index: 300;
+    height: calc(100% - 75px);
+    padding: 1em;
+}
+
+/* if sticky aside is invis show this elem */
+.aside-sticky-replacer {
+    display: none;
+}
+
+.aside-sticky-item {
+    display: block;
+    width: 100%;
+    color: var(--theme-text-secondary);
+}
+
+@media only screen and (max-width: 1150px) {
+    .aside-sticky {
+        display: none;
+    }
+
+    .aside-sticky-replacer {
+        display: block;
+    }
+}
+
+/* item */
+
+.item {
+    /* scroll-margin-top: 3rem; */
+    margin: 10px;
+    padding: 10px;
+    display: inline-block;
+    text-align: center;
+    border-radius: 15px;
+    background-color: var(--theme-bg-secondary);
+    border: 3px solid var(--theme-border);
+    width: 420px;
+    position: relative;
+    transition:
+        transform 0.2s ease,
+        box-shadow 0.2s ease;
+}
+
+.item:hover,
+.item:hover {
+    background-color: var(--theme-bg-highlight);
+    border: 3px solid var(--theme-border);
+}
+
+/* .theme-light_default .item:hover {
+    background-color: var(--theme-bg-secondary);
+    border: 3px solid var(--theme-accent-primary);
+} */
+
+.item-lift {
+    transition: 0.2s ease;
+    /*         transform 0.2s ease,
+        box-shadow 0.2s ease,
+        background-color 0.2s ease; */
+}
+
+.item-lift:hover,
+.item-lift:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+}
+
+.item-name {
+    color: var(--theme-accent-secondary);
+    width: 100%;
+    text-align: center;
+    margin: 0 auto;
+    margin-right: 2vw;
+    padding-right: 5px;
+    padding-left: 5px;
+    border-radius: 5px;
+    /* font-family: 'Consolas', monospace; */
+    font-weight: bolder;
+    font-size: 1.5rem;
+    /* font-size: 40px; */
+    margin: 0;
+    padding: 0;
+}
+
+/* also includes yt preview */
+.item-image-preview {
+    width: 400px;
+    height: 225px;
+    border-radius: 10px;
+    object-fit: cover;
+}
+
+@media only screen and (max-width: 600px) and (-webkit-min-device-pixel-ratio: 2) and (orientation: portrait) {
+    .item {
+        width: 275px;
+        height: auto;
+    }
+
+    .item-image-preview {
+        width: 275px;
+        height: auto;
+    }
+
+    .item-name {
+        overflow-wrap: anywhere;
+    }
+}
+
+.badge {
+    display: inline-block;
+    margin: 0px 5px;
+    padding: 5px;
+    font-weight: bold;
+    line-height: 1;
+    text-align: center;
+    white-space: nowrap;
+    vertical-align: baseline;
+    border-radius: 5px;
+    background-color: var(--badge-bg);
+}
+
+.spec-item-hover-glow-mini:hover,
+.spec-item-hover-glow-mini:hover {
+    box-shadow: var(--theme-select-glow);
+}
+.spec-item-hover-glow:hover,
+.spec-item-hover-glow:hover {
+    background-color: var(--theme-bg-highlight);
+    box-shadow: var(--theme-select-glow);
+}

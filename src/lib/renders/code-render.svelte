@@ -32,19 +32,19 @@
     } */
     code {
         /* background-color: var(--codeInline-bg); */
-        color: var(--code);
+        color: var(--theme-code);
         padding: 2px 6px;
         border-radius: 5px;
         font-family: monospace;
         font-size: 0.95em;
     }
     pre {
-        border: 1px solid var(--border);
+        border: 1px solid var(--theme-border);
         border-radius: 0px;
     }
     pre code {
         display: block;
-        /* border: var(--border) 3px solid; */
+        /* border: var(--theme-border) 3px solid; */
         padding: 2px 6px;
         border-radius: 3px;
         font-family: monospace;

@@ -1,0 +1,245 @@
+/* user inputs */
+
+/* text */
+
+.input-generic,
+input[type="text"],
+input[type="number"],
+input[type="password"],
+textarea {
+    background-color: var(--theme-bg-secondary);
+    border: 3px solid var(--theme-border);
+    display: block;
+    font-size: 24px;
+}
+
+*:focus-visible,
+.generic-focus:focus,
+.button-decor:focus,
+.button-decor-2:focus {
+    outline: 0;
+    background-color: var(--theme-bg-primary);
+    box-shadow: 0 0 0 0.2rem
+        color-mix(in srgb, var(--theme-accent-primary), transparent 50%);
+    /* these two force the highlight to overlay neighbours */
+    position: relative;
+    z-index: 299;
+}
+
+input:not([type="checkbox"]):focus,
+textarea:focus,
+.input-generic:focus,
+input[type="text"]:focus,
+input[type="number"]:focus,
+input[type="password"]:focus {
+    outline: 0;
+    background-color: var(--theme-bg-primary);
+    box-shadow: 0 0 0 0.2rem
+        color-mix(in srgb, var(--theme-accent-primary), transparent 50%);
+    /* these two force the highlight to overlay neighbours */
+    position: relative;
+    z-index: 299;
+    /* color: color-mix(in srgb, var(--theme-accent-primary), transparent 80%); */
+}
+
+input.input-generic,
+textarea.input-generic {
+    width: calc(100% - 10px);
+}
+
+textarea.input-generic {
+    resize: vertical;
+}
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+input[type="number"] {
+    -moz-appearance: textfield;
+}
+
+.searchbar {
+    margin: auto;
+    margin-top: 15px;
+    width: 35%;
+    font-size: 24px;
+    background-color: var(--theme-bg-secondary);
+    border: 3px solid var(--theme-border);
+}
+
+/* clickables */
+
+.checkbox-switch {
+    appearance: none;
+    -webkit-appearance: none;
+    width: 50px;
+    height: 25px;
+    background-color: var(--theme-bg-secondary);
+    position: relative;
+    transition: background-color 300ms ease;
+    vertical-align: top;
+    border: 3px solid var(--theme-border);
+
+    &::after {
+        content: "";
+        position: absolute;
+        top: 50%;
+        left: 23%;
+        transform: translate(-50%, -50%);
+        height: 20px;
+        width: 20px;
+        background-color: var(--theme-disable-);
+        transition: left 300ms ease;
+    }
+
+    &:checked {
+        &::after {
+            left: 77%;
+            background-color: var(--theme-enable-);
+        }
+
+        transition: ease-in-out;
+    }
+}
+
+.checkbox-check {
+    border: 1px solid var(--theme-border);
+    appearance: none;
+    -webkit-appearance: none;
+    width: 25px;
+    height: 25px;
+    background-color: var(--theme-bg-primary);
+    position: relative;
+    transition: background-color 300ms ease;
+    vertical-align: top;
+
+    &::after {
+        content: "";
+        position: absolute;
+        height: calc(100% - 1px);
+        vertical-align: middle;
+        width: calc(100% - 1px);
+        text-align: center;
+        /* content: "✖"; */
+        color: var(--theme-disable-);
+        /* background-color: var(--theme-border); */
+    }
+
+    &:checked {
+        background-color: var(--theme-bg-secondary);
+
+        &::after {
+            width: 100%;
+            text-align: center;
+            content: "✔";
+            color: var(--theme-enable-);
+            /* background-color: #67ff67; */
+        }
+    }
+}
+
+.checkbox-check-alternate {
+    border: 1px solid var(--theme-border);
+    appearance: none;
+    display: inline;
+    -webkit-appearance: none;
+    width: 40px;
+    height: 40px;
+    background-color: var(--theme-bg-primary);
+    position: relative;
+    transition: background-color 300ms ease;
+    top: -3px;
+    vertical-align: top;
+
+    &::after {
+        display: inline;
+        content: "";
+        position: absolute;
+        height: calc(100% - 1px);
+        vertical-align: middle;
+        width: calc(100% - 1px);
+        text-align: center;
+        /* content: "✖"; */
+        color: var(--theme-disable-);
+        /* background-color: var(--theme-border); */
+    }
+
+    &:checked {
+        background-color: var(--theme-bg-secondary);
+
+        &::after {
+            width: 100%;
+            text-align: center;
+            content: "✔";
+            color: var(--theme-enable-);
+            /* background-color: #67ff67; */
+            top: 2px;
+            left: 1px;
+        }
+    }
+}
+
+select {
+    background-color: var(--theme-bg-secondary);
+    border: 3px solid var(--theme-border);
+    font-size: 24px;
+}
+
+/* buttons */
+
+button {
+    font-family: inherit;
+}
+
+.button-decor {
+    border: 3px solid var(--theme-border);
+    background-color: var(--theme-bg-secondary);
+}
+
+.button-decor:hover/* ,
+.button-decor:focus  */ {
+    background-color: var(--theme-bg-highlight);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+}
+
+.button-decor:active {
+    background-color: var(--theme-enable-);
+}
+
+.button-decor-2 {
+    background-color: var(--theme-bg-secondary);
+    display: inline-block;
+    width: fit-content;
+    border: 1px solid var(--theme-border);
+    font-size: 1rem;
+    padding: 0.5em 1em;
+    border-radius: 8px;
+}
+
+.button-decor-2:hover/* ,
+.button-decor-2:focus  */ {
+    cursor: pointer;
+    background-color: var(--theme-bg-highlight);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+}
+
+.button-animated {
+    border-radius: 5px;
+    border: 3px solid var(--theme-border);
+    background-color: var(--theme-bg-secondary);
+    transition: 0.2s ease;
+}
+
+.button-animated:hover,
+.button-animated:focus {
+    transform: translateY(-5px);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+}
+
+.button-animated:active {
+    transform: translateY(-3px);
+    background-color: var(--theme-bg-highlight);
+}

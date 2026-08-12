@@ -56,7 +56,7 @@
             icon="cross"
             callback={() => closeMenu()}
             glowOnHover={true}
-            colour="var(--text-main)"
+            colour="var(--theme-text-primary)"
             textGlowColour="var(--minimise)"
         />
     {/if}
@@ -114,12 +114,12 @@
 
 <style>
     .contextmenu {
-        background-color: var(--bg-secondary);
+        background-color: var(--theme-bg-secondary);
         padding: 5px;
         width: max-content;
         position: absolute;
         z-index: 1001;
-        border: 2px solid var(--border);
+        border: 2px solid var(--theme-border);
         border-radius: 5px;
     }
     .contextmenu .ctxItem {
@@ -134,11 +134,11 @@
         border: none;
     }
     .contextmenu .ctxItem.disabled {
-        color: var(--text-secondary);
+        color: var(--theme-text-secondary);
         text-decoration: line-through;
     }
     .contextmenu .ctxItem:hover {
-        background-color: var(--bg-highlight);
+        background-color: var(--theme-bg-highlight);
     }
     .ctxmenu-stats {
         text-align: left;
@@ -149,26 +149,27 @@
         padding-right: 10px;
     }
     .ctxmenu-stats-table td:last-child {
-        color: var(--accent-tertiary);
+        color: var(--theme-accent-tertiary);
     }
     .contextmenu button {
     }
     .contextmenu button:hover {
-        background-color: var(--highlight);
+        background-color: var(--theme-highlight);
     }
     .contextmenu button:disabled {
         /* text-decoration: line-through; */
-        color: var(--text-secondary);
+        color: var(--theme-text-secondary);
     }
     .contextmenu button:hover:disabled {
         background-color: var(--none);
     }
 
-    a, a.ctxItem {
-        color: var(--text-primary);
+    a,
+    a.ctxItem {
+        color: var(--theme-text-primary);
     }
     a:hover {
-        color: var(--text-primary);
+        color: var(--theme-text-primary);
         text-decoration: none;
     }
 </style>

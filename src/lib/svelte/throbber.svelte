@@ -3,14 +3,14 @@
         active = true,
         size = "60px",
         thickness = size,
-        colour = "var(--accent-primary)",
-        duration = "0.5s"
+        colour = "var(--theme-accent-primary)",
+        duration = "0.5s",
     }: {
         active?: boolean;
         size?: string;
         thickness?: string;
         colour?: string;
-        duration?:string;
+        duration?: string;
     } = $props();
 </script>
 
@@ -23,7 +23,7 @@
 <style>
     .loader {
         height: var(--size);
-		width: var(--size);
+        width: var(--size);
         border-color: var(--clr) transparent var(--clr) transparent;
         border-width: calc(var(--thick) / 15);
         border-style: solid;

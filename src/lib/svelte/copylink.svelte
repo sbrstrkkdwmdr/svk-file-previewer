@@ -5,7 +5,7 @@
         fsize = "18px",
         valign = "middle",
         title = "Copy link to clipboard",
-        colour = "var(--text-main)",
+        colour = "var(--theme-text-primary)",
         textGlowColour = "#fff",
     } = $props();
     function copyLinkRun(ev: MouseEvent) {

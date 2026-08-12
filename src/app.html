@@ -1,20 +1,22 @@
 <!doctype html>
 <html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <meta property="og:type" content="website" />
+        %sveltekit.head%
+    </head>
 
-<head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta property="og:type" content="website">
-    %sveltekit.head%
-</head>
-
-<body data-sveltekit-preload-data="tap">
-    <div style="display: contents">%sveltekit.body%</div>
-</body>
-<link rel="stylesheet" href="/icons.css">
-<link rel="stylesheet" href="/app/styles/fonts.css">
-<link rel="stylesheet" href="/app/styles/base.css" />
-<link rel="stylesheet" href="/app/styles/palette.css" />
-<!-- <link rel="stylesheet" href="/app/styles/Inter/inter.css"> -->
-
+    <body data-sveltekit-preload-data="tap">
+        <div style="display: contents">%sveltekit.body%</div>
+    </body>
+    <link rel="stylesheet" href="/icons.css" />
+    <link rel="stylesheet" href="/app/styles/fonts.css" />
+    <link rel="stylesheet" href="/app/styles/palette.css" />
+    <link rel="stylesheet" href="/app/styles/core/base.css" />
+    <link rel="stylesheet" href="/app/styles/core/inline.css" />
+    <link rel="stylesheet" href="/app/styles/core/input.css" />
+    <link rel="stylesheet" href="/app/styles/core/layout.css" />
+    <link rel="stylesheet" href="/app/styles/core/other.css" />
+    <!-- <link rel="stylesheet" href="/app/styles/Inter/inter.css"> -->
 </html>

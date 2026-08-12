@@ -245,13 +245,13 @@
         text-align: center;
         font-size: 24px;
         background: none;
-        color: var(--text-link);
-        border: solid 3px var(--border);
+        color: var(--theme-text-link);
+        border: solid 3px var(--theme-border);
     }
 
     .data-button:hover {
         color: var(--text-link-hover);
         text-decoration: underline;
-        background-color: var(--bg-highlight);
+        background-color: var(--theme-bg-highlight);
     }
 </style>

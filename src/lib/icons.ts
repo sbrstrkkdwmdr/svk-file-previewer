@@ -163,32 +163,32 @@ export const utils = {
 };
 
 export const sites = {
-    behance: ["ef78", ],
-    bilibili: ["e902", ],
-    bluesky: ["e904", ],
+    behance: ["ef78"],
+    bilibili: ["e902"],
+    bluesky: ["e904"],
     discord: ["efba", "#5865F2"],
-    "discord-clear": ["efba", ],
+    "discord-clear": ["efba"],
     dropbox: ["ea30", "#0061FF"],
-    email: ["ed6c", ],
-    facebook: ["ea58", ],
+    email: ["ed6c"],
+    facebook: ["ea58"],
     github: ["ea82", "purple"],
-    "github-clear": ["ea82", ],
-    instagram: ["eae0", ],
-    linkedin: ["eb25", ],
+    "github-clear": ["ea82"],
+    instagram: ["eae0"],
+    linkedin: ["eb25"],
     mediafire: ["eb47", "#0077FF"],
     mega: ["eb4b", "#D9272E"],
-    niconicodouga: ["e903", ],
+    niconicodouga: ["e903"],
     osu: ["e905", "#FF66AA"],
     pronouns: ["e906", "#C71585"],
-    reddit: ["e92a", ],
-    steam: ["ec56", ],
-    tiktok: ["ec85", ],
-    tumblr: ["ec97", ],
-    twitch: ["ec9a", ],
-    twitter: ["ef65", ],
-    vk: ["ef67", ],
+    reddit: ["e92a"],
+    steam: ["ec56"],
+    tiktok: ["ec85"],
+    tumblr: ["ec97"],
+    twitch: ["ec9a"],
+    twitter: ["ef65"],
+    vk: ["ef67"],
     yt: ["ecf4", "red"],
-    "yt-clear": ["ecf4",  /* 'red' */],
+    "yt-clear": ["ecf4" /* 'red' */],
 
     // tech
     csharp: ["ea07", "#239120"],
@@ -334,7 +334,7 @@ export function getIcons(): string {
     // defined last so that it can override
     txt += `.iconDefClr::before {
     /* color: basic; */
-    color: var(--text-primary);
+    color: var(--theme-text-primary);
     background-image: none;
     background-size: none;
     background-position: none;

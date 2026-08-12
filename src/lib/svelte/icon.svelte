@@ -9,7 +9,7 @@
         title = "",
         propagate = false,
         glowOnHover = false,
-        colour = "var(--text-main)",
+        colour = "var(--theme-text-primary)",
         textGlowColour = colour,
         glowColour = textGlowColour,
         altIcon = icon,
@@ -30,10 +30,12 @@
         altIcon?: string;
         altIconCondition?: () => boolean;
         usePresetColours?: boolean;
-        valign?: string
+        valign?: string;
     } = $props();
 
-    let style = $state(`font-size:${fsize};color:${colour};vertical-align:${valign};`);
+    let style = $state(
+        `font-size:${fsize};color:${colour};vertical-align:${valign};`,
+    );
     let isAlt = $state(false);
     let iconClass = $derived("icon-" + (isAlt ? altIcon : icon));
     if (inline) {
