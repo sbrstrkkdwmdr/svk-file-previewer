@@ -1,7 +1,8 @@
-import type { pathableItem } from "$lib/data/files";
+import type { file, pathableItem } from "$lib/data/files";
 import { downloadGet } from "$lib/server/database";
 import { createHash } from "$lib/server/tool";
 import { getFiles } from "$lib/server/files/updater";
+import * as fs from "fs";
 
 export function getFile(dir: string, fileName: string) {
     const files = getFiles();
@@ -180,4 +181,12 @@ function sortPathableDirect(a: pathableItem, b: pathableItem) {
     if (a.type == b.type) return a.name.localeCompare(b.name);
     if (a.type == "folder") return 1;
     return -1;
+}
+
+export function getFileContent(file: file) {
+    let content: NonSharedBuffer | null = null;
+    if (fs.existsSync("./files/" + file.path)) {
+        content = fs.readFileSync("./files/" + file.path);
+    }
+    return content;
 }

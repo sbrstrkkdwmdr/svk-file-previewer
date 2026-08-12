@@ -44,6 +44,7 @@ export async function updateFiles() {
                 ]);
             });
         });
+        fixRootFolder(rootFolder);
         currentlyUpdating = false;
     }
     if ((workfiles?.length ?? -1) > 0 && workfiles?.[0].hash != "error") {
@@ -162,4 +163,15 @@ function walkCallback_addFiles(results: result[]) {
     } else {
         workfiles = editFiles(results);
     }
+}
+
+function fixRootFolder(root: string) {
+    if (!workfiles) return false;
+    for (const file of workfiles) {
+        if (file.directory.startsWith("/" + root))
+            file.directory = file.directory.replace("/" + root, "");
+        if (file.path.startsWith("/" + root))
+            file.path = file.path.replace("/" + root, "");
+    }
+    return true;
 }
