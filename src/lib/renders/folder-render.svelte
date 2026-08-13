@@ -104,27 +104,59 @@
         {/if}
     </div>
 {/snippet}
-<div class="folder">
-    <span class="header">
-        <div class="file-section file-name">&ensp;&ensp;&ensp; Name</div>
-        <div class="file-section">Size</div>
-        <div class="file-section">Type</div>
-    </span>
-    {#if hasParent}
-        <a class="file" href="..">
-            <div class="file-section file-name">
-                <span class="fileIcon icon-fileGeneric icon-folder"></span>
-                <span class="mono-font file-name-padding"> .. </span>
-            </div>
-            <div class="file-section mono-font"></div>
-            <div class="file-section mono-font">folder</div>
-        </a>
-    {/if}
-    {#each files.children as file}
-        {@render fileEntry(file)}
+{#snippet searchResults(file: pathableItem)}
+    {#each file.children as child}
+        {#if child.type == "file"}
+            {@render fileResult(child)}
+        {:else}
+            {@render searchResults(child)}
+        {/if}
     {/each}
+{/snippet}
+{#snippet fileResult(file: pathableItem)}
+    <a
+        title={file.name}
+        class="file"
+        href={file.type == "folder" ? file.directory : "/open/" + file.hash}
+        oncontextmenu={(ev) => ctxmenu(ev, file)}
+    >
+        {@render fileName(file)}
+        {@render fileLocation(file)}
+    </a>
+{/snippet}
+{#snippet fileLocation(file: pathableItem)}
+    <div class="file-section mono-font">
+        ~{file.directory}
+    </div>
+{/snippet}
+<div class="folder">
+    {#if isSearchResult}
+        <span class="header">
+            <div class="file-section file-name">&ensp;&ensp;&ensp; Name</div>
+            <div class="file-section">Location</div>
+        </span>
+        {@render searchResults(files)}
+    {:else}
+        <span class="header">
+            <div class="file-section file-name">&ensp;&ensp;&ensp; Name</div>
+            <div class="file-section">Size</div>
+            <div class="file-section">Type</div>
+        </span>
+        {#if hasParent}
+            <a class="file" href="..">
+                <div class="file-section file-name">
+                    <span class="fileIcon icon-fileGeneric icon-folder"></span>
+                    <span class="mono-font file-name-padding"> .. </span>
+                </div>
+                <div class="file-section mono-font"></div>
+                <div class="file-section mono-font">folder</div>
+            </a>
+        {/if}
+        {#each files.children as file}
+            {@render fileEntry(file)}
+        {/each}
+    {/if}
 </div>
-
 {#if showContext}
     <div
         transition:fade

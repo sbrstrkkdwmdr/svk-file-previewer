@@ -1,15 +1,28 @@
 <script lang="ts">
-    import { afterNavigate } from "$app/navigation";
+    import { afterNavigate, replaceState } from "$app/navigation";
     import { addressBarPath } from "$lib/data/path-now.js";
     import FolderRender from "$lib/renders/folder-render.svelte";
     import { getColourMode } from "$lib/tools";
     import { onMount } from "svelte";
+    import Searchbar from "$lib/svelte/searchbar.svelte";
+    import type { pathableItem } from "$lib/data/files.js";
+    import { fileSearch } from "$lib/file-filtering.js";
     let { data } = $props();
     let colourMode = $state("dark_default");
-    // let downloadurl = $state("./");
+
+    let searchInitial = $state("");
+    let previnVal = $state("");
+    let usefiles = $derived(data.files);
     onMount(() => {
         colourMode = getColourMode();
         addressBarPath.set(location.pathname);
+        const url = new URL(window.location.href);
+        const query = url.searchParams.get("q");
+        if (query) {
+            searchInitial = query;
+            filterFiles(query);
+            previnVal = query;
+        }
     });
     afterNavigate(() => {
         colourMode = getColourMode();
@@ -23,7 +36,45 @@
         }
         // showFilePreview = window.innerWidth > 900;
     });
+
+    let inTO: NodeJS.Timeout;
+    let resultsAreLoading = $state(false);
+
+    function filterFilesEvent(e: KeyboardEvent) {
+        const val = (e.target! as HTMLInputElement).value?.trim() ?? "";
+        console.log(val);
+        if (previnVal != val) {
+            clearTimeout(inTO);
+            resultsAreLoading = true;
+            inTO = setTimeout(() => {
+                previnVal = val;
+                filterFiles(val);
+                resultsAreLoading = false;
+                return;
+            }, 500);
+        }
+    }
+    function filterFiles(val: string) {
+        const temp = fileSearch(data.files as pathableItem<"folder">, val);
+        usefiles = temp;
+        const nurl = new URL(window.location.href);
+        nurl.searchParams.set("q", val);
+        try {
+            replaceState(nurl, {});
+        } catch (err) {}
+    }
 </script>
 
-<h1>Files</h1>
-<FolderRender files={data.files} hasParent={data.isChild} />
+<Searchbar
+    placeholder="File name"
+    callback={(ev) => filterFilesEvent(ev)}
+    resultsCount={usefiles.children.length}
+    isLoading={resultsAreLoading}
+    showResultsCount={true}
+    initialValue={searchInitial}
+/>
+<FolderRender
+    files={usefiles}
+    hasParent={data.isChild}
+    isSearchResult={previnVal.trim() != ""}
+/>
