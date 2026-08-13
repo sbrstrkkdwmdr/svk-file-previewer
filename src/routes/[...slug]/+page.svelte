@@ -5,8 +5,8 @@
     import { getColourMode } from "$lib/tools";
     import { onMount } from "svelte";
     import Searchbar from "$lib/svelte/searchbar.svelte";
-    import type { pathableItem } from "$lib/data/files.js";
-    import { fileSearch } from "$lib/file-filtering.js";
+    import type { pathableItem } from "$lib/data/files";
+    import { fileSearch, type sortmodes } from "$lib/file-tools";
     let { data } = $props();
     let colourMode = $state("dark_default");
 

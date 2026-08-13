@@ -1,20 +1,15 @@
 <script lang="ts">
-    import { invalidate, pushState } from "$app/navigation";
-    import { extToImage, extToType, previewables } from "$lib/data/extensions";
+    import { extToImage, extToType } from "$lib/data/extensions";
     import { type pathableItem } from "$lib/data/files";
+    import type { Dict } from "$lib/data/types";
+    import { fileNameParts, sort, type sortmodes } from "$lib/file-tools";
     import { getMime, isPreviewable } from "$lib/MIME";
     import { getLink } from "$lib/renders/share";
     import Ctxmenu from "$lib/svelte/ctxmenu.svelte";
+    import Dialogue from "$lib/svelte/dialogue.svelte";
     import Icon from "$lib/svelte/icon.svelte";
-    import Searchbar from "$lib/svelte/searchbar.svelte";
-    import {
-        filesOnly,
-        formatBytes,
-        separateNum,
-        stringMatches,
-    } from "$lib/tools";
-    import { onMount } from "svelte";
-    import { fade, fly, scale, slide } from "svelte/transition";
+    import { formatBytes, separateNum, toCapital } from "$lib/tools";
+    import { fade, scale } from "svelte/transition";
     let {
         files,
         isSearchResult = false,
@@ -36,20 +31,107 @@
         mouseVector[1] = ev.pageY;
     }
 
-    function fileNameParts(str: string) {
-        let name = str;
-        let ext = "";
-        if (str.includes(".")) {
-            const temp = str.split(".");
-            ext = temp.pop()!;
-            name = temp.join(".");
+    let sortmode: sortmodes = $state("name");
+    let sortdirection: "up" | "down" = $state("down");
+
+    type sortoptions = `${sortmodes}:${"up" | "down"}`;
+
+    const sortDict: Dict<[string, () => void], sortoptions> = {
+        "name:down": [
+            "Name (A-Z)",
+            () => {
+                ((sortmode = "name"), (sortdirection = "down"));
+            },
+        ],
+        "name:up": [
+            "Name (Z-A)",
+            () => {
+                ((sortmode = "name"), (sortdirection = "up"));
+            },
+        ],
+
+        "size:down": [
+            "Size (high-low)",
+            () => {
+                ((sortmode = "size"), (sortdirection = "down"));
+            },
+        ],
+        "size:up": [
+            "Size (low-high)",
+            () => {
+                ((sortmode = "size"), (sortdirection = "up"));
+            },
+        ],
+
+        "ext:down": [
+            "File extension (A-Z)",
+            () => {
+                ((sortmode = "ext"), (sortdirection = "down"));
+            },
+        ],
+        "ext:up": [
+            "File extension (Z-A)",
+            () => {
+                ((sortmode = "ext"), (sortdirection = "up"));
+            },
+        ],
+        "mime:down": [
+            "MIME type (A-Z)",
+            () => {
+                ((sortmode = "mime"), (sortdirection = "down"));
+            },
+        ],
+        "mime:up": [
+            "MIME type (Z-A)",
+            () => {
+                ((sortmode = "mime"), (sortdirection = "up"));
+            },
+        ],
+    };
+
+    function getChildren(
+        container: pathableItem[],
+        collection: pathableItem[],
+    ) {
+        for (const child of collection) {
+            if (child.type == "file") container.push(child);
+            else if (isSearchResult) getChildren(container, child.children);
+            else container.push(child);
         }
-        let fullString = [name];
-        if (ext.length > 0) fullString.push("." + ext);
-        return fullString;
     }
+
+    let sortedFiles: pathableItem[] = $derived.by(() => {
+        const tmp: pathableItem[] = [];
+        getChildren(tmp, files.children);
+        sort(tmp, sortmode, sortdirection, "top");
+        return tmp;
+    });
 </script>
 
+<div>
+    <Dialogue>
+        {#snippet display()}
+            <Icon icon="filter" /> sort
+        {/snippet}
+        {#each Object.entries(sortDict) as [key, [name, fn]]}
+            <button
+                value={key}
+                onclick={(ev) => {
+                    fn();
+                }}>{name}</button
+            >
+        {/each}
+    </Dialogue>
+    <select> </select>
+</div>
+{#snippet dirbutton()}
+    <Icon
+        icon="chevron{toCapital(sortdirection)}"
+        callback={() => {
+            sortdirection = sortdirection == "up" ? "down" : "up";
+        }}
+    />
+{/snippet}
 {#snippet fileEntry(file: pathableItem)}
     <a
         title={file.name}
@@ -104,15 +186,6 @@
         {/if}
     </div>
 {/snippet}
-{#snippet searchResults(file: pathableItem)}
-    {#each file.children as child}
-        {#if child.type == "file"}
-            {@render fileResult(child)}
-        {:else}
-            {@render searchResults(child)}
-        {/if}
-    {/each}
-{/snippet}
 {#snippet fileResult(file: pathableItem)}
     <a
         title={file.name}
@@ -135,12 +208,23 @@
             <div class="file-section file-name">&ensp;&ensp;&ensp; Name</div>
             <div class="file-section">Location</div>
         </span>
-        {@render searchResults(files)}
+        {#each sortedFiles as child}
+            {#if child.type == "file"}
+                {@render fileResult(child)}
+            {/if}
+        {/each}
     {:else}
         <span class="header">
-            <div class="file-section file-name">&ensp;&ensp;&ensp; Name</div>
-            <div class="file-section">Size</div>
-            <div class="file-section">Type</div>
+            <div class="file-section file-name">
+                &ensp;&ensp;&ensp;
+                {#if sortmode == "name"}{@render dirbutton()}{/if} Name
+            </div>
+            <div class="file-section">
+                {#if sortmode == "size"}{@render dirbutton()}{/if}Size
+            </div>
+            <div class="file-section">
+                {#if sortmode == "mime"}{@render dirbutton()}{/if}Type
+            </div>
         </span>
         {#if hasParent}
             <a class="file" href="..">
@@ -152,7 +236,7 @@
                 <div class="file-section mono-font">folder</div>
             </a>
         {/if}
-        {#each files.children as file}
+        {#each sortedFiles as file}
             {@render fileEntry(file)}
         {/each}
     {/if}
@@ -301,7 +385,7 @@
     .file:hover {
         /*background-color: var(--theme-bg-highlight);*/
         /*outline: 0;*/
-        background-color: var(--theme-bg-primary);
+        background-color: var(--theme-bg-highlight);
         box-shadow: 0 0 0 0.2rem
             color-mix(in srgb, var(--theme-accent-primary), transparent 50%);
         /* these two force the highlight to overlay neighbours */
@@ -319,6 +403,7 @@
         padding-top: 4px;
         text-decoration: none;
         text-wrap: nowrap;
+        overflow-x: none;
         text-overflow: ellipsis;
     }
     .file-section.file-name .file-name-padding {
