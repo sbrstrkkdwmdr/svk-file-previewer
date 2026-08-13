@@ -589,27 +589,6 @@ export function separateNum(number: string | number, separator?: string) {
 //     if (preview) url += '&preview=true';
 //     return url;
 // }
-
-export type colourPalette = "light_default" | "dark_default";
-
-export function getColourMode(): colourPalette {
-    const temp = localStorage?.getItem("colourMode");
-    if (temp) {
-        return temp as colourPalette;
-    } else if (!window.matchMedia("(prefers-color-scheme: dark)").matches) {
-        return "light_default";
-    }
-    return "dark_default";
-}
-
-export function setColourMode(value: colourPalette) {
-    try {
-        localStorage?.setItem("colourMode", value);
-    } catch (err) {
-        console.log(err);
-    }
-}
-
 export function pathFinalName(path: string) {
     const temp = path.split("/");
     return temp.pop() ?? "";
@@ -645,7 +624,7 @@ export function pathToAllFolderLinks(str: string) {
     return links;
 }
 
-export function filesOnly(item: pathableItem): pathableItem[] {
+export function filesOnly(item: pathableItem<"folder">): pathableItem[] {
     let temp: pathableItem[] = [];
     for (const file of item.children ?? []) {
         if (file.type == "folder") {

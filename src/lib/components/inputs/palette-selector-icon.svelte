@@ -14,7 +14,7 @@
 
     function paletteClick() {
         paletteToggle();
-        paletteCycle();
+        // paletteCycle();
     }
 
     function paletteCycle() {

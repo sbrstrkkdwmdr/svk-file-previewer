@@ -2,7 +2,6 @@
     import { afterNavigate, replaceState } from "$app/navigation";
     import { addressBarPath } from "$lib/data/path-now.js";
     import FolderRender from "$lib/renders/folder-render.svelte";
-    import { getColourMode } from "$lib/tools";
     import { onMount } from "svelte";
     import Searchbar from "$lib/components/inputs/searchbar.svelte";
     import type { pathableItem } from "$lib/data/files";
@@ -14,7 +13,6 @@
     let previnVal = $state("");
     let usefiles = $derived(data.files);
     onMount(() => {
-        colourMode = getColourMode();
         addressBarPath.set(location.pathname);
         const url = new URL(window.location.href);
         const query = url.searchParams.get("q");
@@ -25,7 +23,6 @@
         }
     });
     afterNavigate(() => {
-        colourMode = getColourMode();
         addressBarPath.set(location.pathname);
     });
     $effect(() => {

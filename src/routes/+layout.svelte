@@ -2,9 +2,10 @@
     import { afterNavigate } from "$app/navigation";
     // import favicon from "$lib/assets/favicon.ico";
     import Icon from "$lib/components/icons/icon.svelte";
-    import { getColourMode } from "$lib/tools.js";
     import { onMount } from "svelte";
     import AddressBar from "$lib/components/files/address-bar.svelte";
+    import { paletteValue, syncPalette } from "$lib/palette";
+    import Navbar from "$lib/components/layout/navbar.svelte";
     let { data, children } = $props();
     let pageMeta = $state(data.headmeta);
     let colourMode = $state("dark_default");
@@ -14,7 +15,7 @@
     afterNavigate(() => {});
     function layoutUpdate() {
         pageMeta = data.headmeta;
-        colourMode = getColourMode();
+        syncPalette();
     }
     function updateBodyClass(newtheme: string) {
         const body = document.getElementsByTagName("body")[0];
@@ -64,34 +65,14 @@
         href="/icons/apple-touch-icon.png"
     /> -->
 </svelte:head>
-<div class="header">
-    <!-- PALETTE GOES HERE -->
-    <a
-        href="https://github.com/sbrstrkkdwmdr/svk-file-previewer"
-        title="source code"
-    >
-        <Icon icon="github" fsize="40px" />
-    </a>
-    <AddressBar />
-</div>
-<main class="theme-{colourMode}">
+<Navbar />
+<main class="theme-{$paletteValue}">
     <div class="centre-page">
         {@render children?.()}
     </div>
 </main>
 
 <style>
-    .header {
-        text-align: left;
-        position: sticky;
-        width: 100%;
-        top: 0;
-        background-color: var(--theme-bg-primary);
-        padding: 8px;
-        border-bottom: 3px solid var(--theme-border);
-        /*overflow: none !important;*/
-    }
-
     main {
         padding: 0;
         margin: 0;

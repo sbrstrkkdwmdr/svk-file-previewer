@@ -10,12 +10,7 @@
     import TextRender from "$lib/renders/text-render.svelte";
     import VideoRender from "$lib/renders/video-render.svelte";
     import Icon from "$lib/components/icons/icon.svelte";
-    import {
-        formatBytes,
-        getColourMode,
-        pathToAllFolderLinks,
-        separateNum,
-    } from "$lib/tools";
+    import { formatBytes, pathToAllFolderLinks, separateNum } from "$lib/tools";
     import { onMount } from "svelte";
     let { data } = $props();
     let viewMode = $derived(data.preview.mode);
@@ -29,11 +24,9 @@
         getViewable(data.metadata.hash, data.metadata.name),
     );
     onMount(() => {
-        colourMode = getColourMode();
         addressBarPath.set(data.metadata.directory);
     });
     afterNavigate(() => {
-        colourMode = getColourMode();
         addressBarPath.set(data.metadata.directory);
     });
     $effect(() => {
