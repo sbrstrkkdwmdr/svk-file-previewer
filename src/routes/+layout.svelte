@@ -1,9 +1,6 @@
 <script lang="ts">
     import { afterNavigate } from "$app/navigation";
-    // import favicon from "$lib/assets/favicon.ico";
-    import Icon from "$lib/components/icons/icon.svelte";
     import { onMount } from "svelte";
-    import AddressBar from "$lib/components/files/address-bar.svelte";
     import { paletteValue, syncPalette } from "$lib/palette";
     import Navbar from "$lib/components/layout/navbar.svelte";
     let { data, children } = $props();

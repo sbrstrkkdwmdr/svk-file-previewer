@@ -1,5 +1,5 @@
 <script lang="ts">
-    import AddressBar from "$lib/components/files/address-bar.svelte";
+    import AddressBar from "$lib/components/layout/address-bar.svelte";
     import Icon from "$lib/components/icons/icon.svelte";
     import PaletteSelector from "$lib/components/inputs/palette-selector.svelte";
     import PaletteSelectorIcon from "$lib/components/inputs/palette-selector-icon.svelte";
@@ -16,7 +16,9 @@
     >
         <Icon icon="github" fsize="40px" />
     </a>
-    <AddressBar />
+    <div class="address-bar">
+        <AddressBar />
+    </div>
 </div>
 {#if showPaletteSelector}
     <span
@@ -47,5 +49,9 @@
         padding: 8px;
         border-bottom: 3px solid var(--theme-border);
         /*overflow: none !important;*/
+    }
+    .address-bar {
+        display: inline-block;
+        padding-top: 6px;
     }
 </style>
