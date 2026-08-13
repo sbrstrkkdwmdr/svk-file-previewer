@@ -1,5 +1,6 @@
 <script lang="ts">
     import { afterNavigate } from "$app/navigation";
+    import { addressBarPath } from "$lib/data/path-now.js";
     import FolderRender from "$lib/renders/folder-render.svelte";
     import { getColourMode } from "$lib/tools";
     import { onMount } from "svelte";
@@ -8,9 +9,11 @@
     // let downloadurl = $state("./");
     onMount(() => {
         colourMode = getColourMode();
+        addressBarPath.set(location.pathname);
     });
     afterNavigate(() => {
         colourMode = getColourMode();
+        addressBarPath.set(location.pathname);
     });
     $effect(() => {
         try {

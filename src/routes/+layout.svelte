@@ -4,6 +4,7 @@
     import Icon from "$lib/svelte/icon.svelte";
     import { getColourMode } from "$lib/tools.js";
     import { onMount } from "svelte";
+    import AddressBar from "$lib/svelte/address-bar.svelte";
     let { data, children } = $props();
     let pageMeta = $state(data.headmeta);
     let colourMode = $state("dark_default");
@@ -86,6 +87,7 @@
     >
         <Icon icon="github" fsize="40px" />
     </a>
+    <AddressBar />
 </div>
 <main class="theme-{colourMode}">
     <div class="centre-page">

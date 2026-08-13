@@ -1,6 +1,7 @@
 <script lang="ts">
     import { afterNavigate } from "$app/navigation";
     import { extToImage } from "$lib/data/extensions";
+    import { addressBarPath } from "$lib/data/path-now.js";
     import AudioRender from "$lib/renders/audio-render.svelte";
     import CodeRender from "$lib/renders/code-render.svelte";
     import FolderRender from "$lib/renders/folder-render.svelte";
@@ -30,9 +31,11 @@
     );
     onMount(() => {
         colourMode = getColourMode();
+        addressBarPath.set(data.metadata.directory);
     });
     afterNavigate(() => {
         colourMode = getColourMode();
+        addressBarPath.set(data.metadata.directory);
     });
     $effect(() => {
         try {
@@ -88,7 +91,7 @@
 
 {#snippet parseFolder(fullpath: string, filename: string, hash: string)}
     {@const folders = pathToAllFolderLinks(fullpath)}
-    <a href="/">root</a>{#each folders as [name, link]}
+    <a href="/">~</a>{#each folders as [name, link]}
         /<a href={link}>{name}</a>
     {/each}/<a href="/open/{hash}">{filename}</a>
 {/snippet}
