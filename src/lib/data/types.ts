@@ -1,20 +1,11 @@
-export type Dict<T = any> = { [key: string]: T; };
-
-export type usedItem = {
-    name: string;
-    src: string;
-    id: string;
-    site: string;
-};
-export type portfolioItem = {
-    name: string;
-    used: usedItem[];
-    status: string;
-    description: string;
-    links: {
-        name: string;
-        url: string;
-        icon: string;
-    }[];
-    pixelArt: boolean;
-};
+export type Dict<
+    T = any,
+    U extends string | number | symbol = string,
+    V extends boolean = true,
+> = V extends true
+    ? {
+          [key in U]: T;
+      }
+    : {
+          [key in U]?: T;
+      };
