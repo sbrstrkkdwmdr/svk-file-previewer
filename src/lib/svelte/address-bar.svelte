@@ -20,7 +20,7 @@
 </script>
 
 {#snippet section(name: string, path: string)}
-    <a class="address-bar-section" href={path}>{name}</a>/
+    <a class="address-bar-section" href={path} data-sveltekit-reload>{name}</a>/
 {/snippet}
 <span class="address-bar mono-font">
     {@render section("~", "/")}{#each sections as [name, path]}

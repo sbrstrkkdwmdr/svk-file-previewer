@@ -206,7 +206,7 @@ button {
 }
 
 .button-decor:active {
-    background-color: var(--theme-enable-);
+    background-color: var(--theme-enable);
 }
 
 .button-decor-2 {

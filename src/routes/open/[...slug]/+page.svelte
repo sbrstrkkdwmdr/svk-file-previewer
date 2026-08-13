@@ -4,7 +4,6 @@
     import { addressBarPath } from "$lib/data/path-now.js";
     import AudioRender from "$lib/renders/audio-render.svelte";
     import CodeRender from "$lib/renders/code-render.svelte";
-    import FolderRender from "$lib/renders/folder-render.svelte";
     import ImageRender from "$lib/renders/image-render.svelte";
     import MarkdownRender from "$lib/renders/markdown-render.svelte";
     import { getLink, getViewable } from "$lib/renders/share";

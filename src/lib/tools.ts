@@ -447,12 +447,20 @@ export function fisherYatesShuffle(arr: any[]) {
 export function stringMatches(str: string, search: string) {
     const a = str.toLowerCase();
     const b = search.toLowerCase();
-    if(search.startsWith("\"") && search.endsWith("\"") || search.startsWith("=")){
-        return a.replaceAll('\"', '') == b.replaceAll('\"', '').replace('=', '');
+    if (
+        (search.startsWith('"') && search.endsWith('"')) ||
+        search.startsWith("=")
+    ) {
+        return (
+            a.replaceAll('\"', "") == b.replaceAll('\"', "").replace("=", "")
+        );
     }
-    if(search.includes('*')){
-        const regexPattern =
-        new RegExp('^' + b.replace('.', '\.').replace(/\?/g, '.').replace(/\*/g, '.*') + '$');
+    if (search.includes("*")) {
+        const regexPattern = new RegExp(
+            "^" +
+                b.replace(".", "\.").replace(/\?/g, ".").replace(/\*/g, ".*") +
+                "$",
+        );
         return regexPattern.test(a);
     }
     return a == b || a.includes(b) || b.includes(a);
@@ -610,17 +618,7 @@ export function pathFinalName(path: string) {
 export function formatBytes(bytes: number, decimals = 2, k = 1024) {
     if (!+bytes) return "0 Bytes";
     const dm = decimals < 0 ? 0 : decimals;
-    let sizes = [
-        "Bytes",
-        "KiB",
-        "MiB",
-        "GiB",
-        "TiB",
-        "PiB",
-        "EiB",
-        "ZiB",
-        "YiB",
-    ];
+    let sizes = ["B", "KiB", "MiB", "GiB", "TiB", "PiB", "EiB", "ZiB", "YiB"];
     if (k == 1000) {
         sizes = ["Bytes", "KB", "MB", "GB", "TB", "PB", "EB", "ZB", "YB"];
     }
@@ -647,14 +645,14 @@ export function pathToAllFolderLinks(str: string) {
     return links;
 }
 
-export function filesOnly(item:pathableItem): pathableItem[] {
-    let temp:pathableItem[] = [];
-    for(const file of item.children ?? []){
-        if (file.type == "folder"){
+export function filesOnly(item: pathableItem): pathableItem[] {
+    let temp: pathableItem[] = [];
+    for (const file of item.children ?? []) {
+        if (file.type == "folder") {
             const temp2 = filesOnly(file);
             temp = temp.concat(temp2);
         } else {
-            temp.push(file)
+            temp.push(file);
         }
     }
     return temp;
