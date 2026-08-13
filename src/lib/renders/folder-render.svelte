@@ -6,6 +6,7 @@
     import { getMime, isPreviewable } from "$lib/MIME";
     import { getLink } from "$lib/renders/share";
     import Ctxmenu from "$lib/components/inputs/ctxmenu.svelte";
+    import Select from "$lib/components/bitui/select.svelte";
     import Icon from "$lib/components/icons/icon.svelte";
     import ButtonIcon from "$lib/components/icons/button-icon.svelte";
     import { formatBytes, separateNum, toCapital } from "$lib/tools";
@@ -31,10 +32,11 @@
         mouseVector[1] = ev.pageY;
     }
 
+    type sortoptions = `${sortmodes}:${"up" | "down"}`;
     let sortmode: sortmodes = $state("name");
     let sortdirection: "up" | "down" = $state("down");
-
-    type sortoptions = `${sortmodes}:${"up" | "down"}`;
+    let sortkey: sortoptions = $state("name:down");
+    let sortfolders: "top" | "bottom" | "mixed" = $state("top");
 
     const sortDict: Dict<[string, () => void], sortoptions> = {
         "name:down": [
@@ -103,27 +105,86 @@
     let sortedFiles: pathableItem[] = $derived.by(() => {
         const tmp: pathableItem[] = [];
         getChildren(tmp, files.children);
-        sort(tmp, sortmode, sortdirection, "top");
+        sort(tmp, sortmode, sortdirection, sortfolders);
         return tmp;
     });
 </script>
 
-<!-- <div>
-    <Dialogue>
-        {#snippet display()}
-            <Icon icon="filter" /> sort
+<div>
+    <Select
+        type="single"
+        bind:value={sortkey}
+        onValueChange={() => {
+            const entry = sortDict[sortkey];
+            const fn = entry[1];
+            fn();
+        }}
+        items={Object.entries(sortDict).map(([key, [name, fn]]) => {
+            return {
+                value: key,
+                label: name,
+                disabled: false,
+            };
+        })}
+    >
+        {#snippet trigger()}
+            <span class="bitui icon-left">
+                <Icon icon="filter" />
+            </span>
+            Sort
+            <span class="bitui icon-right">
+                <Icon icon="chevronDown" colour="var(--theme-text-secondary)" />
+            </span>
         {/snippet}
-        {#each Object.entries(sortDict) as [key, [name, fn]]}
-            <button
-                value={key}
-                onclick={(ev) => {
-                    fn();
-                }}>{name}</button
-            >
-        {/each}
-    </Dialogue>
-    <select> </select>
-</div> -->
+        {#snippet item(value, label, disabled, selected)}
+            <span style={selected ? "color:var(--theme-enable-);" : ""}>
+                {#if selected}
+                    <Icon icon="check" colour="inherit" />
+                {/if}
+                {label}
+            </span>
+        {/snippet}
+    </Select>
+    <Select
+        type="single"
+        bind:value={sortfolders}
+        items={[
+            {
+                value: "top",
+                label: "Top of list",
+                disabled: false,
+            },
+            {
+                value: "mixed",
+                label: "Mixed with files",
+                disabled: false,
+            },
+            {
+                value: "bottom",
+                label: "Bottom of list",
+                disabled: false,
+            },
+        ]}
+    >
+        {#snippet trigger()}
+            <span class="bitui icon-left">
+                <Icon icon="folder" />
+            </span>
+            Folders
+            <span class="bitui icon-right">
+                <Icon icon="chevronDown" colour="var(--theme-text-secondary)" />
+            </span>
+        {/snippet}
+        {#snippet item(value, label, disabled, selected)}
+            <span style={selected ? "color:var(--theme-enable-);" : ""}>
+                {#if selected}
+                    <Icon icon="check" colour="inherit" />
+                {/if}
+                {label}
+            </span>
+        {/snippet}
+    </Select>
+</div>
 {#snippet dirbutton()}
     <ButtonIcon
         tooltip="Reverse file sorting"
@@ -217,14 +278,13 @@
     {:else}
         <span class="header">
             <div class="file-section file-name">
-                &ensp;&ensp;&ensp;
-                {#if sortmode == "name"}{@render dirbutton()}{/if} Name
+                &ensp;&ensp;&ensp; Name{#if sortmode == "name"}{@render dirbutton()}{/if}
             </div>
             <div class="file-section">
-                {#if sortmode == "size"}{@render dirbutton()}{/if}Size
+                Size{#if sortmode == "size"}{@render dirbutton()}{/if}
             </div>
             <div class="file-section">
-                {#if sortmode == "mime"}{@render dirbutton()}{/if}Type
+                Type{#if sortmode == "mime"}{@render dirbutton()}{/if}
             </div>
         </span>
         {#if hasParent}

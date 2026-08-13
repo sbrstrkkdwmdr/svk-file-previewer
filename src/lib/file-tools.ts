@@ -78,4 +78,31 @@ export function sort(
 ) {
     collection.sort(compares[sort]);
     if (direction == "up") collection.reverse();
+    handleFolders(collection, folderhandling);
+}
+function handleFolders(
+    collection: pathableItem[],
+    type: "mixed" | "top" | "bottom",
+) {
+    if (type == "mixed") return;
+    const folders: pathableItem[] = [];
+    const files: pathableItem[] = [];
+    let len = collection.length;
+    for (let i = 0; i < len; i++) {
+        const file = collection.shift()!;
+        if (file.type == "file") files.push(file);
+        if (file.type == "folder") folders.push(file);
+    }
+    if (type == "top") {
+        pushall(collection, folders);
+        pushall(collection, files);
+    } else {
+        pushall(collection, files);
+        pushall(collection, folders);
+    }
+}
+function pushall<T extends any>(main: T[], sub: T[]) {
+    for (const item of sub) {
+        main.push(item);
+    }
 }

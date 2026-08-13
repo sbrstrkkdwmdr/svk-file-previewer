@@ -1,0 +1,253 @@
+/* bits-ui based elements */
+@keyframes jumpIn {
+    from {
+        opacity: 0;
+        transform: translateY(15px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0px);
+    }
+}
+
+@keyframes jumpOut {
+    from {
+        opacity: 1;
+        transform: translateY(0px);
+    }
+
+    to {
+        opacity: 0;
+        transform: translateY(-15px);
+    }
+}
+
+@keyframes select-in {
+    from {
+        opacity: 0;
+        transform: translateY(-15px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0px);
+    }
+}
+
+@keyframes select-out {
+    from {
+        opacity: 1;
+        /* transform: translateY(0px); */
+    }
+
+    to {
+        opacity: 0;
+        /* transform: translateY(15px); */
+    }
+}
+
+.bitui:focus,
+/*.bitui:active */
+.bitui[data-highlighted] {
+    outline: 0;
+    background-color: var(--theme-bg-primary);
+    box-shadow: 0 0 0 0.2rem
+        color-mix(in srgb, var(--theme-accent-primary), transparent 50%);
+    /* these two force the highlight to overlay neighbours */
+    position: relative;
+}
+
+.bitui.alert-content {
+    z-index: 500;
+    display: block;
+}
+
+.bitui.alert-dialogue {
+    position: fixed;
+    top: 50%;
+    left: 25%;
+    transform: translate(-50%, -50%);
+    z-index: 501;
+    background-color: var(--theme-bg-secondary);
+    border-radius: 15px;
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    padding: 15px;
+}
+
+.bitui.alert-button {
+    color: var(--theme-text-secondary);
+    background-color: var(--theme-bg-secondary);
+    border: 3px solid var(--theme-border);
+}
+
+.bitui.alert-button:hover {
+    border-color: var(--theme-accent-primary);
+}
+
+.bitui.alert-confirm:hover {
+    border-color: var(--theme-enable-);
+    color: var(--theme-enable-);
+}
+
+.bitui.alert-cancel:hover {
+    border-color: var(--theme-disable-);
+    color: var(--theme-disable-);
+}
+
+.bitui.page-button {
+    background-color: var(--clrs-none);
+    color: var(--theme-text-primary);
+    border-radius: 9px;
+    border: none;
+    width: fit-content;
+    padding: 10px;
+    margin: 0px 5px;
+}
+
+.bitui.page-button:hover {
+    background-color: var(--theme-bg-highlight);
+}
+
+.bitui.page-button.active-page {
+    background-color: var(--theme-text-primary);
+    color: var(--theme-bg-secondary);
+}
+
+.bitui.page-button.disabled {
+    color: var(--theme-text-secondary);
+}
+
+.bitui.page-button.disabled:hover {
+    background-color: var(--none);
+}
+
+.bitui.select {
+}
+
+.bitui.select-trigger {
+    background-color: var(--theme-bg-secondary);
+    width: calc(max-content + 25px);
+    border-radius: 9px;
+    border: 3px solid var(--theme-border);
+    touch-action: none;
+    user-select: none;
+    display: inline-flex;
+    padding: 5px;
+}
+
+.bitui.select-viewport {
+    /*     width: 100%; */
+}
+
+.bitui.select-content {
+    z-index: 401;
+    /* display: flex; */
+    /*     width: 100%; */
+    /* align-items: center;
+    justify-items: center;
+    justify-content: center;
+    justify-self: center; */
+    max-height: 300px;
+    /* for some reason, the presence of a scrollbar cuts off the longest piece of text */
+    /*     padding-right: 50px; */
+    background-color: var(--theme-bg-secondary);
+    border: 3px solid var(--theme-border);
+    border-radius: 9px;
+    overflow-x: hidden;
+    overflow-y: auto;
+    /*     padding-inline-end: 25px; */
+}
+
+.bitui.select-item {
+    /*     width: 250px; */
+    display: flex;
+    height: 24px;
+    touch-action: none;
+    user-select: none;
+    align-items: center;
+    padding: 3px;
+    padding-left: 5px;
+    /*     padding-right: 1.5px; */
+    white-space: nowrap;
+    /* text-overflow: ellipsis; */
+}
+
+.bitui.select-item.disabled {
+    color: var(--theme-text-secondary);
+}
+
+.bitui.select-item:not(.disabled):hover,
+.bitui.select-item:not(.disabled):focus {
+    background-color: var(--theme-bg-highlight);
+}
+
+.bitui.select-content-open {
+    animation: select-in 0.2s;
+}
+
+.bitui.select-content-closed {
+    animation: select-out 0.2s;
+}
+
+/* sometimes items get cut off by the scrollbar so this fixes that by ensuring trailing space */
+.bitui.select-spacefix {
+    margin-right: 25px;
+}
+
+.bitui.scrollup,
+.bitui.scrolldown {
+    display: flex;
+    width: 100%;
+    align-items: center;
+    justify-items: center;
+    justify-content: center;
+    justify-self: center;
+}
+
+.bitui.icon-left {
+    margin-right: 5px;
+}
+
+.bitui.icon-right {
+    margin-left: auto;
+    /* right: 0px; */
+    /* position:; */
+}
+
+.bitui.tooltip-content {
+    z-index: 501;
+    display: flex;
+    background-color: var(--theme-bg-secondary);
+    border: 3px solid var(--theme-border);
+    max-width: 400px;
+    border-radius: 9px;
+    overflow-x: hidden;
+    overflow-y: hidden;
+}
+
+.bitui.popover-content {
+    transform: translate(-50%, -0%);
+    width: max-content;
+    max-width: 25vw;
+    height: fit-content;
+    background-color: var(--theme-bg-primary);
+    z-index: 900;
+    position: fixed;
+    padding: 5px;
+    border-radius: 5px;
+    border: 3px solid var(--theme-border);
+}
+
+.bitui.content-open {
+    animation: jumpIn 0.2s;
+}
+
+.bitui.content-closed {
+    animation: jumpOut 0.2s;
+}

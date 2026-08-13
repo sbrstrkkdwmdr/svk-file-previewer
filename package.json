@@ -1,5 +1,6 @@
 {
     "dependencies": {
+        "bits-ui": "^2.18.1",
         "marked": "^18.0.2",
         "marked-alert": "^2.1.2",
         "marked-footnote": "^1.4.0",
