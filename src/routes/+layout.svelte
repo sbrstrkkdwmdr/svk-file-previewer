@@ -86,7 +86,6 @@
     >
         <Icon icon="github" fsize="40px" />
     </a>
-    <hr />
 </div>
 <main class="theme-{colourMode}">
     <div class="centre-page">
@@ -101,6 +100,13 @@
         width: 100%;
         top: 0;
         background-color: var(--theme-bg-primary);
+        padding: 8px;
+        border-bottom: 3px solid var(--theme-border);
         /*overflow: none !important;*/
+    }
+
+    main {
+        padding: 0;
+        margin: 0;
     }
 </style>
