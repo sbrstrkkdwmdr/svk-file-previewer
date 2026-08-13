@@ -81,12 +81,10 @@
 <!-- <div class="content"> -->
 <!-- </div> -->
 <!-- </div> -->
-<div class="centre-page content">
-    <a target="_self" href={data.metadata.directory} class="data-button">
-        Go to folder
-    </a>
-    {@render renderContent()}
-</div>
+<a target="_self" href={data.metadata.directory} class="data-button">
+    Go to folder
+</a>
+{@render renderContent()}
 
 {#snippet parseFolder(fullpath: string, filename: string, hash: string)}
     {@const folders = pathToAllFolderLinks(fullpath)}
@@ -96,7 +94,7 @@
 {/snippet}
 
 {#snippet renderMetadata()}
-    <div id="metadata">
+    <div id="metadata" class="mono-font">
         <h2>{data.metadata.name}</h2>
         <Icon icon="folder" />
         {@render parseFolder(
