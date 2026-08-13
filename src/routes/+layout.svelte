@@ -1,10 +1,10 @@
 <script lang="ts">
     import { afterNavigate } from "$app/navigation";
     // import favicon from "$lib/assets/favicon.ico";
-    import Icon from "$lib/svelte/icon.svelte";
+    import Icon from "$lib/components/icons/icon.svelte";
     import { getColourMode } from "$lib/tools.js";
     import { onMount } from "svelte";
-    import AddressBar from "$lib/svelte/address-bar.svelte";
+    import AddressBar from "$lib/components/files/address-bar.svelte";
     let { data, children } = $props();
     let pageMeta = $state(data.headmeta);
     let colourMode = $state("dark_default");
@@ -65,22 +65,7 @@
     /> -->
 </svelte:head>
 <div class="header">
-    <Icon
-        icon="moon"
-        callback={() => {
-            if (colourMode == "light_default") {
-                colourMode = "dark_default";
-            } else {
-                colourMode = "light_default";
-            }
-        }}
-        altIcon="sun"
-        altIconCondition={() => colourMode == "light_default"}
-        fsize="40px"
-        textGlowColour="var(--navSocialGlow)"
-        glowColour="var(--navSocialGlowText)"
-        glowOnHover={true}
-    />
+    <!-- PALETTE GOES HERE -->
     <a
         href="https://github.com/sbrstrkkdwmdr/svk-file-previewer"
         title="source code"

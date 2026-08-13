@@ -1,8 +1,9 @@
 <script lang="ts">
     // import { Clock as Circle } from "svelte-loading-spinners";
     import type { KeyboardEventHandler } from "svelte/elements";
-    import Icon from "./icon.svelte";
-    import Throbber from "./throbber.svelte";
+    import Icon from "$lib/components/icons/icon.svelte";
+
+    import Throbber from "$lib/components/notice/throbber.svelte";
     let {
         placeholder,
         callback,
@@ -52,7 +53,7 @@
         />
         {#if isLoading}
             <Throbber size="24px" />
-            <!-- <Circle size="24" color="var(--accent-primary)"/> -->
+            <!-- <Circle size="24" color="var(--theme-accent-primary)"/> -->
         {:else if showResultsCount}
             <div
                 class="results-counter"
@@ -85,6 +86,13 @@
 
     .search-container-child:focus-within {
         background-color: var(--theme-bg-primary);
+        outline: 0;
+        background-color: var(--theme-bg-primary);
+        box-shadow: 0 0 0 0.2rem
+            color-mix(in srgb, var(--theme-accent-primary), transparent 50%);
+        /* these two force the highlight to overlay neighbours */
+        position: relative;
+        z-index: 299;
     }
 
     :global(.search-container-child i) {
@@ -97,6 +105,11 @@
         font-size: 24px;
         background: none;
         border: 1px solid var(--none);
+    }
+    .search-container-child input:focus-visible {
+        outline: 0;
+        box-shadow: none;
+        /* these two force the highlight to overlay neighbours */
     }
     .results-counter {
         height: 20px;

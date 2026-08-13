@@ -9,7 +9,7 @@
     import { getLink, getViewable } from "$lib/renders/share";
     import TextRender from "$lib/renders/text-render.svelte";
     import VideoRender from "$lib/renders/video-render.svelte";
-    import Icon from "$lib/svelte/icon.svelte";
+    import Icon from "$lib/components/icons/icon.svelte";
     import {
         formatBytes,
         getColourMode,

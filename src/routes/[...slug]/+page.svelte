@@ -4,7 +4,7 @@
     import FolderRender from "$lib/renders/folder-render.svelte";
     import { getColourMode } from "$lib/tools";
     import { onMount } from "svelte";
-    import Searchbar from "$lib/svelte/searchbar.svelte";
+    import Searchbar from "$lib/components/inputs/searchbar.svelte";
     import type { pathableItem } from "$lib/data/files";
     import { fileSearch, type sortmodes } from "$lib/file-tools";
     let { data } = $props();

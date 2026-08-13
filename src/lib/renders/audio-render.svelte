@@ -1,5 +1,4 @@
 <script lang="ts">
-    import { getMime } from "../MIME";
     let { src, mime } = $props();
 </script>
 

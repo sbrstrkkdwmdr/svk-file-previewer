@@ -2,7 +2,8 @@
     import type { Dict } from "$lib/data/types";
     import { onMount } from "svelte";
     import { scale } from "svelte/transition";
-    import Icon from "./icon.svelte";
+    import Icon from "$lib/components/icons/icon.svelte";
+    import ButtonIcon from "$lib/components/icons/button-icon.svelte";
     const {
         name,
         desc,
@@ -52,12 +53,13 @@
 
 <section id="contextmenu-{uuid}" class="contextmenu" {style} transition:scale>
     {#if closeMenu}
-        <Icon
+        <ButtonIcon
             icon="cross"
             callback={() => closeMenu()}
             glowOnHover={true}
-            colour="var(--theme-text-primary)"
+            colour="var(--text-main)"
             textGlowColour="var(--minimise)"
+            tooltip="close context menu"
         />
     {/if}
     <h3>{name}</h3>
@@ -84,7 +86,7 @@
                 ><Icon
                     {icon}
                     colour="inherit"
-                    title="this button is disabled"
+                    tooltip="this button is disabled"
                 />
                 {key}</button
             >
@@ -104,7 +106,7 @@
                 ><Icon
                     {icon}
                     colour="inherit"
-                    title="this button is disabled"
+                    tooltip="this button is disabled"
                 />
                 {key}</button
             >
@@ -114,12 +116,12 @@
 
 <style>
     .contextmenu {
-        background-color: var(--theme-bg-secondary);
+        background-color: var(--bg-secondary);
         padding: 5px;
         width: max-content;
         position: absolute;
         z-index: 1001;
-        border: 2px solid var(--theme-border);
+        border: 2px solid var(--border);
         border-radius: 5px;
     }
     .contextmenu .ctxItem {
@@ -134,11 +136,11 @@
         border: none;
     }
     .contextmenu .ctxItem.disabled {
-        color: var(--theme-text-secondary);
+        color: var(--text-secondary);
         text-decoration: line-through;
     }
     .contextmenu .ctxItem:hover {
-        background-color: var(--theme-bg-highlight);
+        background-color: var(--bg-highlight);
     }
     .ctxmenu-stats {
         text-align: left;
@@ -149,16 +151,16 @@
         padding-right: 10px;
     }
     .ctxmenu-stats-table td:last-child {
-        color: var(--theme-accent-tertiary);
+        color: var(--accent-tertiary);
     }
     .contextmenu button {
     }
     .contextmenu button:hover {
-        background-color: var(--theme-highlight);
+        background-color: var(--highlight);
     }
     .contextmenu button:disabled {
         /* text-decoration: line-through; */
-        color: var(--theme-text-secondary);
+        color: var(--text-secondary);
     }
     .contextmenu button:hover:disabled {
         background-color: var(--none);
@@ -166,10 +168,10 @@
 
     a,
     a.ctxItem {
-        color: var(--theme-text-primary);
+        color: var(--text-primary);
     }
     a:hover {
-        color: var(--theme-text-primary);
+        color: var(--text-primary);
         text-decoration: none;
     }
 </style>

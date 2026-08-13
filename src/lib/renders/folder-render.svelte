@@ -5,9 +5,9 @@
     import { fileNameParts, sort, type sortmodes } from "$lib/file-tools";
     import { getMime, isPreviewable } from "$lib/MIME";
     import { getLink } from "$lib/renders/share";
-    import Ctxmenu from "$lib/svelte/ctxmenu.svelte";
-    import Dialogue from "$lib/svelte/dialogue.svelte";
-    import Icon from "$lib/svelte/icon.svelte";
+    import Ctxmenu from "$lib/components/inputs/ctxmenu.svelte";
+    import Icon from "$lib/components/icons/icon.svelte";
+    import ButtonIcon from "$lib/components/icons/button-icon.svelte";
     import { formatBytes, separateNum, toCapital } from "$lib/tools";
     import { fade, scale } from "svelte/transition";
     let {
@@ -108,7 +108,7 @@
     });
 </script>
 
-<div>
+<!-- <div>
     <Dialogue>
         {#snippet display()}
             <Icon icon="filter" /> sort
@@ -123,9 +123,10 @@
         {/each}
     </Dialogue>
     <select> </select>
-</div>
+</div> -->
 {#snippet dirbutton()}
-    <Icon
+    <ButtonIcon
+        tooltip="Reverse file sorting"
         icon="chevron{toCapital(sortdirection)}"
         callback={() => {
             sortdirection = sortdirection == "up" ? "down" : "up";
