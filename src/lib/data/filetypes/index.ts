@@ -4,7 +4,7 @@ import standard from "mime/types/standard.js";
 import type { Dict } from "$lib/data/types";
 import { codeDict } from "$lib/data/extensions";
 import { customExtensions } from "./mimetypes";
-import { mimeNames } from "./names";
+import { extNames, mimeNames } from "./names";
 const tempMime = new Mime(standard, other);
 tempMime.define(customExtensions, true);
 
@@ -20,6 +20,9 @@ export function getMime(filename: string) {
 }
 
 export function fileTypeName(filename: string) {
+    const ext = toExtension(filename);
+    const otype = extNames[ext];
+    if (otype) return otype;
     const mt = getMime(filename);
     const type = mimeNames[mt];
     if (type == null || type == undefined) {

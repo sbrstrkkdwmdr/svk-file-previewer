@@ -43,8 +43,9 @@ export const customExtensions: Dict<string[]> = {
     "text/x-kotlin": ["kt", "kts"],
     "text/x-literate-haskell": ["lhs"],
     "text/x-lua": ["lua"],
+    "text/x-nix": ["nix"],
     "text/x-octave": ["matlab", "m"],
-    "text/x-php": ["php", "php3", "php4"],
+    "text/x-httpd-php": ["php", "php3", "php4"],
     "text/x-powershell": ["ps1", "psm1"],
     "text/x-python": ["py"],
     "text/x-rsrc": ["r"],
@@ -61,4 +62,7 @@ export const customExtensions: Dict<string[]> = {
     "x-osu-beatmap": ["osu"],
     "x-osu-storyboard": ["osb"],
     "x-osu-replay": ["osr"],
+
+    "application/x-cdf": ["cda"],
+    "application/x-gzip": ["gz"],
 };
