@@ -1,5 +1,5 @@
 import type { file } from "$lib/data/files";
-import { getMime } from "$lib/MIME";
+import { getMime } from "$lib/data/filetypes";
 import { getUrls, robotsText, toSitemap } from "$lib/seo";
 import { downloadGet, downloadUpdate } from "$lib/server/database";
 import { getFiles, updateFiles } from "$lib/server/files";

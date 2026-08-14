@@ -12,6 +12,7 @@
     import Icon from "$lib/components/icons/icon.svelte";
     import { formatBytes, pathToAllFolderLinks, separateNum } from "$lib/tools";
     import { onMount } from "svelte";
+    import { fileTypeName } from "$lib/data/filetypes";
     let { data } = $props();
     let viewMode = $derived(data.preview.mode);
     let colourMode = $state("dark_default");
@@ -130,7 +131,10 @@
         {/if}
         <br />
         <span title="MIME type">
-            <Icon icon={extToImage(data.metadata.extension)} /> MIME: {data.mime}
+            <Icon icon={extToImage(data.metadata.extension)} /> Type: {fileTypeName(
+                data.metadata.name,
+            )}
+            ({data.mime})
         </span>
         {#if viewMode == "image" || viewMode == "video"}
             <br />

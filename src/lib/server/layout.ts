@@ -1,5 +1,5 @@
 import type { file } from "$lib/data/files";
-import { getMime } from "$lib/MIME";
+import { getMime } from "$lib/data/filetypes";
 import { UrlParser } from "$lib/tools";
 import type { LayoutServerLoad } from "../../routes/$types";
 import { getFiles } from "$lib/server/files/index";

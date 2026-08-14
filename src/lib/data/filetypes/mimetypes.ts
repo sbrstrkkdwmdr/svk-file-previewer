@@ -1,9 +1,6 @@
-import mime, { Mime } from "mime";
-import other from "mime/types/other.js";
-import standard from "mime/types/standard.js";
-import type { Dict } from "./data/types";
-import { codeDict } from "./data/extensions";
-const customExtensions: Dict<string[]> = {
+import type { Dict } from "$lib/data/types";
+export const customExtensions: Dict<string[]> = {
+    "application/x-bat": ["bat", "btm", "cmd", "vbs"],
     "application/dart": ["dart"],
     "application/json": ["ipynb", "json", "map"],
     "application/x-gdscript": ["gd"],
@@ -16,7 +13,7 @@ const customExtensions: Dict<string[]> = {
     "text/ini": ["ini", "tscn"],
     "text/java": ["java"],
     "text/javascript": ["js", "cjs", "mjs", "jsonc"],
-    "text/jsx": ["tsx"],
+    "text/jsx": ["jsx", "tsx"],
     "text/rust": ["rs"],
     "text/plain": [
         "txt",
@@ -34,7 +31,6 @@ const customExtensions: Dict<string[]> = {
     "text/typescript-tsx": ["tsx"],
     "text/x-asm": ["asm"],
     "text/x-assembly": ["asm"],
-    "text/x-bat": ["bat", "btm", "cmd"],
     "text/x-c": ["c"],
     "text/x-c++src": ["cpp"],
     "text/x-c++hdr": ["h"],
@@ -66,39 +62,3 @@ const customExtensions: Dict<string[]> = {
     "x-osu-storyboard": ["osb"],
     "x-osu-replay": ["osr"],
 };
-
-const tempMime = new Mime(standard, other);
-tempMime.define(customExtensions, true);
-
-export function getMime(filename: string) {
-    const ext = toExtension(filename);
-    // mime.define(standard)
-    // mime.define(other)
-    // mime.define(customExtensions, true);
-    // const out = mime.getType(ext);
-    // const tempMime = new Mime(standard, other);
-    const out = tempMime.getType(ext);
-    return out ?? "application/octet-stream";
-}
-
-function toExtension(filename: string) {
-    if (filename.includes(".")) {
-        const temp = filename.split(".");
-        return temp.pop()!;
-    }
-    return filename;
-}
-export function isPreviewable(filename: string) {
-    const extensions: string[] = [
-        "jpg",
-        "jpeg",
-        "gif",
-        "png",
-        "svg",
-
-        "txt",
-        "css",
-        "md",
-    ];
-    return extensions.includes(toExtension(filename));
-}

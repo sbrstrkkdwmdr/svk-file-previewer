@@ -1,6 +1,6 @@
 import type { pathableItem } from "./data/files";
 import type { Dict } from "./data/types";
-import { getMime } from "./MIME";
+import { getMime } from "$lib/data/filetypes";
 import { stringMatches } from "./tools";
 
 export function fileSearch(parent: pathableItem<"folder">, match: string) {

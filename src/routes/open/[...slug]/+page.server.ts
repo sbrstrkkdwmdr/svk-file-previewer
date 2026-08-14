@@ -1,7 +1,7 @@
 import { codeDict } from "$lib/data/extensions";
 import type { file, pathableItem } from "$lib/data/files";
 import { markdownParse } from "$lib/marked";
-import { getMime } from "$lib/MIME";
+import { getMime } from "$lib/data/filetypes";
 import { downloadGet } from "$lib/server/database";
 import { getFiles, toPathableItem, updateFiles } from "$lib/server/files";
 import { error, json, redirect, type ServerLoadEvent } from "@sveltejs/kit";

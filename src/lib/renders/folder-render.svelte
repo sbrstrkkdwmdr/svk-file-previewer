@@ -3,7 +3,7 @@
     import { type pathableItem } from "$lib/data/files";
     import type { Dict } from "$lib/data/types";
     import { fileNameParts, sort, type sortmodes } from "$lib/file-tools";
-    import { getMime, isPreviewable } from "$lib/MIME";
+    import { getMime, isPreviewable } from "$lib/data/filetypes";
     import { getLink } from "$lib/renders/share";
     import Ctxmenu from "$lib/components/inputs/ctxmenu.svelte";
     import Select from "$lib/components/bitui/select.svelte";
