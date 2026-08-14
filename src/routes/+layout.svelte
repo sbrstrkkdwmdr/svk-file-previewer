@@ -3,6 +3,7 @@
     import { onMount } from "svelte";
     import { paletteValue, syncPalette } from "$lib/palette";
     import Navbar from "$lib/components/layout/navbar.svelte";
+    import Footer from "$lib/components/layout/footer.svelte";
     let { data, children } = $props();
     let pageMeta = $state(data.headmeta);
     let colourMode = $state("dark_default");
@@ -67,6 +68,7 @@
     <div class="centre-page">
         {@render children?.()}
     </div>
+    <Footer />
 </main>
 
 <style>

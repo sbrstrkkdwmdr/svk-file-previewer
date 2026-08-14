@@ -1,6 +1,5 @@
 <script lang="ts">
     import AddressBar from "$lib/components/layout/address-bar.svelte";
-    import Icon from "$lib/components/icons/icon.svelte";
     import PaletteSelector from "$lib/components/inputs/palette-selector.svelte";
     import PaletteSelectorIcon from "$lib/components/inputs/palette-selector-icon.svelte";
     import ButtonIcon from "$lib/components/icons/button-icon.svelte";
@@ -10,12 +9,6 @@
 
 <div class="header theme-{$paletteValue}">
     <PaletteSelectorIcon useExternalSelector={true} bind:showPaletteSelector />
-    <a
-        href="https://github.com/sbrstrkkdwmdr/svk-file-previewer"
-        title="source code"
-    >
-        <Icon icon="github" fsize="40px" />
-    </a>
     <div class="address-bar">
         <AddressBar />
     </div>
