@@ -96,9 +96,11 @@
         collection: pathableItem[],
     ) {
         for (const child of collection) {
-            if (child.type == "file") container.push(child);
-            else if (isSearchResult) getChildren(container, child.children);
-            else container.push(child);
+            // if (child.type == "file") container.push(child);
+            container.push(child);
+            if (isSearchResult && child.type == "folder")
+                getChildren(container, child.children);
+            // else container.push(child);
         }
     }
 
@@ -261,7 +263,9 @@
 {/snippet}
 {#snippet fileLocation(file: pathableItem)}
     <div class="file-section mono-font">
-        ~{file.directory}
+        ~{file.directory.startsWith("/")
+            ? file.directory
+            : "/" + file.directory}
     </div>
 {/snippet}
 <div class="folder">
@@ -271,9 +275,7 @@
             <div class="file-section">Location</div>
         </span>
         {#each sortedFiles as child}
-            {#if child.type == "file"}
-                {@render fileResult(child)}
-            {/if}
+            {@render fileResult(child)}
         {/each}
     {:else}
         <span class="header">
@@ -324,7 +326,10 @@
         {#if contextItem?.type == "file"}
             <Ctxmenu
                 name={"File options"}
-                desc={contextItem?.directory + "/" + (contextItem?.name ?? "")}
+                desc={"~" +
+                    (contextItem!.directory.startsWith("/")
+                        ? contextItem!.directory
+                        : "/" + contextItem!.directory)}
                 mousevector={mouseVector}
                 mousevectorOverridden={true}
                 closeMenu={() => {
@@ -360,7 +365,7 @@
                     Preview: [
                         [getLink(contextItem!, "preview"), "_self"],
                         "show",
-                        isPreviewable(contextItem?.name ?? ""),
+                        true,
                     ],
                 }}
                 buttons={{
@@ -379,7 +384,10 @@
         {:else}
             <Ctxmenu
                 name={"Folder options"}
-                desc={contextItem!.directory}
+                desc={"~" +
+                    (contextItem!.directory.startsWith("/")
+                        ? contextItem!.directory
+                        : "/" + contextItem!.directory)}
                 mousevector={mouseVector}
                 mousevectorOverridden={true}
                 closeMenu={() => {
