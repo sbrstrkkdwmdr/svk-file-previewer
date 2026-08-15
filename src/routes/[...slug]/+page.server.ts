@@ -7,13 +7,6 @@ export const load = async (event: ServerLoadEvent) => {
     let returnfiles: pathableItem<"folder"> = await toPathableItem(
         event.url.pathname,
     );
-    if (!returnfiles) {
-        returnfiles = await toPathableItem();
-    }
-
-    if (returnfiles.children.length == 0) {
-    }
-
     return {
         files: returnfiles,
         isChild: event.url.pathname != "/",

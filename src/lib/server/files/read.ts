@@ -22,11 +22,14 @@ export async function toPathableItem(
     root = "/",
 ): Promise<pathableItem<"folder">> {
     const files = getFiles();
-    root = stripFolder(root).join("/");
+    const rootparts = stripFolder(root);
+    root = rootparts.join("/");
+    const rootname = rootparts?.pop() ?? "";
+    const rootlocation = rootparts.join("/") ?? "";
     const data: pathableItem<"folder"> = {
         type: "folder",
-        name: root,
-        directory: root,
+        name: rootname,
+        directory: rootlocation,
         children: [],
         size: 0,
         hash: "",
@@ -53,22 +56,29 @@ export async function toPathableItem(
             formatFileSubfolder(data, parents, newFile);
         }
     }
-    // if(data.children.length == 0){
-    //     return fixRootLocation(data as pathableItem<"folder">) as pathableItem<"folder">;
-    // }
 
     const sizefix = fixFolderSizes(data);
     const dlfix = await fixFileDownloads(sizefix);
+    // return current folder instead of topmost parent
     const locationFix = fixRootLocation(dlfix);
-    const pathfix = fixPaths(locationFix, root);
+    const pathfix = fixPaths(
+        locationFix,
+        (rootlocation.endsWith("/") ? rootlocation : rootlocation + "/") +
+            rootname,
+    );
     const sorted = sortPathable(pathfix as pathableItem<"folder">);
     // printChildren(sorted);
     return sorted;
 }
-
 function printChildren(item: pathableItem<"folder">) {
     for (const file of item.children) {
-        console.log(file.directory + " / " + file.name);
+        console.log(
+            file.directory.endsWith("/")
+                ? file.directory
+                : file.directory + "/",
+            ":",
+            file.name,
+        );
         if (file.type == "folder") {
             printChildren(file as pathableItem<"folder">);
         }
@@ -114,20 +124,16 @@ function stripFolder(path: string) {
     return arr;
 }
 
-function fixPaths(data: pathableItemFolder, root: string) {
+function fixPaths(
+    data: pathableItemFolder,
+    root = (data.directory.endsWith("/")
+        ? data.directory
+        : data.directory + "/") + data.name,
+) {
     for (let child of data.children) {
+        child.directory = root;
         if (child.type == "folder") {
-            if (root.startsWith(child.name)) {
-                child.directory = root;
-            } else {
-                // child.directory = root + "/" + child.name;
-            }
-            // paths must start with "/"
-            if (!child.directory.startsWith("/"))
-                child.directory = "/" + child.directory;
-            child = fixPaths(child, child.directory);
-        } else {
-            child.directory = data.directory;
+            child = fixPaths(child);
         }
     }
     return data;

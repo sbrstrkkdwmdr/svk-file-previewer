@@ -114,8 +114,11 @@
 
     function getPath(file: pathableItem) {
         if (file.type == "file") return "/open/" + file.hash;
-        const path = file.directory + file.name;
-        return path.replaceAll("//", "/");
+        let path = file.directory + "/" + file.name;
+        while (path.includes("//")) {
+            path = path.replaceAll("//", "/");
+        }
+        return path.startsWith("/") ? path : "/" + path;
     }
 
     let filecount = $derived(
@@ -366,7 +369,7 @@
                 Type{#if sortmode == "mime"}{@render dirbutton()}{/if}
             </div>
         </span>
-        <a class="file" href="..">
+        <a class="file" href="./">
             <div class="file-section file-name">
                 <span class="fileIcon icon-fileGeneric icon-folder"></span>
                 <span class="mono-font file-name-padding"> .. </span>
@@ -461,7 +464,11 @@
         {:else}
             <Ctxmenu
                 name={"Folder options"}
-                desc={"~" + getPath(contextItem!)}
+                desc={"~" +
+                    (contextItem!.directory.startsWith("/")
+                        ? contextItem!.directory
+                        : "/" + contextItem!.directory) +
+                    "/"}
                 mousevector={mouseVector}
                 mousevectorOverridden={true}
                 closeMenu={() => {
