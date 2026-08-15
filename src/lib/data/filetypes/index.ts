@@ -5,6 +5,7 @@ import type { Dict } from "$lib/data/types";
 import { codeDict } from "$lib/data/extensions";
 import { customExtensions } from "./mimetypes";
 import { extNames, mimeNames } from "./names";
+import { toCapital } from "$lib/tools";
 const tempMime = new Mime(standard, other);
 tempMime.define(customExtensions, true);
 
@@ -26,8 +27,9 @@ export function fileTypeName(filename: string) {
     const mt = getMime(filename);
     const type = mimeNames[mt];
     if (type == null || type == undefined) {
-        if (mt.includes("/")) return mt.split("/")[0];
-        return "unknown";
+        if (mt.startsWith("application/")) return "Application data";
+        if (mt.includes("/")) return toCapital(mt.split("/")[0]) + " file";
+        return "Unknown data type";
     }
     return type;
 }

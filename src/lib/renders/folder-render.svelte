@@ -37,6 +37,7 @@
     let sortdirection: "up" | "down" = $state("down");
     let sortkey: sortoptions = $state("name:down");
     let sortfolders: "top" | "bottom" | "mixed" = $state("top");
+    let filetypemode: "mime" | "name" | "ext" = $state("mime");
 
     const sortDict: Dict<[string, () => void], sortoptions> = {
         "name:down": [
@@ -116,6 +117,13 @@
         const path = file.directory + file.name;
         return path.replaceAll("//", "/");
     }
+
+    let filecount = $derived(
+        sortedFiles.filter((f) => f.type == "file").length,
+    );
+    let foldercount = $derived(
+        sortedFiles.filter((f) => f.type == "folder").length,
+    );
 </script>
 
 <div>
@@ -192,6 +200,55 @@
             </span>
         {/snippet}
     </Select>
+    <Select
+        bind:value={filetypemode}
+        type="single"
+        items={[
+            {
+                value: "mime",
+                label: "MIME type",
+                disabled: false,
+            },
+            {
+                value: "name",
+                label: "Type name",
+                disabled: false,
+            },
+            {
+                value: "ext",
+                label: "File extension",
+                disabled: false,
+            },
+        ]}
+    >
+        {#snippet trigger()}
+            <span class="bitui icon-left">
+                <Icon icon="fileText" />
+            </span>
+            File types
+            <span class="bitui icon-right">
+                <Icon icon="chevronDown" colour="var(--theme-text-secondary)" />
+            </span>
+        {/snippet}
+        {#snippet item(value, label, disabled, selected)}
+            <span style={selected ? "color:var(--theme-enable-);" : ""}>
+                {#if selected}
+                    <Icon icon="check" colour="inherit" />
+                {/if}
+                {label}
+            </span>
+        {/snippet}
+    </Select>
+</div>
+<div>
+    {#if sortedFiles.length == filecount}
+        {filecount} files
+    {:else if sortedFiles.length == foldercount}
+        {foldercount} folders
+    {:else}
+        {sortedFiles.length} items ({filecount} files, {foldercount} folders)
+    {/if},
+    {@html formatBytes(sortedFiles.reduce((a, b) => b.size + a, 0))}
 </div>
 {#snippet dirbutton()}
     <ButtonIcon
@@ -249,10 +306,22 @@
 {/snippet}
 {#snippet fileType(file: pathableItem)}
     <div class="file-section mono-font">
-        {#if file.type == "file"}
-            {getMime(file.name)}
+        {#if filetypemode == "name"}
+            {#if file.type == "file"}
+                {fileTypeName(file.name)}
+            {:else}
+                Directory
+            {/if}
+        {:else if filetypemode == "ext"}
+            {#if file.type == "file"}
+                {fileNameParts(file.name)?.[1] ?? ""}
+            {/if}
         {:else}
-            folder
+            {#if file.type == "file"}
+                {getMime(file.name)}
+            {:else}
+                directory
+            {/if}
         {/if}
     </div>
 {/snippet}
@@ -304,7 +373,7 @@
                     <span class="mono-font file-name-padding"> .. </span>
                 </div>
                 <div class="file-section mono-font"></div>
-                <div class="file-section mono-font">folder</div>
+                <div class="file-section mono-font"></div>
             </a>
         {/if}
         {#each sortedFiles as file}
@@ -495,7 +564,7 @@
         font-size: 1.25rem;
     }
 
-    @media (max-width: 960px) {
+    @media (max-width: 959px) {
         /*.show-on-shrink {
         }*/
         .hide-on-shrink {
