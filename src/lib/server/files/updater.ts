@@ -35,7 +35,7 @@ export async function updateFiles() {
         currentlyUpdating = true;
         workfiles = null;
         const iso = new Date().toISOString();
-        console.log(iso + ": Updating file explorer...");
+        // console.log(iso + ": Updating file explorer...");
         fLastUpdate = new Date().getTime();
         await new Promise((resolve, reject) => {
             walk(`./${rootFolder}`, (err, res) => {

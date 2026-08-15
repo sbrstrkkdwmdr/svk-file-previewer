@@ -39,7 +39,6 @@
 
     function filterFilesEvent(e: KeyboardEvent) {
         const val = (e.target! as HTMLInputElement).value?.trim() ?? "";
-        console.log(val);
         if (previnVal != val) {
             clearTimeout(inTO);
             resultsAreLoading = true;

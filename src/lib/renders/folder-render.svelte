@@ -256,6 +256,7 @@
         class="file"
         href={file.type == "folder" ? file.directory : "/open/" + file.hash}
         oncontextmenu={(ev) => ctxmenu(ev, file)}
+        data-sveltekit-reload
     >
         {@render fileName(file)}
         {@render fileLocation(file)}
