@@ -6,6 +6,7 @@
     import Searchbar from "$lib/components/inputs/searchbar.svelte";
     import type { pathableItem } from "$lib/data/files";
     import { fileSearch, type sortmodes } from "$lib/file-tools";
+    import { getQuery, updateQuery } from "$lib/tools";
     let { data } = $props();
     let colourMode = $state("dark_default");
 
@@ -14,8 +15,7 @@
     let usefiles = $derived(data.files);
     onMount(() => {
         addressBarPath.set(location.pathname);
-        const url = new URL(window.location.href);
-        const query = url.searchParams.get("q");
+        const query = getQuery();
         if (query) {
             searchInitial = query;
             filterFiles(query);
@@ -26,11 +26,6 @@
         addressBarPath.set(location.pathname);
     });
     $effect(() => {
-        try {
-            localStorage.setItem("colourMode", colourMode);
-        } catch (err) {
-            console.log(err);
-        }
         // showFilePreview = window.innerWidth > 900;
     });
 
@@ -53,11 +48,7 @@
     function filterFiles(val: string) {
         const temp = fileSearch(data.files as pathableItem<"folder">, val);
         usefiles = temp;
-        const nurl = new URL(window.location.href);
-        nurl.searchParams.set("q", val);
-        try {
-            replaceState(nurl, {});
-        } catch (err) {}
+        updateQuery(val);
     }
 </script>
 

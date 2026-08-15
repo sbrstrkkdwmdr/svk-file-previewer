@@ -1,73 +1,9 @@
-import type { pathableItem } from "./data/files";
-import { subdomainoffset } from "./data/std";
-import type { Dict } from "./data/types";
-
-export const str = "hi";
-
-// https://stackoverflow.com/a/7225450
-export function camelCaseToWords(s: string) {
-    const result = s.replace(/([A-Z])/g, " $1");
-    return result.charAt(0).toUpperCase() + result.slice(1);
-}
+import { pushState, replaceState } from "$app/navigation";
+import { subdomainoffset } from "$lib/data/std";
+import type { Dict } from "$lib/data/types";
 
 export function toCapital(str: string) {
     return str.charAt(0).toUpperCase() + str.slice(1);
-}
-
-// https://stackoverflow.com/a/784611
-export function fixHtmlChars(str: string) {
-    return str
-        .replace(/&/g, "&amp;")
-        .replace(/>/g, "&gt;")
-        .replace(/</g, "&lt;")
-        .replace(/"/g, "&quot;");
-}
-
-function markdownToHtml(markdownText: string): string {
-    markdownText = markdownText.replaceAll("\n", "<br>");
-    markdownText = markdownText.replace(
-        /(```|~~~)(\w+)?\n([\s\S]*?)(\1)/g,
-        (_, fence, lang, code) => {
-            const escapedCode = code
-                .trim()
-                .replace(/&/g, "&amp;")
-                .replace(/</g, "&lt;")
-                .replace(/>/g, "&gt;");
-            return `<span class="code-block">${escapedCode}</span>`;
-        },
-    );
-
-    markdownText = markdownText.replace(
-        /(?<!`)\`([^`\n]+?)\`(?!`)/g,
-        (_, code) => {
-            const escapedInline = code
-                .replace(/&/g, "&amp;")
-                .replace(/</g, "&lt;")
-                .replace(/>/g, "&gt;");
-            return `<span class="inline-code">${escapedInline}</span>`;
-        },
-    );
-
-    markdownText = markdownText.replace(
-        /\[([^\]]+)\]\((https?:\/\/[^\s)]+)\)/g,
-        (_, text, url) => {
-            return `<a href="${url}" target="_blank" rel="noopener noreferrer" class="highlightLink">${text}</a>`;
-        },
-    );
-    markdownText = markdownText.replace(
-        /\[([^\]]+)\]\((mailto:[^\s)]+)\)/g,
-        (_, text, url) => {
-            return `<a href="${url}" target="_blank" rel="noopener noreferrer" class="highlightLink">${text}</a>`;
-        },
-    );
-    markdownText = markdownText.replace(
-        /\[([^\]]+)\]\((\/[^\s)]+)\)/g,
-        (_, text, url) => {
-            return `<a href="${url}" target="_blank" rel="noopener noreferrer" class="highlightLink">${text}</a>`;
-        },
-    );
-
-    return markdownText;
 }
 
 export class UrlParser {
@@ -86,9 +22,26 @@ export class UrlParser {
     public get protocol() {
         return this.urlObject.protocol;
     }
+    /**
+     * subdomains as an array
+     * @example foo.bar.website.com:80/blah -> ["foo", "bar"]
+     */
     public get subdomains() {
         return this._subdomains;
     }
+
+    public get origin() {
+        return this.urlObject.origin;
+    }
+
+    /**
+     * subdomains as a string
+     * @example foo.bar.website.com:80/blah -> "foo.bar"
+     */
+    public get subdomain() {
+        return this._subdomains.join(".");
+    }
+
     public set subdomains(v: string[]) {
         this._subdomains = v;
     }
@@ -158,7 +111,17 @@ export class UrlParser {
         hash = this.hash,
     }): string {
         let url = this.protocol + "//";
-        if (subdomains.length > 0) url += subdomains.join(".") + ".";
+        if (subdomains.length > 0) {
+            const temp = [];
+            for (const subdomain of subdomains) {
+                if (subdomain.length > 0) {
+                    temp.push(subdomain);
+                }
+            }
+            if (temp.length > 0) {
+                url += subdomains.join(".") + ".";
+            }
+        }
         url += host;
         if (port && port.length > 0) url += ":" + port;
         if (path && path.length > 0) url += path;
@@ -166,251 +129,18 @@ export class UrlParser {
         if (hash && hash.length > 0) url += hash;
         return url;
     }
-}
-
-export class OldUrlParser {
-    private url: string;
-    private subdomainOffset: number;
-    public protocol: string = "";
-    public port: number = 0;
-    public subdomains: string[] = [];
-    public domain: string = "";
-    public get path(): string {
-        return this.sp ?? "/";
-    }
-    public set path(v: string) {
-        if (v.startsWith("/")) this.sp = v;
-        else this.sp = "/" + v;
-    }
-    private sp?: string;
-    public locator: string = "";
-    public params: Dict<string> = {};
-    public get paramString() {
-        let str = "";
-        const params = Object.entries(this.params);
-        if (params.length > 0) {
-            str += `?${params[0][0]}=${params[0][1]}`;
-            params.shift();
-            for (const e of params) {
-                str += `?${e[0]}=${e[1]}`;
+    public get isIpAddress() {
+        if (this.primaryDomain.includes(".")) {
+            let i = 0;
+            for (const num of this.primaryDomain.split(".")) {
+                if (!isNaN(+num)) {
+                    i++;
+                }
             }
+            if (i === 4) return true;
         }
-        return str;
+        return false;
     }
-    public get hash() {
-        return this.locator;
-    }
-    public get origin() {
-        return this.protocol + "://" + this.domain;
-    }
-    public get href() {
-        let surl = this.protocol + "://";
-        if (this.subdomains) surl += this.subdomains.join(".") + ".";
-        surl += this.domain;
-        if (this.port) surl += ":" + this.port;
-        if (this.path) {
-            surl += this.path;
-        }
-        if (this.locator) surl += "#" + this.locator;
-        surl += this.paramString;
-        return surl;
-    }
-    /**
-     *
-     * @param subdomainOffset if accessing via localhost set this to 1. This is the number of "."s in the domain + 1. DO NOT INCLUDE SUBDOMAINS IN THIS NUMBER
-     *
-     * localhost -> 1
-     *
-     * api.localhost -> 1 (api is a subdomain)
-     *
-     * transportnsw.info -> 2 (info is TLD)
-     *
-     * user.github.io -> 2 (io is TLD)
-     *
-     * www.somewebsite.me -> 2 (www is a subdomain, me is TLD)
-     *
-     * accc.gov.au -> 3 (gov.au is TLD)
-     *
-     * transport.vic.gov.au -> 4 (vic.gov.au is TLD)
-     */
-    constructor(url: string, subdomainOffset: number = subdomainoffset) {
-        this.url = url;
-        if (url.includes("localhost")) subdomainOffset = 1;
-        this.subdomainOffset = subdomainOffset;
-        this.parse();
-        this.url = url;
-    }
-    private parse() {
-        try {
-            this.parseProtocol();
-            this.parsePort();
-            this.parseDomain();
-            this.parsePath();
-        } catch (err) {
-            console.log(err);
-        }
-    }
-    private parseProtocol() {
-        if (this.url.includes("://")) {
-            this.protocol = this.url.split("://")[0];
-            this.url = this.url.split("://")[1];
-        }
-    }
-    private parseDomain() {
-        // {subdomains?}.{domain.TLD}{/path?}{#hash?}
-        let temp = this.url;
-        if (this.url.includes("/")) {
-            const www = this.url.split("/");
-            temp = www.shift()!;
-            this.url = "/" + www.join("/");
-        }
-        // {subdomains.domain.TLD}
-        if (temp.includes(".")) {
-            const split: string[] = temp.split(".");
-            let domain: string[] = [];
-            for (let i = 0; i < this.subdomainOffset && i < split.length; i++) {
-                domain.push(split.pop() as string);
-            }
-            this.subdomains = split ?? [];
-            this.domain = domain.join(".");
-        } else {
-            this.domain = temp;
-        }
-    }
-    private parsePort() {
-        if (this.url.includes(":")) {
-            const temp = this.url.split(":")[1];
-            this.port = parseInt(
-                this.url.includes("/") ? temp.split("/")[0] : temp,
-            );
-            this.url = this.url.replace(":" + this.port, "");
-        }
-    }
-    //type error cannot read properties of undefined reading 'includes'
-    // weird thing is it still works anyways?? tf
-    private parsePath() {
-        if (this.url == "" || !this.url) {
-            this.path = "/";
-            return;
-        }
-        if (this.url?.includes("#")) {
-            this.path = this.url.split("#")[0];
-            this.locator = this.url.split("#")[1];
-        } else if (this.url?.includes("?")) {
-            this.path = this.url.split("?")[0];
-            this.parseParams(this.url.split("?")[1]);
-        } else {
-            this.path = this.url;
-        }
-    }
-    private parseParams(str: string) {
-        let items: string[] = [str];
-        if (str.includes("&")) items = str.split("&");
-        for (const str of items) {
-            const key = str.split("=")[0];
-            const val = str.split("=")[1];
-            this.params[key] = val;
-        }
-    }
-}
-
-// see https://github.com/sbrstrkkdwmdr/ssob/blob/main/src/commands/command.ts
-export function getLink(pattern: string, input: string) {
-    const paramNames: string[] = [];
-    let rawRegex = pattern.replace(/{(\w+)}/g, (_, name) => {
-        paramNames.push(name);
-        return "<<<CAPTURE>>>";
-    });
-
-    rawRegex = rawRegex.replace(/([.+?^$()|[\]\\])/g, "\\$1");
-
-    const regexPattern = rawRegex.replace(/<<<CAPTURE>>>/g, "([^/#?]+)");
-
-    const regex = new RegExp("^" + regexPattern + "$");
-
-    const match = input.match(regex);
-    if (match) {
-        const result = paramNames.map((name, index) => ({
-            [name]: match[index + 1],
-        }));
-
-        return kvToDict(result);
-    }
-
-    return null;
-}
-function kvToDict(array: any[]) {
-    const dictionary: Dict = {};
-    for (const elem of array) {
-        const key = Object.keys(elem)[0];
-        dictionary[key] = elem[key];
-    }
-    return dictionary;
-}
-
-export function secondsToTime(seconds: number, allowDays?: boolean) {
-    const days = Math.floor(seconds / 60 / 60 / 24).toString();
-    const hours =
-        allowDays == true
-            ? ((seconds / 60 / 60) % 24 < 10
-                  ? "0" + Math.floor((seconds / 60 / 60) % 24)
-                  : Math.floor((seconds / 60 / 60) % 24)
-              ).toString()
-            : (seconds / 60 / 60 < 10
-                  ? "0" + Math.floor(seconds / 60 / 60)
-                  : Math.floor(seconds / 60 / 60)
-              ).toString();
-    const minutes =
-        (seconds / 60) % 60 < 10
-            ? "0" + Math.floor((seconds / 60) % 60)
-            : Math.floor((seconds / 60) % 60);
-    const secs =
-        seconds % 60 < 10
-            ? "0" + Math.floor(seconds % 60)
-            : Math.floor(seconds % 60);
-    let str;
-    if (allowDays == true) {
-        str =
-            parseInt(days) > 0
-                ? `${days}:${hours}:${minutes}:${secs}`
-                : parseInt(hours) > 0
-                  ? `${hours}:${minutes}:${secs}`
-                  : `${minutes}:${secs}`;
-    } else {
-        str =
-            parseInt(hours) > 0
-                ? `${hours}:${minutes}:${secs}`
-                : `${minutes}:${secs}`;
-    }
-    return str;
-}
-
-/**
- * /directory/filename.png -> filename
- *
- * file.test.ts -> file.test
- */
-export function pathToFilename(str: string) {
-    const file = str.includes("/") ? str.split("/").pop()! : str;
-    if (file.includes(".")) {
-        const wip = file.split(".");
-        wip.pop();
-        return wip.join(".");
-    }
-    return file;
-}
-
-export function listItems(list: string[]) {
-    let string = "";
-    if (list.length > 1) {
-        for (let i = 0; i < list.length - 2; i++) {
-            string += list[i] + ", ";
-        }
-        string += list[list.length - 2] + " and " + list[list.length - 1];
-    } else {
-        return list[0];
-    }
-    return string;
 }
 
 export function pushArray<T extends any>(arr: T[], arr2: T[]) {
@@ -435,7 +165,7 @@ export function keyToIndex(key: string, dict: Dict) {
     return -1;
 }
 
-export function fisherYatesShuffle(arr: any[]) {
+export function fisherYatesShuffle<T extends any>(arr: T[]): T[] {
     for (let i = arr.length - 1; i > 0; i--) {
         const j = Math.floor(Math.random() * (i + 1));
         [arr[i], arr[j]] = [arr[j], arr[i]];
@@ -476,90 +206,6 @@ export function arrayToDict(arr: any[], key: string, value: string) {
     return dict;
 }
 
-// https://stackoverflow.com/a/30521308
-export function pascalCamelToSnake(str: string) {
-    const fixed =
-        // str.replace(/(?:^|\.?)([A-Z])/g, function (x: string, y: string) { return "_" + y.toLowerCase(); }).replace(/^_/, "");
-        str
-            .replace(/\.?([A-Z])/g, function (x: string, y: string) {
-                return "_" + y.toLowerCase();
-            })
-            .replace(/^_/, "")
-            .replaceAll(" ", "_")
-            .replaceAll("__", "_");
-    return fixed;
-}
-
-/**
- * eg 1,000 -> 1k
- * 1,000,000 -> 1m
- * 1,111,111 -> 1.111m
- * 111,111 -> 111.1k
- */
-export function numberShorthand(input: number) {
-    let value = +scientificNotation(input, 3);
-    let output = input + "";
-    switch (true) {
-        case value >= 1e9:
-            output = value / 1e9 + "B";
-            break;
-        case value >= 1e8:
-        case value >= 1e7:
-        case value >= 1e6:
-            output = value / 1e6 + "M";
-            break;
-        case value >= 1e5:
-        case value >= 1e4:
-        case value >= 1e3:
-            output = value / 1e3 + "K";
-            break;
-    }
-    return output;
-}
-
-export function scientificNotation(input: number, significantFigures: number) {
-    let tNum: string;
-    const numString = input.toString().replace(/[-.]/g, ""); // Remove "-" and "."
-    const eIndex = numString.indexOf("e");
-    const numLength = eIndex !== -1 ? eIndex : numString.length;
-
-    if (numLength <= significantFigures) {
-        tNum = `${input}`;
-    } else if (input !== 0) {
-        let exponent = 0;
-        let i = 0;
-        while (Math.abs(input) < 1 || Math.abs(input) >= 10) {
-            i++;
-            if (Math.abs(input) < 1) {
-                input *= 10;
-                exponent--;
-            } else if (Math.abs(input) >= 10) {
-                input /= 10;
-                exponent++;
-            }
-        }
-        let mantissa = input.toFixed(significantFigures - 1);
-        // Code to ensure the number has the correct number of significant figures
-        const xFig =
-            significantFigures + (mantissa.match(/[-.]/g) || []).length;
-        mantissa = mantissa.slice(0, xFig);
-        mantissa = mantissa.slice(0, xFig);
-        if (exponent !== 0) {
-            tNum = `${mantissa}e${exponent}`;
-        } else {
-            tNum = mantissa;
-        }
-    } else {
-        tNum = "0";
-    }
-
-    if (tNum.endsWith(".")) {
-        tNum = tNum.replace(".", "");
-    }
-
-    return tNum;
-}
-
 /**
  * @info separates numbers eg. 3000000 -> 3,000,000
  * @param number
@@ -580,35 +226,6 @@ export function separateNum(number: string | number, separator?: string) {
     return ans;
 }
 
-// export function pathToDownload(path: string, preview: boolean = true) {
-//     let url = '/api/download';
-//     const split = path.split('/');
-//     const filename = split.pop()!;
-//     url += '?name=' + filename;
-//     url += '&location=' + split.join('/') + '/';
-//     if (preview) url += '&preview=true';
-//     return url;
-// }
-export function pathFinalName(path: string) {
-    const temp = path.split("/");
-    return temp.pop() ?? "";
-}
-
-export function formatBytes(bytes: number, decimals = 2, k = 1024) {
-    if (!+bytes) return "0 Bytes";
-    const dm = decimals < 0 ? 0 : decimals;
-    let sizes = ["B", "KiB", "MiB", "GiB", "TiB", "PiB", "EiB", "ZiB", "YiB"];
-    if (k == 1000) {
-        sizes = ["Bytes", "KB", "MB", "GB", "TB", "PB", "EB", "ZB", "YB"];
-    }
-    const i = Math.floor(Math.log(bytes) / Math.log(k));
-
-    return `${parseFloat((bytes / Math.pow(k, i)).toFixed(dm))} ${sizes[i]}`;
-}
-
-// accept:
-// /folder/file
-// /folder/subfolder/file
 export function pathToAllFolderLinks(str: string) {
     const split = str.split("/");
     if (split[0].length == 0) split.shift();
@@ -624,15 +241,208 @@ export function pathToAllFolderLinks(str: string) {
     return links;
 }
 
-export function filesOnly(item: pathableItem<"folder">): pathableItem[] {
-    let temp: pathableItem[] = [];
-    for (const file of item.children ?? []) {
-        if (file.type == "folder") {
-            const temp2 = filesOnly(file);
-            temp = temp.concat(temp2);
+export function formatBytes(bytes: number, decimals = 2, k = 1024) {
+    if (!+bytes) return "0 Bytes";
+    const dm = decimals < 0 ? 0 : decimals;
+    let sizes = ["B", "KiB", "MiB", "GiB", "TiB", "PiB", "EiB", "ZiB", "YiB"];
+    if (k == 1000) {
+        sizes = ["Bytes", "KB", "MB", "GB", "TB", "PB", "EB", "ZB", "YB"];
+    }
+    const i = Math.floor(Math.log(bytes) / Math.log(k));
+
+    return `${parseFloat((bytes / Math.pow(k, i)).toFixed(dm))} ${sizes[i]}`;
+}
+
+export function pagesToValues(
+    current: number,
+    count: number,
+): (string | number)[] {
+    if (count <= 5) {
+        const temp = [];
+        for (let i = 0; i < count; i++) {
+            temp.push(i);
+        }
+        return fixPages(temp);
+    } else if (current < 3) {
+        const temp = [];
+        for (let i = 0; i < count; i++) {
+            if (i < 5 || i == count - 1) {
+                temp.push(i);
+                continue;
+            } else {
+                temp.push("...");
+            }
+        }
+        return fixPages(temp);
+    } else if (current > count - 4) {
+        const temp = [];
+        for (let i = 0; i < count; i++) {
+            if (i == 0 || i >= count - 5) {
+                temp.push(i);
+                continue;
+            } else {
+                temp.push("...");
+            }
+        }
+        return fixPages(temp);
+    } else {
+        const temp: (string | number)[] = [];
+        for (let i = 0; i < count; i++) {
+            if (i == 0 || i == count - 1) {
+                temp.push(i);
+                continue;
+            } else if (i == current || i == current - 1 || i == current + 1) {
+                temp.push(i);
+                continue;
+            } else {
+                temp.push("...");
+            }
+        }
+        return fixPages(temp);
+    }
+}
+
+function fixPages(elems: (string | number)[]) {
+    const values: (string | number)[] = [];
+    let preval: any = "";
+    for (const value of elems) {
+        if (value == "..." && preval != "...") {
+            values.push(value);
+        } else if (!values.includes(value)) {
+            values.push(value);
+        }
+        preval = value;
+    }
+    return values;
+}
+
+export type imageType =
+    "big" | "medium" | "small" | "square" | "square_small" | "flag";
+
+export function imageError(event: Event, type: imageType) {
+    let newimage = "/img/";
+    let [w, h] = [1920, 1080];
+    switch (type) {
+        case "big":
+        case "medium":
+        default:
+            newimage += "404-long.png";
+            break;
+        // case "small":
+        //     newimage += "404_small.jpg";
+        //     break;
+        case "square":
+        case "square_small":
+            newimage += "404-square.png";
+            break;
+        case "flag":
+            newimage += "flags/__.png";
+            break;
+    }
+    console.warn(
+        'Could not load image "' +
+            (event.target as HTMLImageElement).src +
+            '"\nReplacing with \"' +
+            newimage +
+            '"',
+    );
+    const target = event.target as HTMLImageElement;
+    target.setAttribute("data-src-old", target.src);
+    target.src = newimage;
+
+    // const target = (event.target as HTMLImageElement).style;
+    // target.setProperty("--img-fallback", `url("${newimage}")`);
+    // target.setProperty("max-width", w + "px");
+    // target.setProperty("max-height", h + "px");
+    // target.setProperty("width", "100%");
+    // target.setProperty("height", "100%");
+
+    // target.setProperty("display", "inline-block");
+}
+
+export function updateQuery(query: string) {
+    try {
+        let newurl = new URL(window.location.href);
+        if (query && query.length > 0) {
+            const newquery = formatQueryString(query);
+            // newurl = updateParamNoEncode(newurl, "q", newquery);
+            newurl.searchParams.set("q", newquery);
         } else {
-            temp.push(file);
+            newurl.searchParams.delete("q");
+        }
+        if (newurl.toString() != window.location.href) {
+            replaceState(newurl, {});
+        }
+    } catch (error) {
+        console.log(error);
+    }
+}
+
+export function getQuery() {
+    try {
+        const url = new URL(window.location.href);
+        const query = url.searchParams.get("q") ?? "";
+        return decodeURIComponent(query);
+    } catch (err) {
+        return "";
+    }
+}
+
+export function updateParamNoEncode(url: URL, key: string, value: string) {
+    const keys: Dict<string> = {};
+    let isthere = false;
+    for (const [k, v] of url.searchParams) {
+        if (k == key) {
+            keys[k] = value;
+            isthere = true;
+        } else {
+            keys[k] = v;
         }
     }
+    if (!isthere) {
+        keys[key] = value;
+    }
+    url.search =
+        "?" +
+        Object.entries(keys)
+            .map(([k, v]) => k + "=" + v)
+            .join("&");
+    return url;
+}
+
+export function formatQueryString(query: string) {
+    // for whatever reason svelte just changes it back to a " " (or %20)
+    return encodeURIComponent(query);
+}
+
+export function dictToSelectable(
+    input: Dict<string>,
+    disableSearch: string = "",
+) {
+    const temp: {
+        value: string;
+        label: string;
+        disabled: boolean;
+    }[] = [];
+    for (const key in input) {
+        let disabled = false;
+        if (disableSearch && input[key].includes(disableSearch)) {
+            disabled = true;
+        }
+
+        temp.push({
+            value: key,
+            label: input[key],
+            disabled,
+        });
+    }
     return temp;
+}
+
+export function resetFocus() {
+    (document.activeElement as HTMLElement).blur();
+}
+
+export function toClipboard(text: string) {
+    navigator.clipboard.writeText(text);
 }
