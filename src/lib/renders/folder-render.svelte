@@ -366,16 +366,14 @@
                 Type{#if sortmode == "mime"}{@render dirbutton()}{/if}
             </div>
         </span>
-        {#if hasParent}
-            <a class="file" href="..">
-                <div class="file-section file-name">
-                    <span class="fileIcon icon-fileGeneric icon-folder"></span>
-                    <span class="mono-font file-name-padding"> .. </span>
-                </div>
-                <div class="file-section mono-font"></div>
-                <div class="file-section mono-font"></div>
-            </a>
-        {/if}
+        <a class="file" href="..">
+            <div class="file-section file-name">
+                <span class="fileIcon icon-fileGeneric icon-folder"></span>
+                <span class="mono-font file-name-padding"> .. </span>
+            </div>
+            <div class="file-section mono-font"></div>
+            <div class="file-section mono-font"></div>
+        </a>
         {#each sortedFiles as file}
             {@render fileEntry(file)}
         {/each}
@@ -406,7 +404,9 @@
                 desc={"~" +
                     (contextItem!.directory.startsWith("/")
                         ? contextItem!.directory
-                        : "/" + contextItem!.directory)}
+                        : "/" + contextItem!.directory) +
+                    "/" +
+                    contextItem!.name}
                 mousevector={mouseVector}
                 mousevectorOverridden={true}
                 closeMenu={() => {
@@ -461,10 +461,7 @@
         {:else}
             <Ctxmenu
                 name={"Folder options"}
-                desc={"~" +
-                    (contextItem!.directory.startsWith("/")
-                        ? contextItem!.directory
-                        : "/" + contextItem!.directory)}
+                desc={"~" + getPath(contextItem!)}
                 mousevector={mouseVector}
                 mousevectorOverridden={true}
                 closeMenu={() => {

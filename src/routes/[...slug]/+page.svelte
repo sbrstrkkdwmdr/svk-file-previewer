@@ -1,14 +1,13 @@
 <script lang="ts">
-    import { afterNavigate, replaceState } from "$app/navigation";
+    import { afterNavigate } from "$app/navigation";
     import { addressBarPath } from "$lib/data/path-now.js";
     import FolderRender from "$lib/renders/folder-render.svelte";
     import { onMount } from "svelte";
     import Searchbar from "$lib/components/inputs/searchbar.svelte";
     import type { pathableItem } from "$lib/data/files";
-    import { fileSearch, type sortmodes } from "$lib/file-tools";
+    import { fileSearch } from "$lib/file-tools";
     import { getQuery, updateQuery } from "$lib/tools";
     let { data } = $props();
-    let colourMode = $state("dark_default");
 
     let searchInitial = $state("");
     let previnVal = $state("");

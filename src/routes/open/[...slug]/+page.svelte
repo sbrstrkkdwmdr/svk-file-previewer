@@ -51,32 +51,6 @@
 </script>
 
 <svelte:window bind:innerWidth />
-<!-- {#if viewMode == "folder"}
-        <h1>Files</h1>
-        <FolderRender files={data.files} /> -->
-<!-- <div class="content-container"> -->
-<!-- {#if showFilePreview}
-        <section class="content left">
-            <h1>Files</h1>
-            <FolderRender files={data.files} isChild={data.isChild} />
-        </section>
-    {/if}
-    <section class="content right">
-        {#if !showFilePreview}
-            <a
-                target="_self"
-                href={data.metadata.directory}
-                class="data-button"
-            >
-                Go to folder
-            </a>
-        {/if}
-
-        {@render renderContent()}
-    </section> -->
-<!-- <div class="content"> -->
-<!-- </div> -->
-<!-- </div> -->
 <a target="_self" href={data.metadata.directory} class="data-button">
     Go to folder
 </a>
@@ -120,7 +94,7 @@
                 href={downloadurl}
                 title="Open file in browser"
             >
-                <Icon icon="download" /> open file in browser
+                <Icon icon="external" /> open file in browser
             </a>
         {/if}
         {#if data.downloadCount > 0}<br />
@@ -247,8 +221,9 @@
     }
 
     .data-button:hover {
-        color: var(--text-link-hover);
+        border: solid 3px var(--theme-text-link-hover);
         text-decoration: underline;
         background-color: var(--theme-bg-highlight);
+        border: solid 3px var(--theme-text-link-hover);
     }
 </style>
