@@ -1,4 +1,4 @@
-import type { file, pathableItem } from "$lib/data/files";
+import type { file, pathableItem, pathableItemFolder } from "$lib/data/files";
 import { downloadGet } from "$lib/server/database";
 import { createHash } from "$lib/server/tool";
 import { getFiles } from "$lib/server/files/updater";
@@ -38,14 +38,13 @@ export async function toPathableItem(
         if (!parents.join("/").startsWith(root)) {
             continue;
         }
-
         const newFile: pathableItem<"file"> = {
             type: "file",
             name: file.name,
             directory: file.directory,
             size: file.size,
-            children: [],
             hash: file.hash,
+            downloadCount: 0,
         };
 
         if (parents.length == 0) {
@@ -92,7 +91,7 @@ function formatFileSubfolder(
             }
         }
         if (!found.includes(str)) {
-            found.push(str);
+            // found.push(str);
             const newchild: pathableItem<"folder"> = {
                 type: "folder",
                 hash: createHash("/" + found.join("/") + "/" + str),
@@ -115,11 +114,15 @@ function stripFolder(path: string) {
     return arr;
 }
 
-function fixPaths(data: pathableItem, root: string) {
+function fixPaths(data: pathableItemFolder, root: string) {
     for (let child of data.children) {
         if (child.type == "folder") {
-            if (root.startsWith(child.name)) child.directory = root;
-            else child.directory = root + "/" + child.name;
+            if (root.startsWith(child.name)) {
+                child.directory = root;
+            } else {
+                // child.directory = root + "/" + child.name;
+            }
+            // paths must start with "/"
             if (!child.directory.startsWith("/"))
                 child.directory = "/" + child.directory;
             child = fixPaths(child, child.directory);
@@ -130,7 +133,7 @@ function fixPaths(data: pathableItem, root: string) {
     return data;
 }
 
-function fixFolderSizes(data: pathableItem) {
+function fixFolderSizes(data: pathableItemFolder) {
     let n = 0;
     for (let child of data.children) {
         if (child.type == "folder") {
@@ -142,7 +145,7 @@ function fixFolderSizes(data: pathableItem) {
     return data;
 }
 
-async function fixFileDownloads(data: pathableItem) {
+async function fixFileDownloads(data: pathableItemFolder) {
     for (let child of data.children) {
         if (child.type == "folder") {
             child = await fixFileDownloads(child);
@@ -157,7 +160,7 @@ async function fixFileDownloads(data: pathableItem) {
     return data;
 }
 
-function fixRootLocation(data: pathableItem) {
+function fixRootLocation(data: pathableItemFolder) {
     const name = data.name;
     while (data.children.length == 1 && data.children[0].type == "folder") {
         data = data.children[0];
@@ -167,11 +170,11 @@ function fixRootLocation(data: pathableItem) {
     return data;
 }
 
-function sortPathable(data: pathableItem<"folder">) {
+function sortPathable(data: pathableItemFolder) {
     data.children.sort(sortPathableDirect);
     for (const child of data.children) {
         if (child.type == "folder") {
-            sortPathable(child as pathableItem<"folder">);
+            sortPathable(child);
         }
     }
     return data;

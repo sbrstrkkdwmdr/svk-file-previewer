@@ -110,6 +110,12 @@
         sort(tmp, sortmode, sortdirection, sortfolders);
         return tmp;
     });
+
+    function getPath(file: pathableItem) {
+        if (file.type == "file") return "/open/" + file.hash;
+        const path = file.directory + file.name;
+        return path.replaceAll("//", "/");
+    }
 </script>
 
 <div>
@@ -200,7 +206,7 @@
     <a
         title={file.name}
         class="file"
-        href={file.type == "folder" ? file.directory : "/open/" + file.hash}
+        href={getPath(file)}
         oncontextmenu={(ev) => ctxmenu(ev, file)}
     >
         {@render fileName(file)}
@@ -254,7 +260,7 @@
     <a
         title={file.name}
         class="file"
-        href={file.type == "folder" ? file.directory : "/open/" + file.hash}
+        href={getPath(file)}
         oncontextmenu={(ev) => ctxmenu(ev, file)}
         data-sveltekit-reload
     >
@@ -264,9 +270,10 @@
 {/snippet}
 {#snippet fileLocation(file: pathableItem)}
     <div class="file-section mono-font">
-        ~{file.directory.startsWith("/")
+        ~{(file.directory.startsWith("/")
             ? file.directory
-            : "/" + file.directory}
+            : "/" + file.directory
+        ).replaceAll("//", "/")}
     </div>
 {/snippet}
 <div class="folder">
