@@ -7,15 +7,15 @@ export function fileSearch(parent: pathableItem<"folder">, match: string) {
     const temp: pathableItem<"folder"> = { ...parent };
     temp.children = [];
     for (const file of parent.children) {
-        if (
-            stringMatches(file.name, match) ||
-            (stringMatches(file.directory, match) && file.directory != "")
-        ) {
+        console.log(file.directory + "/" + file.name);
+        if (stringMatches(file.name, match)) {
             temp.children.push(file);
         } else if (file.type == "folder") {
             const nf = fileSearch(file as pathableItem<"folder">, match);
             if (nf.children.length > 0) {
-                temp.children.push(nf);
+                for (const child of nf.children) {
+                    temp.children.push(child);
+                }
             }
         }
     }

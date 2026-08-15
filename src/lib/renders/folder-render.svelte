@@ -98,8 +98,8 @@
         for (const child of collection) {
             // if (child.type == "file") container.push(child);
             container.push(child);
-            if (isSearchResult && child.type == "folder")
-                getChildren(container, child.children);
+            // if (isSearchResult && child.type == "folder")
+            // getChildren(container, child.children);
             // else container.push(child);
         }
     }
