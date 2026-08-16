@@ -1,5 +1,5 @@
 <script lang="ts">
-    import { extToImage, extToType } from "$lib/data/extensions";
+    import { getFileIcon } from "$lib/data/extensions";
     import { type pathableItem } from "$lib/data/files";
     import type { Dict } from "$lib/data/types";
     import { fileNameParts, sort, type sortmodes } from "$lib/file-tools";
@@ -280,7 +280,7 @@
         <span
             class="fileIcon icon-fileGeneric icon-{file.type == 'folder'
                 ? 'folder'
-                : extToImage(file.name.split('.')?.pop() ?? '')}"
+                : getFileIcon(file.name)}"
         ></span>
         <span class="mono-font file-name-padding">
             {parts[0]}{#if parts[1]}
@@ -422,7 +422,7 @@
                             ` (${separateNum(contextItem?.size ?? 0)} bytes)`,
                     ],
                     Type: [
-                        extToImage(contextItem!.name.split(".")?.pop() ?? ""),
+                        getFileIcon(contextItem!.name),
                         fileTypeName(contextItem!.name) +
                             " (" +
                             getMime(contextItem!.name) +

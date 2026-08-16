@@ -1,3 +1,6 @@
+import { toCapital } from "$lib/tools";
+import { getMime } from "./filetypes";
+
 export const codeDict = {
     "arm-asm": ["asm"],
     bash: ["sh"],
@@ -47,12 +50,10 @@ function dictionaryAVToArray(dict: object) {
     return temp;
 }
 
-export const previewables = ["md", "log", "txt"].concat(
-    dictionaryAVToArray(codeDict),
-);
+const previewables = ["md", "log", "txt"].concat(dictionaryAVToArray(codeDict));
 
-export const extensions = {
-    Image: ["png", "jpg", "svg", "jpeg", "gif", "pdn", "heic"],
+const extensions = {
+    Image: ["png", "jpg", "svg", "jpeg", "gif", "pdn", "heic", "webp"],
     Video: ["mp4", "mkv", "mov", "avi"],
     Audio: ["mp3", "ogg", "wav", "flac", "aac"],
     Text: ["txt", "log", "osb", "osu", "m", "hbs", "asm"],
@@ -63,7 +64,7 @@ export const extensions = {
     db: ["sql"],
     ...codeDict,
 };
-export const extensions_full = {
+const extensions_full = {
     "osu! Beatmap archive": ["osz"],
     "osu! Skin archive": ["osk"],
     "osu! Beatmap": ["osu"],
@@ -75,30 +76,26 @@ export const extensions_full = {
 /**
  * icon value
  */
-export function extToImage(str: string) {
+export function getFileIcon(str: string) {
     str = str.toLowerCase();
     let p = "file";
     for (const key in extensions) {
         //@ts-expect-error string cannot index extensions
-        if (extensions[key].some((x) => x == str)) {
+        if (extensions[key].some((x) => str.endsWith("." + x))) {
             p += key;
             break;
         }
     }
     if (p == "file") {
-        p += "Generic";
-    }
-    return p;
-}
-export function extToType(str: string) {
-    str = str.toLowerCase();
-    let p = "file";
-    for (const key in extensions_full) {
-        //@ts-expect-error string cannot index extensions
-        if (extensions_full[key].some((x) => x == str)) {
-            p = key;
-            break;
+        const mime = getMime(str);
+        for (const str of ["image", "audio", "video", "text"]) {
+            if (mime.startsWith(str)) {
+                p = "file" + toCapital(str);
+            }
+        }
+        if (p == "file") {
+            p += "Generic";
         }
     }
-    return p.toLowerCase();
+    return p;
 }

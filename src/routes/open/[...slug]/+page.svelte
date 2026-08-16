@@ -1,6 +1,6 @@
 <script lang="ts">
     import { afterNavigate } from "$app/navigation";
-    import { extToImage } from "$lib/data/extensions";
+    import { getFileIcon } from "$lib/data/extensions";
     import { addressBarPath } from "$lib/data/path-now.js";
     import AudioRender from "$lib/renders/audio-render.svelte";
     import CodeRender from "$lib/renders/code-render.svelte";
@@ -105,7 +105,7 @@
         {/if}
         <br />
         <span title="MIME type">
-            <Icon icon={extToImage(data.metadata.extension)} /> Type: {fileTypeName(
+            <Icon icon={getFileIcon(data.metadata.name)} /> Type: {fileTypeName(
                 data.metadata.name,
             )}
             ({data.mime})
