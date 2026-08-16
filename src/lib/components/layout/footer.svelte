@@ -3,7 +3,7 @@
 </script>
 
 <div class="special-footer">
-    <a href="https://github.com/sbrstrkkdwmdr/"
+    <a href="https://github.com/sbrstrkkdwmdr/svk-file-previewer"
         ><Icon icon="github-clear" /> Source code</a
     >
     | made by <a href="https://github.com/sbrstrkkdwmdr/">sbrstrkkdwmdr</a>
